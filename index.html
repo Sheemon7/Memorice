@@ -37,7 +37,47 @@
 
 --->
 
-<h2> <a id="1st" class="anchor" href="#welcome-to-github-pages" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>První zamyšlení</h2>
+<h2> <a class="anchor" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Druhé zamyšlení</h2>
+
+<code>29.2.2016</code>
+
+<p>V tomto příspěvku bych chtěl nastínit více detailů o připravované aplikaci a rozepsat se o mých dalších nápadech.</p> 
+
+<p>Všechny potřebné informace, které si chceme zapamatovat se dají rozdělit na tři typy:
+	<ul>
+		<li><b>Jednostranné slovníky/mapy</b> - V tomto případě si chceme rychle a úspěšně vybavit protějšek daného klíče (značná inspirace u dictionary ADT). Příklady: člověk/jeho telefonní číslo, nákupní položka/množství
+		</li>
+		
+		<li><b>Oboustranné slovníky/mapy</b> - Odvozený typ od jednostranných. Potřebujeme si pamatovat "oboustranný překlad" Příklady: učení slovíček cizích jazyků, dvojice stát/jeho hlavní město, z matematiky kružnice/její rovnice nebo libovolná definice
+		</li>
+
+		<li><b>Seznam</b> - Speciální typ jednostranné mapy, která má jako množinu klíčů aritmetickou posloupnost 1, 2, 3... tzn. jde nám o to si zapamatovat pořadí. Příklady: posloupnost událostí (dějepis), různé návody, algoritmy (řešení kvadratických rovnic...), memorování čísla π (pi)
+		</li>
+
+		<li><b>Množina informací</b> - V tomto případě si chceme vybavit co nejvíce informací k danému temátu (v libovolném pořadí). Příklady: co všechno nakoupit, klíčová slova/povolené konstrukty/knihovní funkce daného jazyka a mnoho dalších. 
+		</li>
+	</ul>
+
+Uvidíme, pro kolik těchto kategorií stihnu přídat podporu.
+</p>
+
+<p>Co se týče vzhledu aplikace, chtěl bych, aby byla funkční a minimalistická. Na úvodní stránce by mělo být minimum buttonů. Zatím jsem zvažoval tyto:
+		<ul>
+			<li><b>Trénink</b> - Stěžejní funkce, jejíž spuštění by po vybrání daného setu informací uživatele testovala a zároveň učila.
+			</li>
+		
+			<li><b>Vložení nových informací</b> - Funkcionalita pro přidávání nových informací do databáze. PO vybrání kategorie lze přidávat data (toto přidávání by jistě zjednodušil nějaký import z dokumentu). Ještě nemám rozmyšlené, jestli použiji nějakou SQL databázi, nebo ne, ale určitě by to nebylo na škodu.
+			</li>
+
+			<li><b>Manuál</b> - Obsahoval by jednak stručný návod pro použití aplikace a navíc nějaké další osvědčené triky pro trénink paměti.
+			</li>
+		</ul>
+</p> 
+		
+
+<h2> <a class="anchor" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>První zamyšlení</h2>
+
+<code>27.2.2016</code>
 
 <p><b>Memorice</b> (z anglického "memory" a "rice") by měla být aplikace, která běžnému, avšak odhodlanému člověku pomůže s učením nových věcí a jejich memorováním. Bude používat poznatky z knih:
 
