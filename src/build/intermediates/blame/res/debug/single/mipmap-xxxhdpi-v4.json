@@ -1,0 +1,10 @@
+[
+    {
+        "merged": "C:\\Users\\Sheemon\\Google Drive\\CTU\\PR2\\Android\\Memorice\\src\\build\\intermediates\\res\\merged\\debug\\mipmap-xxxhdpi-v4\\ic_launcher.png",
+        "source": "C:\\Users\\Sheemon\\Google Drive\\CTU\\PR2\\Android\\Memorice\\src\\src\\main\\res\\mipmap-xxxhdpi\\ic_launcher.png"
+    },
+    {
+        "merged": "C:\\Users\\Sheemon\\Google Drive\\CTU\\PR2\\Android\\Memorice\\app\\build\\intermediates\\res\\merged\\debug\\mipmap-xxxhdpi-v4\\ic_launcher.png",
+        "source": "C:\\Users\\Sheemon\\Google Drive\\CTU\\PR2\\Android\\Memorice\\app\\src\\main\\res\\mipmap-xxxhdpi\\ic_launcher.png"
+    }
+]
