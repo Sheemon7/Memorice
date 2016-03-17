@@ -41,6 +41,19 @@
 
 --->
 
+<h2> <a class="anchor" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Objektový návrh<br><code>17.3.2016</code></h2>
+
+<p>Vedle vývoje hlavní, androidí aplikace vyvíjím i konzolovou aplikaci, která bude stejně funkční jako aplikace, ale bude probíhat pouze v konzoli. Poté mám v plánu aplikaci pouze přemigrovat do prostředí Androida. Toho lze docílit pomocí vhodných interfaců. Za hlavní považuji tyto:
+
+<ul>
+		<li><b>I/O</b> - Skupina interfaců pro komunikaci, zejména zadávání vstupu v podobě dat a komunikace aplikace s uživatelem. V aplikaci nahradím dialogovými okny nebo něčím podobným.
+		</li>
+		
+		<li><b>Zápis do databáze</b> - Memorice bude datová aplikace, nebude mít data uložená na remote serveru, ale bude lokální (textová povaha dat nám to umožní aniž bychom spotřebovali mnoho paměti. Proto budu muset do aplikace přidat i interfacy na čtení-ukládání souborů. Zatím budu řešit ukládáním v podobě binárních souborů, ale v budoucnu bych rád použil SQLite, pro kterou má Android nativní podporu.
+		</li>
+
+<p>Příští týden je v plánu první konzultace k práci, poznatky z této konzultace doplním v dalším článku.</p>
+
 <h2> <a class="anchor" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Třetí příspěvek<br><code>9.3.2016</code></h2>
 
 <p>Dnešní text bude pouze krátký, je čistě technického charakteru. Konečně jsem se totiž vypořádal s technickými problémy.</p> 
