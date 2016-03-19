@@ -1,4 +1,4 @@
-package database;
+package model.database;
 
 /**
  * Created by sheemon on 18.3.16.

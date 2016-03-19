@@ -1,6 +1,7 @@
-package database;
+package model.database;
 
 import model.entities.Entity;
+import model.entities.EntityEnum;
 
 import java.io.*;
 
@@ -9,8 +10,8 @@ import java.io.*;
  */
 public class FileDataWriter implements DataWriter {
 
-    public void writeEntry(Entity entity) {
-        String path = directory + File.separator + entity.getName();
+    public void writeEntry(Entity entity, EntityEnum type) {
+        String path = directory + File.separator + type.getName() + File.separator + entity.getName();
         File file = getFile(path);
         try {
             FileOutputStream out = new FileOutputStream(file);

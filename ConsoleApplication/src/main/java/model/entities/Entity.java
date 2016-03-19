@@ -1,8 +1,8 @@
 package model.entities;
 
+import model.database.NameDatabase;
 import model.util.InvalidNameException;
 import model.util.NameAlreadyUsedException;
-import model.util.NameTest;
 
 import java.io.Serializable;
 
@@ -14,8 +14,12 @@ public abstract class Entity implements Serializable{
 
     private String name;
 
+
+    private final EntityEnum type;
+
     public Entity(String name) {
         this.name = name;
+        type = null;
     }
 
     public String getName() {
@@ -24,7 +28,7 @@ public abstract class Entity implements Serializable{
 
     public boolean setName(String name) {
         try {
-            NameTest.addName(name);
+            NameDatabase.addName(this);
             this.name = name;
             return true;
         } catch (NameAlreadyUsedException e) {
@@ -34,6 +38,11 @@ public abstract class Entity implements Serializable{
         } finally {
             return false;
         }
+    }
+
+
+    public EntityEnum getType() {
+        return type;
     }
 
     public abstract int size();

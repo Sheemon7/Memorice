@@ -1,6 +1,7 @@
-package database;
+package model.database;
 
 import model.entities.Entity;
+import model.entities.EntityEnum;
 
 import java.io.*;
 
@@ -9,12 +10,11 @@ import java.io.*;
  */
 public class FileDataReader implements DataReader {
 
-    public Entity readEntity(String name) {
-        String path = directory + File.separator + name;
-        FileInputStream in = null;
+    public Entity readEntity(String name, EntityEnum type) {
+        String path = directory + File.separator + type.getName() + File.separator + name;
         Object object = null;
         try {
-            in = new FileInputStream(path);
+            FileInputStream in = new FileInputStream(path);
             ObjectInputStream objectIn = new ObjectInputStream(in);
             object = objectIn.readObject();
             objectIn.close();

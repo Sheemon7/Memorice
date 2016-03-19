@@ -3,7 +3,6 @@ package model.entities;
 import model.entities.entries.ListEntry;
 
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by sheemon on 18.3.16.
