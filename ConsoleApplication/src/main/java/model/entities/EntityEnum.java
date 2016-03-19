@@ -5,9 +5,9 @@ package model.entities;
  */
 public enum EntityEnum {
     DICTIONARY("dictionary"),
-    DOUBLEDICTIONARY("double dictionary"),
-    LIST("list"),
-    SET("set");
+    DOUBLE_DICTIONARY("double dictionary"),
+    SEQUENCE("sequence"),
+    GROUP("group");
 
     EntityEnum(String name) {
         this.name = name;

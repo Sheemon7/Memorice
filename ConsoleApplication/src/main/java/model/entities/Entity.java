@@ -5,16 +5,16 @@ import model.util.InvalidNameException;
 import model.util.NameAlreadyUsedException;
 
 import java.io.Serializable;
+import java.util.Iterator;
+import java.util.function.Consumer;
 
 /**
  * Created by sheemon on 18.3.16.
  */
-public abstract class Entity implements Serializable{
+public abstract class Entity implements Serializable, Iterable{
 
 
     private String name;
-
-
     private final EntityEnum type;
 
     public Entity(String name) {
@@ -46,4 +46,7 @@ public abstract class Entity implements Serializable{
     }
 
     public abstract int size();
+
+    public abstract Iterator iterator();
+
 }

@@ -1,6 +1,6 @@
 package model.entities;
 
-import model.entities.entries.DictionaryEntry;
+import model.entities.entries.GroupEntry;
 
 import java.util.HashSet;
 import java.util.Iterator;
@@ -9,29 +9,29 @@ import java.util.Set;
 /**
  * Created by sheemon on 18.3.16.
  */
-public class Dictionary extends Entity {
+public class Group extends Entity {
 
-    private Set<DictionaryEntry> entries = new HashSet<>();
+    private Set<GroupEntry> entries = new HashSet<>();
 
-    public Dictionary(String name) {
+    public Group(String name) {
         super(name);
     }
 
-    public boolean addEntry(DictionaryEntry entry) {
+    public boolean addEntry(GroupEntry entry) {
         return entries.add(entry);
     }
 
-    public boolean removeEntry(DictionaryEntry entry) {
+    public boolean removeEntry(GroupEntry entry) {
         return entries.remove(entry);
     }
 
     @Override
     public int size() {
-        return 0;
+        return entries.size();
     }
 
     @Override
     public Iterator iterator() {
-        return null;
+        return entries.iterator();
     }
 }
