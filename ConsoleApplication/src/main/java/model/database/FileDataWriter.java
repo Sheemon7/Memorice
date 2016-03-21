@@ -4,19 +4,23 @@ import model.entities.Entity;
 import model.entities.EntityEnum;
 
 import java.io.*;
+import java.util.logging.Logger;
 
 /**
  * Created by sheemon on 18.3.16.
  */
 public class FileDataWriter implements DataWriter {
 
-    public void writeEntry(Entity entity, EntityEnum type) {
+    private final static Logger LOGGER = Logger.getLogger(FileDataWriter.class.getName());
+
+    public void writeEntity(Entity entity, EntityEnum type) {
         String path = directory + File.separator + type.getName() + File.separator + entity.getName();
         File file = getFile(path);
         try {
             FileOutputStream out = new FileOutputStream(file);
             ObjectOutputStream objectOut = new ObjectOutputStream(out);
             objectOut.writeObject(entity);
+            LOGGER.info(type + " " + entity.getName() + " succesfully saved to database.");
             objectOut.close();
             out.close();
         } catch (FileNotFoundException e) {
@@ -24,6 +28,12 @@ public class FileDataWriter implements DataWriter {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public void deleteEntity(Entity entity, EntityEnum type) {
+        String path = directory + File.separator + type.getName() + File.separator + entity.getName();
+        File file = getFile(path);
+        file.delete();
     }
 
     private File getFile(String path) {

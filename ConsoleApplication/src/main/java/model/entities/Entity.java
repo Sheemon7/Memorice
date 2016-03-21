@@ -28,16 +28,15 @@ public abstract class Entity implements Serializable, Iterable{
 
     public boolean setName(String name) {
         try {
-            NameDatabase.addName(this);
+            NameDatabase.getInstance().addName(this);
             this.name = name;
             return true;
         } catch (NameAlreadyUsedException e) {
             e.printStackTrace();
         } catch (InvalidNameException e) {
             e.printStackTrace();
-        } finally {
-            return false;
         }
+        return false;
     }
 
 

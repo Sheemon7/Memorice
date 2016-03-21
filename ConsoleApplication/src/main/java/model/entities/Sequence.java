@@ -2,6 +2,7 @@ package model.entities;
 
 import model.entities.entries.SequenceEntry;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -9,7 +10,7 @@ import java.util.List;
 /**
  * Created by sheemon on 18.3.16.
  */
-public class Sequence extends Entity {
+public class Sequence extends Entity implements Serializable {
 
     private List<SequenceEntry> entries= new ArrayList<SequenceEntry>();
 

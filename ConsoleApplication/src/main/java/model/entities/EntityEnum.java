@@ -5,7 +5,6 @@ package model.entities;
  */
 public enum EntityEnum {
     DICTIONARY("dictionary"),
-    DOUBLE_DICTIONARY("double dictionary"),
     SEQUENCE("sequence"),
     GROUP("group");
 

@@ -7,13 +7,25 @@ import java.util.Scanner;
  */
 public class StandardInputReader implements IStdIn {
 
-    Scanner scanner = new Scanner(System.in);
+    private static StandardInputReader singleton = new StandardInputReader();
+    private Scanner scanner = new Scanner(System.in);
+
+
+    private StandardInputReader() {
+
+    }
+
+    public static StandardInputReader getInstance() {
+        return singleton;
+    }
 
     public int probe() {
         return scanner.nextInt();
     }
 
+
+
     public String readLine() {
-        return scanner.nextLine();
+        return scanner.next();
     }
 }

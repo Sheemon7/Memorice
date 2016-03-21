@@ -7,7 +7,7 @@ import gui.IStdOut;
  */
 public class Helper {
 
-    private String help = "TODO HELP\n";
+    private String help = "HELP WILL BE THERE\n";
 
     public void printHelp(IStdOut printer) {
         printer.writeLn(help);

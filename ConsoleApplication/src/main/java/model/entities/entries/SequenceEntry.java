@@ -1,9 +1,11 @@
 package model.entities.entries;
 
+import java.io.Serializable;
+
 /**
  * Created by sheemon on 18.3.16.
  */
-public class SequenceEntry extends GroupEntry {
+public class SequenceEntry extends GroupEntry implements Serializable {
 
     private final int number;
 

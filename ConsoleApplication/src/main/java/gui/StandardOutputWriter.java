@@ -5,6 +5,16 @@ package gui;
  */
 public class StandardOutputWriter implements IStdOut {
 
+    private static StandardOutputWriter singleton = new StandardOutputWriter();
+
+    private StandardOutputWriter() {
+
+    }
+
+    public static StandardOutputWriter getInstance() {
+        return singleton;
+    }
+
     public void write(String string) {
         System.out.print(string);
     }

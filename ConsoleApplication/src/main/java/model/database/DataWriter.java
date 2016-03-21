@@ -10,5 +10,5 @@ import java.io.FileNotFoundException;
  */
 public interface DataWriter extends DataHandler {
 
-    void writeEntry(Entity entity, EntityEnum type) throws FileNotFoundException;
+    void writeEntity(Entity entity, EntityEnum type) throws FileNotFoundException;
 }

@@ -2,6 +2,7 @@ package model.entities;
 
 import model.entities.entries.DictionaryEntry;
 
+import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
@@ -9,7 +10,7 @@ import java.util.Set;
 /**
  * Created by sheemon on 18.3.16.
  */
-public class Dictionary extends Entity {
+public class Dictionary extends Entity implements Serializable {
 
     private Set<DictionaryEntry> entries = new HashSet<>();
 
