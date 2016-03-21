@@ -36,4 +36,15 @@ public class Sequence extends Entity implements Serializable {
     public Iterator iterator() {
         return entries.iterator();
     }
+
+    @Override
+    public String toString() {
+        StringBuilder builder = new StringBuilder("Sequence: " + getName() +
+                " entries= ");
+        for (SequenceEntry entry:
+             entries) {
+            builder.append(entry.toString());
+        }
+        return builder.toString();
+    }
 }

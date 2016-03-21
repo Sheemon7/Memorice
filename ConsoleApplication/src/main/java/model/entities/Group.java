@@ -1,6 +1,7 @@
 package model.entities;
 
 import model.entities.entries.GroupEntry;
+import model.entities.entries.SequenceEntry;
 
 import java.io.Serializable;
 import java.util.HashSet;
@@ -34,5 +35,16 @@ public class Group extends Entity implements Serializable {
     @Override
     public Iterator iterator() {
         return entries.iterator();
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder builder = new StringBuilder("Group: " + getName() +
+                " entries= ");
+        for (GroupEntry entry:
+                entries) {
+            builder.append(entry.toString());
+        }
+        return builder.toString();
     }
 }

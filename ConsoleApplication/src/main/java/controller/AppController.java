@@ -6,11 +6,13 @@ import gui.IStdIn;
 import gui.IStdOut;
 import gui.StandardInputReader;
 import gui.StandardOutputWriter;
+import model.database.FileDataReader;
 import model.database.FileDataWriter;
 import model.database.NameDatabase;
 import model.entities.Entity;
 import model.entities.EntityEnum;
 import model.entities.builders.*;
+import model.entities.entries.DictionaryEntry;
 import model.help.Helper;
 
 import java.util.logging.Logger;
@@ -21,6 +23,7 @@ import java.util.logging.Logger;
 public class AppController {
 
     private final static Logger LOGGER = Logger.getLogger(AppController.class.getName());
+    private final static NameDatabase database = NameDatabase.getInstance();
 
     private IStdOut writer = StandardOutputWriter.getInstance();
     private IStdIn reader = StandardInputReader.getInstance();
@@ -28,13 +31,13 @@ public class AppController {
     public void runApplication() {
         LOGGER.info("Starting Application");
         LOGGER.info("Updating data");
-        NameDatabase.getInstance().updateNames();
+        database.updateNames();
         writer.writeLn(Strings.WELCOME);
         mainMenu();
     }
 
     private void mainMenu() {
-        switch (probe(Strings.PROBE, "Training", "My Sets", "Help", "Add new sets")) {
+        switch (probe(Strings.PROBE, "Training", "My Sets", "Edit", "Help", "Add new sets")) {
             case 1:
                 invokeTraining();
                 break;
@@ -42,9 +45,12 @@ public class AppController {
                 invokeMySets();
                 break;
             case 3:
-                invokeHelp();
+                invokeModification();
                 break;
             case 4:
+                invokeHelp();
+                break;
+            case 5:
                 invokeAdding();
                 break;
         }
@@ -98,11 +104,68 @@ public class AppController {
     }
 
     public void invokeMySets() {
+        listMySets();
+        probeExit();
+    }
+
+    private void listMySets() {
         writer.writeLn("My sets:");
-        for (String name : NameDatabase.getInstance().getNames()) {
-            writer.writeLn(name);
+        int number = 1;
+        for (String name :database.getTypes().keySet()) {
+            writer.write(String.valueOf(number++) + "\t");
+            writer.writeLn(name + ", " + database.getTypes().get(name).getName());
+        }
+    }
+
+    public void invokeModification() {
+        switch (probe("Would you like to remove or modify?", "remove", "modify")) {
+            case 1:
+                remove();
+                break;
+            case 2:
+                modify();
+                break;
         }
         probeExit();
+    }
+
+    private void remove() {
+        listMySets();
+        writer.writeLn("Which one would you like to remove? (name)");
+        database.deleteName(reader.readLine());
+    }
+
+    private void modify() {
+        listMySets();
+        writer.writeLn("Which one would you like to modify? (name)");
+        String name = reader.readLine();
+        EntityEnum type = database.getType(name);
+        Entity e = new FileDataReader().readEntity(name, type);
+        modifyEntity(e);
+    }
+
+    private void modifyEntity(Entity entity) {
+        switch (probe("What next?", "Read entity", "Delete entry", "Add entry", "Exit")) {
+            case 1:
+                writer.writeLn(entity.toString());
+                modify();
+                break;
+            case 2:
+                modify();
+                break;
+            case 3:
+                modify();
+                break;
+            case 4:
+                probeExit();
+        }
+//        while (!((line = reader.readLine().trim()).equals("Q"))) {
+//            definition = line;
+//            term = reader.readLine();
+//            entry = new DictionaryEntry(definition, term);
+//            d.addEntry(entry);
+//        }
+//        return d;
     }
 
     private void probeExit() {

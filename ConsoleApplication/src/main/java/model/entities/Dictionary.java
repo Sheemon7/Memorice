@@ -1,6 +1,7 @@
 package model.entities;
 
 import model.entities.entries.DictionaryEntry;
+import model.entities.entries.SequenceEntry;
 
 import java.io.Serializable;
 import java.util.HashSet;
@@ -34,5 +35,16 @@ public class Dictionary extends Entity implements Serializable {
     @Override
     public Iterator iterator() {
         return null;
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder builder = new StringBuilder("Dictionary: " + getName() +
+                " entries= ");
+        for (DictionaryEntry entry:
+                entries) {
+            builder.append(entry.toString());
+        }
+        return builder.toString();
     }
 }

@@ -20,6 +20,7 @@ public class NameDatabase implements Serializable {
     private final static Logger LOGGER = Logger.getLogger(NameDatabase.class.getName());
     private static NameDatabase singleton = new NameDatabase();
 
+
     private Map<String, EntityEnum> types = new HashMap<String, EntityEnum>();
     private Set<String> names = new HashSet<String>();
 
@@ -43,17 +44,18 @@ public class NameDatabase implements Serializable {
         types.put(name, entity.getType());
     }
 
-    public List<Entity> browseAll() {
-        List<Entity> ret = new ArrayList<Entity>();
-        for (EntityEnum type :
-                EntityEnum.values()) {
-
-        }
-        return ret;
+    public void deleteName(String name) {
+        new File(DataHandler.directory + File.separator + types.get(name).getName() + File.separator + name).delete();
+        names.remove(name);
+        types.remove(name);
     }
 
     public EntityEnum getType(String entity) {
         return types.get(entity);
+    }
+
+    public Map<String, EntityEnum> getTypes() {
+        return types;
     }
 
     public Set<String> getNames() {
