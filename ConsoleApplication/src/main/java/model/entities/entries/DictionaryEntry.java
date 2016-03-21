@@ -14,6 +14,11 @@ public class DictionaryEntry extends GroupEntry implements Serializable{
         this.key = key;
     }
 
+    @Override
+    public String toString() {
+        return key + ": " + super.toString();
+    }
+
     public String getKey() {
         return key;
     }

@@ -18,6 +18,11 @@ public class Sequence extends Entity implements Serializable {
         super(name);
     }
 
+    @Override
+    public EntityEnum getType() {
+        return EntityEnum.SEQUENCE;
+    }
+
     public boolean addEntry(SequenceEntry entry) {
         return entries.add(entry);
     }

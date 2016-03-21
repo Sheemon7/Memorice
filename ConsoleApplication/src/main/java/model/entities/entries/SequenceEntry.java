@@ -14,6 +14,11 @@ public class SequenceEntry extends GroupEntry implements Serializable {
         this.number = number;
     }
 
+    @Override
+    public String toString() {
+        return number + ": " + super.toString();
+    }
+
     public int getNumber() {
         return number;
     }

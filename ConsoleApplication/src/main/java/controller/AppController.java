@@ -54,6 +54,7 @@ public class AppController {
                 invokeAdding();
                 break;
         }
+        database.updateNames();
     }
 
     public void exit() {
@@ -105,7 +106,7 @@ public class AppController {
 
     public void invokeMySets() {
         listMySets();
-        probeExit();
+        mainMenu();
     }
 
     private void listMySets() {
@@ -159,13 +160,7 @@ public class AppController {
             case 4:
                 probeExit();
         }
-//        while (!((line = reader.readLine().trim()).equals("Q"))) {
-//            definition = line;
-//            term = reader.readLine();
-//            entry = new DictionaryEntry(definition, term);
-//            d.addEntry(entry);
-//        }
-//        return d;
+
     }
 
     private void probeExit() {

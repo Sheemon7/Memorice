@@ -17,4 +17,17 @@ public class GroupEntry implements Serializable {
         return value;
     }
 
+    @Override
+    public String toString() {
+        return value + "\n";
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        GroupEntry that = (GroupEntry) o;
+        return value != null ? value.equals(that.value) : that.value == null;
+
+    }
 }

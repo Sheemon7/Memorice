@@ -19,8 +19,17 @@ public class Group extends Entity implements Serializable {
         super(name);
     }
 
+    @Override
+    public EntityEnum getType() {
+        return EntityEnum.GROUP;
+    }
+
     public boolean addEntry(GroupEntry entry) {
-        return entries.add(entry);
+        if (!entries.contains(entry)) {
+            return entries.add(entry);
+        } else {
+            return false;
+        }
     }
 
     public boolean removeEntry(GroupEntry entry) {

@@ -20,9 +20,8 @@ public class NameDatabase implements Serializable {
     private final static Logger LOGGER = Logger.getLogger(NameDatabase.class.getName());
     private static NameDatabase singleton = new NameDatabase();
 
-
-    private Map<String, EntityEnum> types = new HashMap<String, EntityEnum>();
-    private Set<String> names = new HashSet<String>();
+    private Map<String, EntityEnum> types = new HashMap<>();
+    private Set<String> names = new HashSet<>();
 
     private NameDatabase() {
 

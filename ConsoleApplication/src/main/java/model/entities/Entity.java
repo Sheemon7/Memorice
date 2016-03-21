@@ -15,11 +15,9 @@ public abstract class Entity implements Serializable, Iterable{
 
 
     private String name;
-    private final EntityEnum type;
 
     public Entity(String name) {
         this.name = name;
-        type = null;
     }
 
     public String getName() {
@@ -40,9 +38,7 @@ public abstract class Entity implements Serializable, Iterable{
     }
 
 
-    public EntityEnum getType() {
-        return type;
-    }
+    public abstract EntityEnum getType();
 
     public abstract int size();
 

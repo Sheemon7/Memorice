@@ -19,8 +19,17 @@ public class Dictionary extends Entity implements Serializable {
         super(name);
     }
 
+    @Override
+    public EntityEnum getType() {
+        return EntityEnum.DICTIONARY;
+    }
+
     public boolean addEntry(DictionaryEntry entry) {
-        return entries.add(entry);
+        if (!entries.contains(entry)) {
+            return entries.add(entry);
+        } else {
+            return false;
+        }
     }
 
     public boolean removeEntry(DictionaryEntry entry) {
