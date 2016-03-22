@@ -19,7 +19,7 @@ public class GroupEntry implements Serializable {
 
     @Override
     public String toString() {
-        return value + "\n";
+        return value;
     }
 
     @Override
@@ -29,5 +29,10 @@ public class GroupEntry implements Serializable {
         GroupEntry that = (GroupEntry) o;
         return value != null ? value.equals(that.value) : that.value == null;
 
+    }
+
+    @Override
+    public int hashCode() {
+        return value != null ? value.hashCode() : 0;
     }
 }

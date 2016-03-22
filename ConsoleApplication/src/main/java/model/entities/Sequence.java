@@ -45,10 +45,10 @@ public class Sequence extends Entity implements Serializable {
     @Override
     public String toString() {
         StringBuilder builder = new StringBuilder("Sequence: " + getName() +
-                " entries= ");
+                "\nentries= ");
         for (SequenceEntry entry:
              entries) {
-            builder.append(entry.toString());
+            builder.append(entry.toString() + "\n");
         }
         return builder.toString();
     }

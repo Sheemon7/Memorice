@@ -33,6 +33,10 @@ public class AppController {
         LOGGER.info("Updating data");
         database.updateNames();
         writer.writeLn(Strings.WELCOME);
+        writer.writeLn("Console application demonstrates, how the final project would function. It may happen, that " +
+                "you accidentally press something else during the input process and the programme will fail. Nevertheless," +
+                "this should not hapen afterwards (for example, the set selection in modify section will be replaced by dropdown)." +
+                "This is the reason why I decided to not to occupy myself with properly checking the input");
         mainMenu();
     }
 

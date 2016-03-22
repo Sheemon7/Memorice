@@ -7,19 +7,19 @@ import java.io.Serializable;
  */
 public class DictionaryEntry extends GroupEntry implements Serializable{
 
-    private final String key;
+    private final String definition;
 
     public DictionaryEntry(String key, String value) {
-        super(value);
-        this.key = key;
+        super(key);
+        this.definition = key;
     }
 
     @Override
     public String toString() {
-        return key + ": " + super.toString();
+        return super.toString() + ": " + definition;
     }
 
-    public String getKey() {
-        return key;
+    public String getDefinition() {
+        return definition;
     }
 }

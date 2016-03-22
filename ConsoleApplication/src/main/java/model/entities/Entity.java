@@ -24,18 +24,18 @@ public abstract class Entity implements Serializable, Iterable{
         return name;
     }
 
-    public boolean setName(String name) {
-        try {
-            NameDatabase.getInstance().addName(this);
-            this.name = name;
-            return true;
-        } catch (NameAlreadyUsedException e) {
-            e.printStackTrace();
-        } catch (InvalidNameException e) {
-            e.printStackTrace();
-        }
-        return false;
-    }
+//    public boolean setName(String name) {
+//        try {
+//            NameDatabase.getInstance().addName(this);
+//            this.name = name;
+//            return true;
+//        } catch (NameAlreadyUsedException e) {
+//            e.printStackTrace();
+//        } catch (InvalidNameException e) {
+//            e.printStackTrace();
+//        }
+//        return false;
+//    }
 
 
     public abstract EntityEnum getType();

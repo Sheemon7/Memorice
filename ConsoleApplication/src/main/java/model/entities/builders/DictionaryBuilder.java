@@ -6,6 +6,7 @@ import model.entities.entries.DictionaryEntry;
 import model.entities.entries.GroupEntry;
 import model.util.InvalidNameException;
 import model.util.NameAlreadyUsedException;
+import model.util.TermAlreadyUsedException;
 
 import java.util.StringTokenizer;
 
@@ -32,7 +33,12 @@ public class DictionaryBuilder extends Builder {
             definition = line;
             term = reader.readLine();
             entry = new DictionaryEntry(definition, term);
-            d.addEntry(entry);
+            try {
+                d.addEntry(entry);
+            } catch (TermAlreadyUsedException e) {
+                e.printStackTrace();
+                writer.writeLn("Term already used!");
+            }
         }
         return d;
     }

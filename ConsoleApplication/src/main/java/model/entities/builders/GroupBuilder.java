@@ -5,6 +5,7 @@ import model.entities.Group;
 import model.entities.entries.GroupEntry;
 import model.util.InvalidNameException;
 import model.util.NameAlreadyUsedException;
+import model.util.TermAlreadyUsedException;
 
 /**
  * Created by sheemon on 21.3.16.
@@ -26,7 +27,12 @@ public class GroupBuilder extends Builder {
         GroupEntry entry;
         while (!((line = reader.readLine().trim()).equals("Q"))) {
             entry = new GroupEntry(line);
-            g.addEntry(entry);
+            try {
+                g.addEntry(entry);
+            } catch (TermAlreadyUsedException e) {
+                e.printStackTrace();
+                System.out.println("Term already used!");
+            }
         }
         return g;
     }

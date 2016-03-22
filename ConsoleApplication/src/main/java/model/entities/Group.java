@@ -1,7 +1,7 @@
 package model.entities;
 
 import model.entities.entries.GroupEntry;
-import model.entities.entries.SequenceEntry;
+import model.util.TermAlreadyUsedException;
 
 import java.io.Serializable;
 import java.util.HashSet;
@@ -24,11 +24,11 @@ public class Group extends Entity implements Serializable {
         return EntityEnum.GROUP;
     }
 
-    public boolean addEntry(GroupEntry entry) {
+    public boolean addEntry(GroupEntry entry) throws TermAlreadyUsedException {
         if (!entries.contains(entry)) {
             return entries.add(entry);
         } else {
-            return false;
+            throw new TermAlreadyUsedException();
         }
     }
 
@@ -49,10 +49,10 @@ public class Group extends Entity implements Serializable {
     @Override
     public String toString() {
         StringBuilder builder = new StringBuilder("Group: " + getName() +
-                " entries= ");
+                "\nentries= ");
         for (GroupEntry entry:
                 entries) {
-            builder.append(entry.toString());
+            builder.append(entry.toString()+ "\n");
         }
         return builder.toString();
     }

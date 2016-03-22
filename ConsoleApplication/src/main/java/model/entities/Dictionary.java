@@ -2,6 +2,7 @@ package model.entities;
 
 import model.entities.entries.DictionaryEntry;
 import model.entities.entries.SequenceEntry;
+import model.util.TermAlreadyUsedException;
 
 import java.io.Serializable;
 import java.util.HashSet;
@@ -24,11 +25,11 @@ public class Dictionary extends Entity implements Serializable {
         return EntityEnum.DICTIONARY;
     }
 
-    public boolean addEntry(DictionaryEntry entry) {
+    public boolean addEntry(DictionaryEntry entry) throws TermAlreadyUsedException {
         if (!entries.contains(entry)) {
             return entries.add(entry);
         } else {
-            return false;
+            throw new TermAlreadyUsedException();
         }
     }
 
@@ -49,10 +50,10 @@ public class Dictionary extends Entity implements Serializable {
     @Override
     public String toString() {
         StringBuilder builder = new StringBuilder("Dictionary: " + getName() +
-                " entries= ");
+                "\nentries= ");
         for (DictionaryEntry entry:
                 entries) {
-            builder.append(entry.toString());
+            builder.append(entry.toString() + "\n");
         }
         return builder.toString();
     }
