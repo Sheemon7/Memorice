@@ -29,7 +29,7 @@ public class Sequence extends Entity implements Serializable {
 
     public boolean removeEntry(SequenceEntry entry) {
         return entries.remove(entry);
-        //soupnout cisla? v builderu nebo tady? dulezite
+        //soupnout cisla? v builderu nebo tady? dulezite, asi podle toho, jak budou fungovat databaze v Androidu
     }
 
     @Override

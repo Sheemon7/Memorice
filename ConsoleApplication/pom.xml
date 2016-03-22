@@ -8,24 +8,12 @@
     <artifactId>ConsoleApplication</artifactId>
     <version>1.0</version>
 
+    <name>Memorice</name>
+    <url>http://sheemon7.github.io/Memorice/</url>
+
+
     <build>
         <plugins>
-            <plugin>
-                <groupId>fel.cvut.cz</groupId>
-                <artifactId>ConsoleApplication</artifactId>
-                <version>1.0</version>
-                <executions>
-                    <execution>
-                        <phase>test</phase>
-                        <goals>
-                            <goal>java</goal>
-                        </goals>
-                        <configuration>
-                            <mainClass>Main</mainClass>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
@@ -36,6 +24,4 @@
             </plugin>
         </plugins>
     </build>
-
-
 </project>

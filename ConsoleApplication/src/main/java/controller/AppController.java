@@ -156,9 +156,11 @@ public class AppController {
                 modify();
                 break;
             case 2:
+                writer.writeLn("Will be implemented after better Android environment examination");
                 modify();
                 break;
             case 3:
+                writer.writeLn("Will be implemented after better Android environment examination");
                 modify();
                 break;
             case 4:
