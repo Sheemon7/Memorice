@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$USER_HOME$/ownCloud/CTU/PR2/Android/Memorice/AndroidApplication/AndroidApplication.iml" filepath="$USER_HOME$/ownCloud/CTU/PR2/Android/Memorice/AndroidApplication/AndroidApplication.iml" />
+      <module fileurl="file://$USER_HOME$/ownCloud/CTU/PR2/Android/Memorice/AndroidApplication/Memorice/Memorice.iml" filepath="$USER_HOME$/ownCloud/CTU/PR2/Android/Memorice/AndroidApplication/Memorice/Memorice.iml" />
+    </modules>
+  </component>
+</project>
