@@ -1,7 +1,13 @@
 <resources>
     <string name="app_name">Memorice</string>
     <string name="entry_activity_title">Sets</string>
+    <string name="settings_activity_title">Settings</string>
 
     <string name="settings_action_label">Settings</string>
     <string name="search_action_label">Search</string>
+
+    <string name="list">List</string>
+    <string name="set">Set</string>
+    <string name="dictionary">Dictionary</string>
+
 </resources>
