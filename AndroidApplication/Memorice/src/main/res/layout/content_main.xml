@@ -9,14 +9,6 @@
     android:paddingTop="112dp"
     android:weightSum="1">
 
-    <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="108dp"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginBottom="48dp"
-        android:paddingLeft="32dp"
-        android:src="@drawable/bowl" />
-
     <!--&lt;!&ndash; Email Label &ndash;&gt;-->
     <!--<android.support.design.widget.TextInputLayout-->
     <!--android:layout_width="match_parent"-->
@@ -47,17 +39,27 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textColor="@color/colorInvertDarker"
         android:text="@string/welcome_entry"
         android:id="@+id/textView"
         android:layout_gravity="center_horizontal" />
 
     <android.support.v7.widget.AppCompatButton
-        android:id="@+id/btn_login"
+        android:id="@+id/btn_my_sets"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="24dp"
         android:layout_marginTop="24dp"
         android:padding="12dp"
+        android:textColor="@color/white"
         android:text="My sets" />
+
+    <ImageView
+        android:id="@+id/rice_pic"
+        android:layout_width="345dp"
+        android:layout_height="216dp"
+        android:layout_marginBottom="48dp"
+        android:paddingLeft="64dp"
+        android:layout_weight="0.03" />
 </LinearLayout>
 

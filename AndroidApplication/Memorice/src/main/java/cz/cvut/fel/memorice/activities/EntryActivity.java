@@ -1,6 +1,9 @@
 package cz.cvut.fel.memorice.activities;
 
 import android.content.Intent;
+import android.content.res.Resources;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.ActionBar;
@@ -61,6 +64,14 @@ public class EntryActivity extends AppCompatActivity {
         prepareFAB();
 
 
+        prepareRecyclerView();
+
+        ActionBar ab = getSupportActionBar();
+        ab.setDisplayHomeAsUpEnabled(true);
+    }
+
+
+    private void prepareRecyclerView() {
         mRecyclerView = (RecyclerView) findViewById(R.id.recycler_view);
 
         // use this setting to improve performance if you know that changes
@@ -73,16 +84,14 @@ public class EntryActivity extends AppCompatActivity {
 
         // specify an adapter (see also next example)
         ArrayList<String> mDataset = new ArrayList<>();
-        for (int i = 0; i < 100; i++) {
-            mDataset.add("TEST");
-        }
+//        for (int i = 0; i < 100; i++) {
+//            mDataset.add("TEST");
+//        }
+        mDataset.add("DODOD");
+        mDataset.add("DODsdadad");
 
         mAdapter = new MyAdapter(mDataset);
         mRecyclerView.setAdapter(mAdapter);
-
-
-        ActionBar ab = getSupportActionBar();
-        ab.setDisplayHomeAsUpEnabled(true);
     }
 
     private void prepareFAB() {

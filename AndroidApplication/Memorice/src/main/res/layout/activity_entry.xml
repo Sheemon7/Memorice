@@ -41,8 +41,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="right|bottom"
-            fab:fab_addButtonColorNormal="@color/colorAccent"
-            fab:fab_addButtonColorPressed="@color/half_black"
+            fab:fab_addButtonColorNormal="@color/colorPrimary"
+            fab:fab_addButtonColorPressed="@color/white"
             fab:fab_addButtonPlusIconColor="@color/white"
             fab:fab_addButtonStrokeVisible="true"
             fab:fab_labelStyle="@style/menu_labels_style"
@@ -52,10 +52,9 @@
                 android:id="@+id/fab_dictionary"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                fab:fab_colorNormal="@color/half_black"
-                fab:fab_colorPressed="@color/colorAccent"
+                fab:fab_colorNormal="@color/colorInvert"
+                fab:fab_colorPressed="@color/colorPrimary"
                 fab:fab_icon="@drawable/ic_dictionary_24dp"
-                fab:fab_plusIconColor="@color/white"
                 fab:fab_size="normal"
                 fab:fab_title="@string/dictionary" />
 
@@ -63,10 +62,9 @@
                 android:id="@+id/fab_list"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                fab:fab_colorNormal="@color/half_black"
-                fab:fab_colorPressed="@color/colorAccent"
+                fab:fab_colorNormal="@color/colorInvert"
+                fab:fab_colorPressed="@color/colorPrimary"
                 fab:fab_icon="@drawable/ic_list_24dp"
-                fab:fab_plusIconColor="@color/white"
                 fab:fab_size="normal"
                 fab:fab_title="@string/list" />
 
@@ -74,10 +72,9 @@
                 android:id="@+id/fab_set"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                fab:fab_colorNormal="@color/half_black"
-                fab:fab_colorPressed="@color/colorAccent"
+                fab:fab_colorNormal="@color/colorInvert"
+                fab:fab_colorPressed="@color/colorPrimary"
                 fab:fab_icon="@drawable/ic_set_24dp"
-                fab:fab_plusIconColor="@color/colorAccent"
                 fab:fab_size="normal"
                 fab:fab_title="@string/set" />
 
