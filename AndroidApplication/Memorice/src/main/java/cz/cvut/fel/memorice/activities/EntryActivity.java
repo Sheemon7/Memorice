@@ -1,5 +1,6 @@
 package cz.cvut.fel.memorice.activities;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.ActionBar;
@@ -146,6 +147,9 @@ public class EntryActivity extends AppCompatActivity {
                 Toast.makeText(getApplicationContext(), "Search pressed", Toast.LENGTH_SHORT);
                 //TODO - search action
                 return true;
+            case R.id.action_settings:
+                Intent myIntent = new Intent(EntryActivity.this, SettingsActivity.class);
+                EntryActivity.this.startActivity(myIntent);
             default:
                 return super.onOptionsItemSelected(item);
         }
