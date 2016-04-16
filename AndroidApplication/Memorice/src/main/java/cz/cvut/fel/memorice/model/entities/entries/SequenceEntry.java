@@ -5,7 +5,7 @@ import java.io.Serializable;
 /**
  * Created by sheemon on 18.3.16.
  */
-public class SequenceEntry extends GroupEntry implements Serializable {
+public class SequenceEntry extends Entry implements Serializable {
 
     private final int number;
 

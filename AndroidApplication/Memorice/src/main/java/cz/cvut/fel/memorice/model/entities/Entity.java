@@ -3,11 +3,13 @@ package cz.cvut.fel.memorice.model.entities;
 import java.io.Serializable;
 import java.util.Iterator;
 
+import cz.cvut.fel.memorice.model.entities.entries.Entry;
+import cz.cvut.fel.memorice.model.util.TermAlreadyUsedException;
+
 /**
  * Created by sheemon on 18.3.16.
  */
 public abstract class Entity implements Serializable, Iterable{
-
 
     private String name;
 
@@ -19,19 +21,7 @@ public abstract class Entity implements Serializable, Iterable{
         return name;
     }
 
-//    public boolean setName(String name) {
-//        try {
-//            NameDatabase.getInstance().addName(this);
-//            this.name = name;
-//            return true;
-//        } catch (NameAlreadyUsedException e) {
-//            e.printStackTrace();
-//        } catch (InvalidNameException e) {
-//            e.printStackTrace();
-//        }
-//        return false;
-//    }
-
+//    public abstract <T extends Entry> boolean addEntry(Class<T> entry);
 
     public abstract EntityEnum getType();
 

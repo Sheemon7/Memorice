@@ -5,7 +5,7 @@ import java.io.Serializable;
 /**
  * Created by sheemon on 18.3.16.
  */
-public class DictionaryEntry extends GroupEntry implements Serializable{
+public class DictionaryEntry extends Entry implements Serializable{
 
     private final String definition;
 

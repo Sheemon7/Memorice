@@ -1,8 +1,10 @@
 package cz.cvut.fel.memorice.model.entities.builders;
 
 import cz.cvut.fel.memorice.model.database.NameDatabase;
+import cz.cvut.fel.memorice.model.entities.Dictionary;
 import cz.cvut.fel.memorice.model.entities.Group;
-import cz.cvut.fel.memorice.model.entities.entries.GroupEntry;
+import cz.cvut.fel.memorice.model.entities.entries.Entry;
+import cz.cvut.fel.memorice.model.util.ConcurrentBuildingException;
 import cz.cvut.fel.memorice.model.util.InvalidNameException;
 import cz.cvut.fel.memorice.model.util.NameAlreadyUsedException;
 import cz.cvut.fel.memorice.model.util.TermAlreadyUsedException;
@@ -12,28 +14,35 @@ import cz.cvut.fel.memorice.model.util.TermAlreadyUsedException;
  */
 public class GroupBuilder extends Builder {
 
+    private static final GroupBuilder instance = new GroupBuilder();
+
+    public static GroupBuilder getInstance() {
+        return instance;
+    }
+
+    private GroupBuilder() {
+    }
+
+    private Group beingBuilt;
+
     @Override
-    public Group create() {
-        writer.writeLn("Insert name of the group");
-        String line = reader.readLine().trim();
-        Group g = new Group(line);
-        try {
-            NameDatabase.getInstance().addName(g);
-        } catch (NameAlreadyUsedException | InvalidNameException e) {
-            e.printStackTrace();
-            return null;
+    public void init(String label) {
+        if (beingBuilt != null) {
+            throw new ConcurrentBuildingException();
+        } else {
+            beingBuilt = new Group(label);
         }
-        writer.writeLn("Insert terms, each on its own line. Press Q to quit");
-        GroupEntry entry;
-        while (!((line = reader.readLine().trim()).equals("Q"))) {
-            entry = new GroupEntry(line);
-            try {
-                g.addEntry(entry);
-            } catch (TermAlreadyUsedException e) {
-                e.printStackTrace();
-                System.out.println("Term already used!");
-            }
-        }
-        return g;
+    }
+
+    @Override
+    public void add(Entry e) {
+        //TODO
+    }
+
+    @Override
+    public Group wrap() {
+        Group r = beingBuilt;
+        beingBuilt = null;
+        return r;
     }
 }

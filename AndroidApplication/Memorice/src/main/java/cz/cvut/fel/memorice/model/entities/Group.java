@@ -5,7 +5,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 
-import cz.cvut.fel.memorice.model.entities.entries.GroupEntry;
+import cz.cvut.fel.memorice.model.entities.entries.Entry;
 import cz.cvut.fel.memorice.model.util.TermAlreadyUsedException;
 
 /**
@@ -13,7 +13,7 @@ import cz.cvut.fel.memorice.model.util.TermAlreadyUsedException;
  */
 public class Group extends Entity implements Serializable {
 
-    private Set<GroupEntry> entries = new HashSet<>();
+    private Set<Entry> entries = new HashSet<>();
 
     public Group(String name) {
         super(name);
@@ -24,7 +24,7 @@ public class Group extends Entity implements Serializable {
         return EntityEnum.GROUP;
     }
 
-    public boolean addEntry(GroupEntry entry) throws TermAlreadyUsedException {
+    public boolean addEntry(Entry entry) throws TermAlreadyUsedException {
         if (!entries.contains(entry)) {
             return entries.add(entry);
         } else {
@@ -32,7 +32,7 @@ public class Group extends Entity implements Serializable {
         }
     }
 
-    public boolean removeEntry(GroupEntry entry) {
+    public boolean removeEntry(Entry entry) {
         return entries.remove(entry);
     }
 
@@ -50,7 +50,7 @@ public class Group extends Entity implements Serializable {
     public String toString() {
         StringBuilder builder = new StringBuilder("Group: " + getName() +
                 "\nentries= ");
-        for (GroupEntry entry:
+        for (Entry entry:
                 entries) {
             builder.append(entry.toString()+ "\n");
         }

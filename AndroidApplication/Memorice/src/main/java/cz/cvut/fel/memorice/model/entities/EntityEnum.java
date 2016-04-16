@@ -8,6 +8,18 @@ public enum EntityEnum {
     SEQUENCE("sequence"),
     GROUP("group");
 
+    public static EntityEnum getType(String typeString) {
+        switch (typeString) {
+            case "dictionary":
+                return DICTIONARY;
+            case "sequence":
+                return SEQUENCE;
+            case "group":
+                return GROUP;
+        }
+        return null;
+    }
+
     EntityEnum(String name) {
         this.name = name;
     }

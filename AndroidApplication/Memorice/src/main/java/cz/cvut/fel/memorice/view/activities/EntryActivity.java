@@ -1,9 +1,11 @@
 package cz.cvut.fel.memorice.view.activities;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.ActionBar;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -15,6 +17,7 @@ import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -25,16 +28,21 @@ import java.util.ArrayList;
 import java.util.logging.Logger;
 
 import cz.cvut.fel.memorice.R;
+import cz.cvut.fel.memorice.model.database.SQLiteHelper;
+import cz.cvut.fel.memorice.model.entities.EntityEnum;
+import cz.cvut.fel.memorice.model.entities.builders.Builder;
+import cz.cvut.fel.memorice.model.entities.entries.Entry;
 
 /**
  * Created by sheemon on 14.4.16.
  */
 public class EntryActivity extends AppCompatActivity {
+    private static final Logger LOG = Logger.getLogger(EntryActivity.class.getName());
+
     private RecyclerView mRecyclerView;
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
 
-    private static final Logger LOG = Logger.getLogger(EntryActivity.class.getName());
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,21 +53,7 @@ public class EntryActivity extends AppCompatActivity {
                 (Toolbar) findViewById(R.id.entry_toolbar);
         setSupportActionBar(toolbar);
 
-//        final FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-//        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
-//            fab.setOnClickListener(new View.OnClickListener() {
-//                @Override
-//                public void onClick(View view) {
-//                    Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-//                            .setAction("Action", null).show();
-//                }
-//            });
-//        } else {
-//        }
-
         prepareFAB();
-
-
         prepareRecyclerView();
 
         ActionBar ab = getSupportActionBar();
@@ -79,12 +73,7 @@ public class EntryActivity extends AppCompatActivity {
         mRecyclerView.setLayoutManager(mLayoutManager);
 
         // specify an adapter (see also next example)
-        ArrayList<String> mDataset = new ArrayList<>();
-//        for (int i = 0; i < 100; i++) {
-//            mDataset.add("TEST");
-//        }
-        mDataset.add("DODOD");
-        mDataset.add("DODsdadad");
+        ArrayList<String> mDataset = new SQLiteHelper(getApplicationContext()).getAllLabels();
 
         mAdapter = new MyAdapter(mDataset);
         mRecyclerView.setAdapter(mAdapter);
@@ -116,19 +105,19 @@ public class EntryActivity extends AppCompatActivity {
         findViewById(R.id.fab_list).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(getApplicationContext(), "Clicked list", Toast.LENGTH_SHORT).show();
+                showInputDialog(EntityEnum.SEQUENCE);
             }
         });
         findViewById(R.id.fab_set).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(getApplicationContext(), "Clicked set", Toast.LENGTH_SHORT).show();
+                showInputDialog(EntityEnum.GROUP);
             }
         });
         findViewById(R.id.fab_dictionary).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(getApplicationContext(), "Clicked dictionary", Toast.LENGTH_SHORT).show();
+                showInputDialog(EntityEnum.DICTIONARY);
             }
         });
     }
@@ -149,7 +138,7 @@ public class EntryActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_search:
-                Toast.makeText(getApplicationContext(), "Search pressed", Toast.LENGTH_SHORT);
+                Toast.makeText(getApplicationContext(), "Search pressed", Toast.LENGTH_SHORT).show();
                 //TODO - search action
                 return true;
             case R.id.action_settings:
@@ -160,6 +149,41 @@ public class EntryActivity extends AppCompatActivity {
         }
 
     }
+
+    protected void showInputDialog(final EntityEnum type) {
+
+        // get prompts.xml view
+        LayoutInflater layoutInflater = LayoutInflater.from(EntryActivity.this);
+        View promptView = layoutInflater.inflate(R.layout.label_input_dialog, null);
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(EntryActivity.this);
+        alertDialogBuilder.setTitle("Label");
+        alertDialogBuilder.setMessage("Insert label");
+        alertDialogBuilder.setView(promptView);
+
+
+        final EditText editText = (EditText) promptView.findViewById(R.id.input_text);
+        alertDialogBuilder.setCancelable(false)
+                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        SQLiteHelper db = new SQLiteHelper(getApplicationContext());
+                        //TODO move jinam
+                        Builder b = Builder.getCorrectBuilder(type);
+                        b.init(editText.getText().toString());
+                        db.addEntity(b.wrap());
+                        Toast.makeText(getApplicationContext(), "Hello, " + editText.getText(), Toast.LENGTH_LONG).show();
+                    }
+                })
+                .setNegativeButton("Cancel",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                dialog.cancel();
+                            }
+                        });
+
+        AlertDialog alert = alertDialogBuilder.create();
+        alert.show();
+    }
+
 
     public static class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
         private ArrayList<String> mDataset;
@@ -199,7 +223,7 @@ public class EntryActivity extends AppCompatActivity {
         @Override
         public MyAdapter.ViewHolder onCreateViewHolder(ViewGroup parent,
                                                        int viewType) {
-            // create a new view
+            // init a new view
             View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.entry_line, parent, false);
             // set the view's size, margins, paddings and layout parameters
             ViewHolder vh = new ViewHolder(v);
