@@ -4,36 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:paddingLeft="24dp"
-    android:paddingRight="24dp"
-    android:paddingTop="112dp"
-    android:weightSum="1">
-
-    <!--&lt;!&ndash; Email Label &ndash;&gt;-->
-    <!--<android.support.design.widget.TextInputLayout-->
-    <!--android:layout_width="match_parent"-->
-    <!--android:layout_height="wrap_content"-->
-    <!--android:layout_marginTop="8dp"-->
-    <!--android:layout_marginBottom="8dp">-->
-    <!--<EditText android:id="@+id/input_email"-->
-    <!--android:layout_width="match_parent"-->
-    <!--android:layout_height="wrap_content"-->
-    <!--android:inputType="textEmailAddress"-->
-    <!--android:hint="Email" />-->
-    <!--</android.support.design.widget.TextInputLayout>-->
-
-    <!--&lt;!&ndash; Password Label &ndash;&gt;-->
-    <!--<android.support.design.widget.TextInputLayout-->
-    <!--android:layout_width="match_parent"-->
-    <!--android:layout_height="wrap_content"-->
-    <!--android:layout_marginTop="8dp"-->
-    <!--android:layout_marginBottom="8dp">-->
-    <!--<EditText android:id="@+id/input_password"-->
-    <!--android:layout_width="match_parent"-->
-    <!--android:layout_height="wrap_content"-->
-    <!--android:inputType="textPassword"-->
-    <!--android:hint="Password"/>-->
-    <!--</android.support.design.widget.TextInputLayout>-->
+    android:layout_gravity="center_horizontal">
 
     <TextView
         android:layout_width="wrap_content"
@@ -44,15 +15,25 @@
         android:id="@+id/textView"
         android:layout_gravity="center_horizontal" />
 
-    <android.support.v7.widget.AppCompatButton
-        android:id="@+id/btn_my_sets"
-        android:layout_width="fill_parent"
+    <Button
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="24dp"
-        android:layout_marginTop="24dp"
-        android:padding="12dp"
+        android:id="@+id/btn_my_sets"
+        android:layout_margin="24dp"
+        android:layout_gravity="center_horizontal"
         android:textColor="@color/white"
-        android:text="My sets" />
+        android:text="My sets"/>
+
+<!--<android.support.v7.widget.AppCompatButton-->
+        <!--android:id="@+id/btn_my_sets"-->
+        <!--android:layout_width="296dp"-->
+        <!--android:layout_gravity="center_horizontal"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_marginBottom="24dp"-->
+        <!--android:layout_marginTop="24dp"-->
+        <!--android:padding="36dp"-->
+        <!--android:textColor="@color/white"-->
+        <!--android:text="My sets" />-->
 
     <ImageView
         android:id="@+id/rice_pic"
@@ -60,6 +41,8 @@
         android:layout_height="216dp"
         android:layout_marginBottom="48dp"
         android:paddingLeft="64dp"
-        android:layout_weight="0.03" />
+        android:layout_weight="0.03"
+        android:layout_gravity="center_horizontal"/>
+
 </LinearLayout>
 
