@@ -50,8 +50,9 @@ public class SQLiteHelper extends SQLiteOpenHelper {
         String CREATE_TABLE_ENTITIES =
                 "CREATE TABLE entities (" +
                         KEY_LABEL + " TEXT PRIMARY KEY, " +
-                        KEY_TYPE + " TEXT ENUM ('sequence', 'group', 'dictionary') " +
-                        KEY_FAVORITE + " BOOLEAN)";
+                        KEY_TYPE + " TEXT ENUM ('sequence', 'group', 'dictionary'), " +
+                        KEY_FAVORITE + " BOOLEAN" +
+                        ")";
         db.execSQL(CREATE_TABLE_ENTITIES);
     }
 
@@ -113,12 +114,12 @@ public class SQLiteHelper extends SQLiteOpenHelper {
 
         ArrayList<String> ret = new ArrayList<>();
 
-        if (cursor != null) {
+        if (cursor != null && cursor.moveToFirst()) {
             cursor.moveToFirst();
-        }
-        while (!cursor.isLast()) {
-            ret.add(cursor.getString(0));
-            cursor.moveToNext();
+            while (!cursor.isLast()) {
+                ret.add(cursor.getString(0));
+                cursor.moveToNext();
+            }
         }
         return ret;
     }

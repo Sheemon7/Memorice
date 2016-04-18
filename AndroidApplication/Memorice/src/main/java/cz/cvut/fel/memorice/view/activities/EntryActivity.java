@@ -31,7 +31,6 @@ import cz.cvut.fel.memorice.R;
 import cz.cvut.fel.memorice.model.database.SQLiteHelper;
 import cz.cvut.fel.memorice.model.entities.EntityEnum;
 import cz.cvut.fel.memorice.model.entities.builders.Builder;
-import cz.cvut.fel.memorice.model.entities.entries.Entry;
 
 /**
  * Created by sheemon on 14.4.16.
@@ -73,6 +72,7 @@ public class EntryActivity extends AppCompatActivity {
         mRecyclerView.setLayoutManager(mLayoutManager);
 
         // specify an adapter (see also next example)
+//        ArrayList<String> mDataset = new ArrayList<>();
         ArrayList<String> mDataset = new SQLiteHelper(getApplicationContext()).getAllLabels();
 
         mAdapter = new MyAdapter(mDataset);
@@ -105,19 +105,22 @@ public class EntryActivity extends AppCompatActivity {
         findViewById(R.id.fab_list).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showInputDialog(EntityEnum.SEQUENCE);
+                Intent myIntent = new Intent(EntryActivity.this, InputActivity.class);
+                EntryActivity.this.startActivity(myIntent);
             }
         });
         findViewById(R.id.fab_set).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showInputDialog(EntityEnum.GROUP);
+                Intent myIntent = new Intent(EntryActivity.this, InputActivity.class);
+                EntryActivity.this.startActivity(myIntent);
             }
         });
         findViewById(R.id.fab_dictionary).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showInputDialog(EntityEnum.DICTIONARY);
+                Intent myIntent = new Intent(EntryActivity.this, InputActivity.class);
+                EntryActivity.this.startActivity(myIntent);
             }
         });
     }
@@ -148,40 +151,6 @@ public class EntryActivity extends AppCompatActivity {
                 return super.onOptionsItemSelected(item);
         }
 
-    }
-
-    protected void showInputDialog(final EntityEnum type) {
-
-        // get prompts.xml view
-        LayoutInflater layoutInflater = LayoutInflater.from(EntryActivity.this);
-        View promptView = layoutInflater.inflate(R.layout.label_input_dialog, null);
-        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(EntryActivity.this);
-        alertDialogBuilder.setTitle("Label");
-        alertDialogBuilder.setMessage("Insert label");
-        alertDialogBuilder.setView(promptView);
-
-
-        final EditText editText = (EditText) promptView.findViewById(R.id.input_text);
-        alertDialogBuilder.setCancelable(false)
-                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        SQLiteHelper db = new SQLiteHelper(getApplicationContext());
-                        //TODO move jinam
-                        Builder b = Builder.getCorrectBuilder(type);
-                        b.init(editText.getText().toString());
-                        db.addEntity(b.wrap());
-                        Toast.makeText(getApplicationContext(), "Hello, " + editText.getText(), Toast.LENGTH_LONG).show();
-                    }
-                })
-                .setNegativeButton("Cancel",
-                        new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int id) {
-                                dialog.cancel();
-                            }
-                        });
-
-        AlertDialog alert = alertDialogBuilder.create();
-        alert.show();
     }
 
 
