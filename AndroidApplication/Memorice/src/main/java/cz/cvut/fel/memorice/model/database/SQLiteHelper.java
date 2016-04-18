@@ -11,11 +11,7 @@ import java.util.logging.Logger;
 
 import cz.cvut.fel.memorice.model.entities.Entity;
 import cz.cvut.fel.memorice.model.entities.EntityEnum;
-import cz.cvut.fel.memorice.model.entities.Sequence;
 import cz.cvut.fel.memorice.model.entities.builders.Builder;
-import cz.cvut.fel.memorice.model.entities.builders.DictionaryBuilder;
-import cz.cvut.fel.memorice.model.entities.builders.GroupBuilder;
-import cz.cvut.fel.memorice.model.entities.builders.SequenceBuilder;
 
 /**
  * Created by sheemon on 16.4.16.
@@ -32,7 +28,7 @@ public class SQLiteHelper extends SQLiteOpenHelper {
     private static final String TABLE_ENTITIES = "entities";
     // Entities Table Columns names
     private static final String KEY_LABEL = "label";
-    private static final String KEY_TYPE = "author";
+    private static final String KEY_TYPE = "type";
     private static final String KEY_FAVORITE = "favorite";
     private static final String[] ENTITIES_COLUMNS = {KEY_LABEL, KEY_TYPE, KEY_FAVORITE};
 
@@ -50,9 +46,9 @@ public class SQLiteHelper extends SQLiteOpenHelper {
         String CREATE_TABLE_ENTITIES =
                 "CREATE TABLE entities (" +
                         KEY_LABEL + " TEXT PRIMARY KEY, " +
-                        KEY_TYPE + " TEXT ENUM ('sequence', 'group', 'dictionary'), " +
-                        KEY_FAVORITE + " BOOLEAN" +
-                        ")";
+                        KEY_TYPE + " TEXT, " +
+                        KEY_FAVORITE + " INTEGER " +
+                        ");";
         db.execSQL(CREATE_TABLE_ENTITIES);
     }
 
@@ -70,7 +66,7 @@ public class SQLiteHelper extends SQLiteOpenHelper {
         ContentValues values = new ContentValues();
         values.put(KEY_LABEL, entity.getName());
         values.put(KEY_TYPE, entity.getType().toString());
-        values.put(KEY_FAVORITE, false);
+        values.put(KEY_FAVORITE, entity.isFavourite() ? 1 : 0);
 
         db.insert(TABLE_ENTITIES, null, values);
         db.close();
@@ -87,17 +83,16 @@ public class SQLiteHelper extends SQLiteOpenHelper {
                 new String[]{label},
                 null, null, null, null);
 
-        if (cursor != null) {
-            cursor.moveToFirst();
+        if (cursor != null && cursor.moveToFirst()) {
+            EntityEnum type = EntityEnum.getType(cursor.getString(0));
+            Builder b = Builder.getCorrectBuilder(type);
+            b.init(label);
+            //TODO - add entries
+            return b.wrap();
+        } else {
+            return null;
         }
 
-        EntityEnum type = EntityEnum.getType(cursor.getString(1));
-        Builder b = Builder.getCorrectBuilder(type);
-
-
-        b.init(label);
-        //TODO - add entries, SET FAVORITE
-        return b.wrap();
     }
 
     public void deleteEntity(String label) {

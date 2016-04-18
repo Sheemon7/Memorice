@@ -35,7 +35,20 @@
 
         </activity>
         <activity
-            android:name=".view.activities.InputActivity"
+            android:name=".view.activities.DictionaryInputActivity"
+            android:parentActivityName=".view.activities.EntryActivity"
+            android:label="@string/title_activity_input">
+        </activity>
+
+        <activity
+            android:name=".view.activities.SequenceInputActivity"
+            android:parentActivityName=".view.activities.EntryActivity"
+            android:label="@string/title_activity_input">
+        </activity>
+
+        <activity
+            android:name=".view.activities.SetInputActivity"
+            android:parentActivityName=".view.activities.EntryActivity"
             android:label="@string/title_activity_input">
         </activity>
 

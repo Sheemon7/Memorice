@@ -1,11 +1,9 @@
 package cz.cvut.fel.memorice.view.activities;
 
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.ActionBar;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -17,7 +15,6 @@ import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -29,8 +26,6 @@ import java.util.logging.Logger;
 
 import cz.cvut.fel.memorice.R;
 import cz.cvut.fel.memorice.model.database.SQLiteHelper;
-import cz.cvut.fel.memorice.model.entities.EntityEnum;
-import cz.cvut.fel.memorice.model.entities.builders.Builder;
 
 /**
  * Created by sheemon on 14.4.16.
@@ -105,21 +100,21 @@ public class EntryActivity extends AppCompatActivity {
         findViewById(R.id.fab_list).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent myIntent = new Intent(EntryActivity.this, InputActivity.class);
+                Intent myIntent = new Intent(EntryActivity.this, SequenceInputActivity.class);
                 EntryActivity.this.startActivity(myIntent);
             }
         });
         findViewById(R.id.fab_set).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent myIntent = new Intent(EntryActivity.this, InputActivity.class);
+                Intent myIntent = new Intent(EntryActivity.this, SetInputActivity.class);
                 EntryActivity.this.startActivity(myIntent);
             }
         });
         findViewById(R.id.fab_dictionary).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent myIntent = new Intent(EntryActivity.this, InputActivity.class);
+                Intent myIntent = new Intent(EntryActivity.this, DictionaryInputActivity.class);
                 EntryActivity.this.startActivity(myIntent);
             }
         });
@@ -147,6 +142,9 @@ public class EntryActivity extends AppCompatActivity {
             case R.id.action_settings:
                 Intent myIntent = new Intent(EntryActivity.this, SettingsActivity.class);
                 EntryActivity.this.startActivity(myIntent);
+            case android.R.id.home: // Intercept the click on the home button
+                finish();
+                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }

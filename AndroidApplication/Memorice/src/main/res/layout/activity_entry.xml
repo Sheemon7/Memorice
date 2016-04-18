@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.design.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:fab="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -42,9 +43,9 @@
             android:layout_height="wrap_content"
             android:layout_gravity="right|bottom"
             fab:fab_addButtonColorNormal="@color/colorPrimary"
-            fab:fab_addButtonColorPressed="@color/white"
             fab:fab_addButtonPlusIconColor="@color/white"
-            fab:fab_addButtonStrokeVisible="true"
+            fab:fab_addButtonColorPressed="@color/colorInvert"
+            fab:fab_addButtonStrokeVisible="false"
             fab:fab_labelStyle="@style/menu_labels_style"
             fab:fab_labelsPosition="left">
 
@@ -54,7 +55,7 @@
                 android:layout_height="wrap_content"
                 fab:fab_colorNormal="@color/colorInvert"
                 fab:fab_colorPressed="@color/colorPrimary"
-                fab:fab_icon="@drawable/ic_dictionary_24dp"
+                fab:fab_icon="@drawable/ic_dictionary_white_24dp"
                 fab:fab_size="normal"
                 fab:fab_title="@string/dictionary" />
 
@@ -64,7 +65,7 @@
                 android:layout_height="wrap_content"
                 fab:fab_colorNormal="@color/colorInvert"
                 fab:fab_colorPressed="@color/colorPrimary"
-                fab:fab_icon="@drawable/ic_list_24dp"
+                fab:fab_icon="@drawable/ic_list_white_24dp"
                 fab:fab_size="normal"
                 fab:fab_title="@string/list" />
 
@@ -74,7 +75,7 @@
                 android:layout_height="wrap_content"
                 fab:fab_colorNormal="@color/colorInvert"
                 fab:fab_colorPressed="@color/colorPrimary"
-                fab:fab_icon="@drawable/ic_set_24dp"
+                fab:fab_icon="@drawable/ic_set_white_24dp"
                 fab:fab_size="normal"
                 fab:fab_title="@string/set" />
 

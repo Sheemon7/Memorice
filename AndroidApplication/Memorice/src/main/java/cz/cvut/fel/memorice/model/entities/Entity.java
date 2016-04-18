@@ -9,7 +9,17 @@ import cz.cvut.fel.memorice.model.util.TermAlreadyUsedException;
 /**
  * Created by sheemon on 18.3.16.
  */
-public abstract class Entity implements Serializable, Iterable{
+public abstract class Entity implements Serializable, Iterable {
+
+    private boolean favourite;
+
+    public boolean isFavourite() {
+        return favourite;
+    }
+
+    public void setFavourite(boolean favourite) {
+        this.favourite = favourite;
+    }
 
     private String name;
 

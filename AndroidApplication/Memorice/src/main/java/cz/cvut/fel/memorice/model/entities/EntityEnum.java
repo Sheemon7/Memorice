@@ -6,7 +6,7 @@ package cz.cvut.fel.memorice.model.entities;
 public enum EntityEnum {
     DICTIONARY("dictionary"),
     SEQUENCE("sequence"),
-    GROUP("group");
+    GROUP("set");
 
     public static EntityEnum getType(String typeString) {
         switch (typeString) {

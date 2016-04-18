@@ -1,9 +1,5 @@
 package cz.cvut.fel.memorice.model.entities.builders;
 
-import java.util.Map;
-
-import cz.cvut.fel.memorice.gui.StandardInputReader;
-import cz.cvut.fel.memorice.gui.StandardOutputWriter;
 import cz.cvut.fel.memorice.model.entities.Entity;
 import cz.cvut.fel.memorice.model.entities.EntityEnum;
 import cz.cvut.fel.memorice.model.entities.entries.Entry;
@@ -17,7 +13,7 @@ public abstract class Builder {
         if (type == EntityEnum.DICTIONARY) {
             return DictionaryBuilder.getInstance();
         } else if (type == EntityEnum.GROUP) {
-            return GroupBuilder.getInstance();
+            return SetBuilder.getInstance();
         } else {
             return SequenceBuilder.getInstance();
         }

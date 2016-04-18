@@ -1,26 +1,21 @@
 package cz.cvut.fel.memorice.model.entities.builders;
 
-import cz.cvut.fel.memorice.model.database.NameDatabase;
-import cz.cvut.fel.memorice.model.entities.Dictionary;
 import cz.cvut.fel.memorice.model.entities.Group;
 import cz.cvut.fel.memorice.model.entities.entries.Entry;
 import cz.cvut.fel.memorice.model.util.ConcurrentBuildingException;
-import cz.cvut.fel.memorice.model.util.InvalidNameException;
-import cz.cvut.fel.memorice.model.util.NameAlreadyUsedException;
-import cz.cvut.fel.memorice.model.util.TermAlreadyUsedException;
 
 /**
  * Created by sheemon on 21.3.16.
  */
-public class GroupBuilder extends Builder {
+public class SetBuilder extends Builder {
 
-    private static final GroupBuilder instance = new GroupBuilder();
+    private static final SetBuilder instance = new SetBuilder();
 
-    public static GroupBuilder getInstance() {
+    public static SetBuilder getInstance() {
         return instance;
     }
 
-    private GroupBuilder() {
+    private SetBuilder() {
     }
 
     private Group beingBuilt;
@@ -31,6 +26,7 @@ public class GroupBuilder extends Builder {
             throw new ConcurrentBuildingException();
         } else {
             beingBuilt = new Group(label);
+            beingBuilt.setFavourite(false);
         }
     }
 
