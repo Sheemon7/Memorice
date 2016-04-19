@@ -9,6 +9,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import cz.cvut.fel.memorice.R;
 import cz.cvut.fel.memorice.model.database.SQLiteHelper;
@@ -18,9 +19,7 @@ import cz.cvut.fel.memorice.model.util.NameAlreadyUsedException;
 /**
  * Created by sheemon on 18.4.16.
  */
-public class SetInputActivity extends AppCompatActivity {
-
-
+public class SetInputActivity extends InputActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,6 +33,7 @@ public class SetInputActivity extends AppCompatActivity {
         ActionBar ab = getSupportActionBar();
         ab.setDisplayHomeAsUpEnabled(true);
         ab.setHomeAsUpIndicator(R.drawable.ic_cross_white_24dp);
+        prepareInputLabels();
     }
 
     @Override
@@ -48,7 +48,7 @@ public class SetInputActivity extends AppCompatActivity {
                     buildNewSet();
                     finish();
                 } catch (NameAlreadyUsedException e) {
-                    showLabelUsedDialog();
+                    showLabelUsedDialog(new AlertDialog.Builder(SetInputActivity.this));
                 }
         }
         return super.onOptionsItemSelected(item);
@@ -65,27 +65,4 @@ public class SetInputActivity extends AppCompatActivity {
         builder.init(label);
         helper.addEntity(builder.wrap());
     }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_input, menu);
-        return true;
-    }
-
-    protected void showLabelUsedDialog() {
-        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(SetInputActivity.this);
-        alertDialogBuilder.setTitle("Name already used!");
-        alertDialogBuilder.setMessage("Please insert another one");
-        alertDialogBuilder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.cancel();
-            }
-        });
-        AlertDialog alert = alertDialogBuilder.create();
-        alert.show();
-    }
-
-
 }

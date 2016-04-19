@@ -17,5 +17,6 @@
 
     <string name="add_entity">Label</string>
     <string name="save_entity">Save</string>
+    <string name="used_label">Name has already been used!</string>
 
 </resources>

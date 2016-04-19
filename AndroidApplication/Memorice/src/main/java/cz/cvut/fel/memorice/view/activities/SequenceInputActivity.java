@@ -18,7 +18,7 @@ import cz.cvut.fel.memorice.model.util.NameAlreadyUsedException;
 /**
  * Created by sheemon on 18.4.16.
  */
-public class SequenceInputActivity extends AppCompatActivity {
+public class SequenceInputActivity extends InputActivity {
 
 
 
@@ -34,6 +34,7 @@ public class SequenceInputActivity extends AppCompatActivity {
         ActionBar ab = getSupportActionBar();
         ab.setDisplayHomeAsUpEnabled(true);
         ab.setHomeAsUpIndicator(R.drawable.ic_cross_white_24dp);
+        prepareInputLabels();
     }
 
     @Override
@@ -48,7 +49,7 @@ public class SequenceInputActivity extends AppCompatActivity {
                     buildNewSequence();
                     finish();
                 } catch (NameAlreadyUsedException e) {
-                    showLabelUsedDialog();
+                    showLabelUsedDialog(new AlertDialog.Builder(SequenceInputActivity.this));
                 }
         }
         return super.onOptionsItemSelected(item);
@@ -65,27 +66,4 @@ public class SequenceInputActivity extends AppCompatActivity {
         builder.init(label);
         helper.addEntity(builder.wrap());
     }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_input, menu);
-        return true;
-    }
-
-    protected void showLabelUsedDialog() {
-        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(SequenceInputActivity.this);
-        alertDialogBuilder.setTitle("Name already used!");
-        alertDialogBuilder.setMessage("Please insert another one");
-        alertDialogBuilder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.cancel();
-            }
-        });
-        AlertDialog alert = alertDialogBuilder.create();
-        alert.show();
-    }
-
-
 }

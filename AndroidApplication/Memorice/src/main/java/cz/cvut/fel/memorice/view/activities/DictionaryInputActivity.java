@@ -6,9 +6,13 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import cz.cvut.fel.memorice.R;
 import cz.cvut.fel.memorice.model.database.SQLiteHelper;
@@ -18,9 +22,7 @@ import cz.cvut.fel.memorice.model.util.NameAlreadyUsedException;
 /**
  * Created by sheemon on 18.4.16.
  */
-public class DictionaryInputActivity extends AppCompatActivity {
-
-
+public class DictionaryInputActivity extends InputActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,7 +36,9 @@ public class DictionaryInputActivity extends AppCompatActivity {
         ActionBar ab = getSupportActionBar();
         ab.setDisplayHomeAsUpEnabled(true);
         ab.setHomeAsUpIndicator(R.drawable.ic_cross_white_24dp);
+        prepareInputLabels();
     }
+
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -48,15 +52,15 @@ public class DictionaryInputActivity extends AppCompatActivity {
                     buildNewDictionary();
                     finish();
                 } catch (NameAlreadyUsedException e) {
-                    showLabelUsedDialog();
+                    showLabelUsedDialog(new AlertDialog.Builder(DictionaryInputActivity.this));
                 }
         }
         return super.onOptionsItemSelected(item);
     }
 
     private void buildNewDictionary() throws NameAlreadyUsedException {
-        EditText labelInput = (EditText) findViewById(R.id.entry_title);
-        String label = labelInput.getText().toString();
+        labelInput = (EditText) findViewById(R.id.entry_title);
+        String label = labelInput.getText().toString().trim();
         SQLiteHelper helper = new SQLiteHelper(getApplicationContext());
         if (helper.getEntity(label) != null) {
             throw new NameAlreadyUsedException();
@@ -66,26 +70,7 @@ public class DictionaryInputActivity extends AppCompatActivity {
         helper.addEntity(builder.wrap());
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_input, menu);
-        return true;
-    }
 
-    protected void showLabelUsedDialog() {
-        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(DictionaryInputActivity.this);
-        alertDialogBuilder.setTitle("Name already used!");
-        alertDialogBuilder.setMessage("Please insert another one");
-        alertDialogBuilder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.cancel();
-            }
-        });
-        AlertDialog alert = alertDialogBuilder.create();
-        alert.show();
-    }
 
 
 }

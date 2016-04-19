@@ -191,7 +191,7 @@ public class EntryActivity extends AppCompatActivity {
         public MyAdapter.ViewHolder onCreateViewHolder(ViewGroup parent,
                                                        int viewType) {
             // init a new view
-            View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.entry_line, parent, false);
+            View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.entity_line, parent, false);
             // set the view's size, margins, paddings and layout parameters
             ViewHolder vh = new ViewHolder(v);
             return vh;
