@@ -1,5 +1,6 @@
 package cz.cvut.fel.memorice.view.activities;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.view.MenuItemCompat;
@@ -9,6 +10,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
+import android.view.GestureDetector;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -38,6 +40,7 @@ public class EntryActivity extends AppCompatActivity {
     private RecyclerView mRecyclerView;
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
+    private FloatingActionsMenu fabMenu;
 
 
     @Override
@@ -49,8 +52,8 @@ public class EntryActivity extends AppCompatActivity {
                 (Toolbar) findViewById(R.id.entry_toolbar);
         setSupportActionBar(toolbar);
 
-        prepareFAB();
         prepareRecyclerView();
+        prepareFAB();
 
         ActionBar ab = getSupportActionBar();
         ab.setDisplayHomeAsUpEnabled(true);
@@ -63,6 +66,22 @@ public class EntryActivity extends AppCompatActivity {
         // use this setting to improve performance if you know that changes
         // in content do not change the layout size of the RecyclerView
         mRecyclerView.setHasFixedSize(true);
+        mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+                //TODO
+                fabMenu.setVisibility(View.VISIBLE);
+            }
+
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                //TODO
+                fabMenu.setVisibility(View.INVISIBLE);
+            }
+        });
+
 
         // use a linear layout manager
         mLayoutManager = new LinearLayoutManager(this);
@@ -81,43 +100,43 @@ public class EntryActivity extends AppCompatActivity {
     }
 
     private void prepareFAB() {
-        final FrameLayout frameLayout = (FrameLayout) findViewById(R.id.frame_layout);
-        frameLayout.getBackground().setAlpha(0);
-        final FloatingActionsMenu fabMenu = (FloatingActionsMenu) findViewById(R.id.fab_menu);
+//        mRecyclerView.getBackground().setAlpha(0);
+        fabMenu = (FloatingActionsMenu) findViewById(R.id.fab_menu);
         fabMenu.setOnFloatingActionsMenuUpdateListener(new FloatingActionsMenu.OnFloatingActionsMenuUpdateListener() {
             @Override
             public void onMenuExpanded() {
-                frameLayout.getBackground().setAlpha(240);
-                frameLayout.setOnTouchListener(new View.OnTouchListener() {
-                    @Override
-                    public boolean onTouch(View v, MotionEvent event) {
-                        fabMenu.collapse();
-                        return true;
-                    }
-                });
+//                mRecyclerView.getBackground().setAlpha(255);
+                mRecyclerView.addOnItemTouchListener(new RecyclerItemClickListener(getApplicationContext(),
+                        new RecyclerItemClickListener.OnItemClickListener() {
+                            @Override
+                            public void onItemClick(View view, int position) {
+                                fabMenu.collapse();
+                            }
+                        }));
+
             }
 
             @Override
             public void onMenuCollapsed() {
-                frameLayout.getBackground().setAlpha(0);
-                frameLayout.setOnTouchListener(null);
+//                mRecyclerView.getBackground().setAlpha(0);
+                mRecyclerView.setOnTouchListener(null);
             }
         });
-        findViewById(R.id.fab_list).setOnClickListener(new View.OnClickListener() {
+        fabMenu.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent myIntent = new Intent(EntryActivity.this, SequenceInputActivity.class);
                 EntryActivity.this.startActivity(myIntent);
             }
         });
-        findViewById(R.id.fab_set).setOnClickListener(new View.OnClickListener() {
+        fabMenu.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent myIntent = new Intent(EntryActivity.this, SetInputActivity.class);
                 EntryActivity.this.startActivity(myIntent);
             }
         });
-        findViewById(R.id.fab_dictionary).setOnClickListener(new View.OnClickListener() {
+        fabMenu.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent myIntent = new Intent(EntryActivity.this, DictionaryInputActivity.class);
@@ -224,13 +243,13 @@ public class EntryActivity extends AppCompatActivity {
 
             switch (e.getType()) {
                 case GROUP:
-                    holder.imageType.setImageResource(R.drawable.ic_set_24dp);
+                    holder.imageType.setImageResource(R.drawable.ic_set_inverted_24dp);
                     break;
                 case SEQUENCE:
-                    holder.imageType.setImageResource(R.drawable.ic_list_24dp);
+                    holder.imageType.setImageResource(R.drawable.ic_list_inverted_24dp);
                     break;
                 case DICTIONARY:
-                    holder.imageType.setImageResource(R.drawable.ic_dictionary_24dp);
+                    holder.imageType.setImageResource(R.drawable.ic_dictionary_inverted_24dp);
                     break;
             }
 
@@ -246,5 +265,41 @@ public class EntryActivity extends AppCompatActivity {
         public int getItemCount() {
             return mDataset.size();
         }
+    }
+
+    public static class RecyclerItemClickListener implements RecyclerView.OnItemTouchListener {
+
+        //reference na stack overflow
+        // http://stackoverflow.com/questions/24471109/recyclerview-onclick
+        private OnItemClickListener mListener;
+
+        public interface OnItemClickListener {
+            public void onItemClick(View view, int position);
+        }
+
+        GestureDetector mGestureDetector;
+
+        public RecyclerItemClickListener(Context context, OnItemClickListener listener) {
+            mListener = listener;
+            mGestureDetector = new GestureDetector(context, new GestureDetector.SimpleOnGestureListener() {
+                @Override public boolean onSingleTapUp(MotionEvent e) {
+                    return true;
+                }
+            });
+        }
+
+        @Override public boolean onInterceptTouchEvent(RecyclerView view, MotionEvent e) {
+            View childView = view.findChildViewUnder(e.getX(), e.getY());
+            if (childView != null && mListener != null && mGestureDetector.onTouchEvent(e)) {
+                mListener.onItemClick(childView, view.getChildPosition(childView));
+                return true;
+            }
+            return false;
+        }
+
+        @Override public void onTouchEvent(RecyclerView view, MotionEvent motionEvent) { }
+
+        @Override
+        public void onRequestDisallowInterceptTouchEvent (boolean disallowIntercept){}
     }
 }
