@@ -8,15 +8,26 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme.NoActionBar">
+
         <activity
-            android:name=".view.activities.MainActivity"
-            android:label="@string/app_name"
-            android:theme="@style/AppTheme.NoActionBar">
+            android:name=".view.activities.SplashActivity"
+            android:theme="@style/SplashTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+
+        <activity
+            android:name=".view.activities.MainActivity"
+            android:label="@string/app_name"
+            android:theme="@style/AppTheme.NoActionBar">
+            <!--<intent-filter>-->
+                <!--<action android:name="android.intent.action.MAIN" />-->
+
+                <!--<category android:name="android.intent.category.LAUNCHER" />-->
+            <!--</intent-filter>-->
         </activity>
         <activity
             android:name=".view.activities.EntryActivity"
@@ -51,6 +62,7 @@
             android:parentActivityName=".view.activities.EntryActivity"
             android:label="@string/title_activity_input">
         </activity>
+
 
     </application>
 

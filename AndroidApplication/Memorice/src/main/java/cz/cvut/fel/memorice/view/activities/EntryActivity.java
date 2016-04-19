@@ -65,7 +65,12 @@ public class EntryActivity extends AppCompatActivity {
         // use a linear layout manager
         mLayoutManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(mLayoutManager);
+        addDataToAdapter();
 
+
+    }
+
+    private void addDataToAdapter() {
         // specify an adapter (see also next example)
 //        ArrayList<String> mDataset = new ArrayList<>();
         ArrayList<String> mDataset = new SQLiteHelper(getApplicationContext()).getAllLabels();
