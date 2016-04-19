@@ -84,7 +84,7 @@ public class SQLiteHelper extends SQLiteOpenHelper {
                 null, null, null, null);
 
         if (cursor != null && cursor.moveToFirst()) {
-            EntityEnum type = EntityEnum.getType(cursor.getString(0));
+            EntityEnum type = EntityEnum.getType(cursor.getString(1));
             Builder b = Builder.getCorrectBuilder(type);
             b.init(label);
             //TODO - add entries
@@ -92,7 +92,30 @@ public class SQLiteHelper extends SQLiteOpenHelper {
         } else {
             return null;
         }
+    }
 
+    public ArrayList<Entity> getAllEntities() {
+        LOG.info("Getting all entities:");
+        ArrayList<Entity> ret = new ArrayList<>();
+
+        String query = "SELECT * FROM " + TABLE_ENTITIES;
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(query, null);
+
+        Entity entity = null;
+        if (cursor.moveToFirst() && cursor != null) {
+            do {
+                EntityEnum type = EntityEnum.getType(cursor.getString(1));
+                Builder b = Builder.getCorrectBuilder(type);
+                String label = cursor.getString(0);
+                b.init(label);
+                //TODO - add entries
+                entity = b.wrap();
+                entity.setFavourite(cursor.getInt(2) == 1);
+                ret.add(entity);
+            } while (cursor.moveToNext());
+        }
+        return ret;
     }
 
     public void deleteEntity(String label) {

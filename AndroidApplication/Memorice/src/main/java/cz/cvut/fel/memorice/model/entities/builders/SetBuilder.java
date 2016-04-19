@@ -26,7 +26,6 @@ public class SetBuilder extends Builder {
             throw new ConcurrentBuildingException();
         } else {
             beingBuilt = new Group(label);
-            beingBuilt.setFavourite(false);
         }
     }
 

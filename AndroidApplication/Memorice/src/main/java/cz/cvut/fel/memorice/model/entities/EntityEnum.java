@@ -9,7 +9,7 @@ public enum EntityEnum {
     GROUP("set");
 
     public static EntityEnum getType(String typeString) {
-        switch (typeString) {
+        switch (typeString.toLowerCase()) {
             case "dictionary":
                 return DICTIONARY;
             case "sequence":

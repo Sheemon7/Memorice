@@ -42,7 +42,6 @@ public class DictionaryInputActivity extends InputActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-
         switch (item.getItemId()) {
             case android.R.id.home: // Intercept the click on the home button
                 finish();

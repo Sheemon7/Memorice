@@ -16,6 +16,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -26,6 +27,7 @@ import java.util.logging.Logger;
 
 import cz.cvut.fel.memorice.R;
 import cz.cvut.fel.memorice.model.database.SQLiteHelper;
+import cz.cvut.fel.memorice.model.entities.Entity;
 
 /**
  * Created by sheemon on 14.4.16.
@@ -72,8 +74,7 @@ public class EntryActivity extends AppCompatActivity {
 
     private void addDataToAdapter() {
         // specify an adapter (see also next example)
-//        ArrayList<String> mDataset = new ArrayList<>();
-        ArrayList<String> mDataset = new SQLiteHelper(getApplicationContext()).getAllLabels();
+        ArrayList<Entity> mDataset = new SQLiteHelper(getApplicationContext()).getAllEntities();
 
         mAdapter = new MyAdapter(mDataset);
         mRecyclerView.setAdapter(mAdapter);
@@ -158,36 +159,41 @@ public class EntryActivity extends AppCompatActivity {
 
 
     public static class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
-        private ArrayList<String> mDataset;
+        private ArrayList<Entity> mDataset;
 
         // Provide a reference to the views for each data item
         // Complex data items may need more than one view per item, and
         // you provide access to all the views for a data item in a view holder
         public static class ViewHolder extends RecyclerView.ViewHolder {
             // each data item is just a string in this case
-            public TextView txtHeader;
-            public TextView txtFooter;
+            private TextView txtHeader;
+            private TextView txtFooter;
+            private ImageView imageType;
+            private ImageView imageFav;
+
+
 
             public ViewHolder(View v) {
                 super(v);
                 txtHeader = (TextView) v.findViewById(R.id.firstLine);
                 txtFooter = (TextView) v.findViewById(R.id.secondLine);
+                imageType = (ImageView) v.findViewById(R.id.icon_type);
+                imageFav= (ImageView) v.findViewById(R.id.icon_favorite);
             }
         }
 
-        public void add(int position, String item) {
-            mDataset.add(position, item);
-            notifyItemInserted(position);
-        }
+//        public void add(int position, String item) {
+//            mDataset.add(position, item);
+//            notifyItemInserted(position);
+//        }
+//
+//        public void remove(String item) {
+//            int position = mDataset.indexOf(item);
+//            mDataset.remove(position);
+//            notifyItemRemoved(position);
+//        }
 
-        public void remove(String item) {
-            int position = mDataset.indexOf(item);
-            mDataset.remove(position);
-            notifyItemRemoved(position);
-        }
-
-        // Provide a suitable constructor (depends on the kind of dataset)
-        public MyAdapter(ArrayList<String> myDataset) {
+        public MyAdapter(ArrayList<Entity> myDataset) {
             mDataset = myDataset;
         }
 
@@ -205,10 +211,8 @@ public class EntryActivity extends AppCompatActivity {
         // Replace the contents of a view (invoked by the layout manager)
         @Override
         public void onBindViewHolder(ViewHolder holder, int position) {
-            // - get element from your dataset at this position
-            // - replace the contents of the view with that element
-            final String name = mDataset.get(position);
-            holder.txtHeader.setText(mDataset.get(position));
+            Entity e = mDataset.get(position);
+            holder.txtHeader.setText(e.getName());
             holder.txtHeader.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -216,8 +220,25 @@ public class EntryActivity extends AppCompatActivity {
                 }
             });
 
-            holder.txtFooter.setText("Footer: " + mDataset.get(position));
+//            holder.txtFooter.setText("Footer: " + e.getName());
 
+            switch (e.getType()) {
+                case GROUP:
+                    holder.imageType.setImageResource(R.drawable.ic_set_24dp);
+                    break;
+                case SEQUENCE:
+                    holder.imageType.setImageResource(R.drawable.ic_list_24dp);
+                    break;
+                case DICTIONARY:
+                    holder.imageType.setImageResource(R.drawable.ic_dictionary_24dp);
+                    break;
+            }
+
+            if (e.isFavourite()) {
+                holder.imageFav.setImageResource(R.drawable.ic_favorite_true_24dp);
+            } else {
+                holder.imageFav.setImageResource(R.drawable.ic_favorite_false_24dp);
+            }
         }
 
         // Return the size of your dataset (invoked by the layout manager)

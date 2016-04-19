@@ -32,7 +32,6 @@ public class DictionaryBuilder extends Builder {
             throw new ConcurrentBuildingException();
         } else {
             beingBuilt = new Dictionary(label);
-            beingBuilt.setFavourite(false);
         }
     }
 

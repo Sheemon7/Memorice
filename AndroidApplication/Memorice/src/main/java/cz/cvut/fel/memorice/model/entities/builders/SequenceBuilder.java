@@ -32,7 +32,6 @@ public class SequenceBuilder extends Builder {
             throw new ConcurrentBuildingException();
         } else {
             beingBuilt = new Sequence(label);
-            beingBuilt.setFavourite(false);
         }
     }
 
