@@ -59,6 +59,11 @@ public class EntryActivity extends AppCompatActivity {
         ab.setDisplayHomeAsUpEnabled(true);
     }
 
+    @Override
+    protected void onPostResume() {
+        super.onPostResume();
+        addDataToAdapter();
+    }
 
     private void prepareRecyclerView() {
         mRecyclerView = (RecyclerView) findViewById(R.id.recycler_view);
@@ -100,12 +105,11 @@ public class EntryActivity extends AppCompatActivity {
     }
 
     private void prepareFAB() {
-//        mRecyclerView.getBackground().setAlpha(0);
         fabMenu = (FloatingActionsMenu) findViewById(R.id.fab_menu);
         fabMenu.setOnFloatingActionsMenuUpdateListener(new FloatingActionsMenu.OnFloatingActionsMenuUpdateListener() {
             @Override
             public void onMenuExpanded() {
-//                mRecyclerView.getBackground().setAlpha(255);
+                findViewById(R.id.shadowView).setVisibility(View.VISIBLE);
                 mRecyclerView.addOnItemTouchListener(new RecyclerItemClickListener(getApplicationContext(),
                         new RecyclerItemClickListener.OnItemClickListener() {
                             @Override
@@ -118,31 +122,32 @@ public class EntryActivity extends AppCompatActivity {
 
             @Override
             public void onMenuCollapsed() {
-//                mRecyclerView.getBackground().setAlpha(0);
+                findViewById(R.id.shadowView).setVisibility(View.GONE);
                 mRecyclerView.setOnTouchListener(null);
             }
         });
-        fabMenu.setOnClickListener(new View.OnClickListener() {
+        findViewById(R.id.fab_list).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent myIntent = new Intent(EntryActivity.this, SequenceInputActivity.class);
                 EntryActivity.this.startActivity(myIntent);
             }
         });
-        fabMenu.setOnClickListener(new View.OnClickListener() {
+        findViewById(R.id.fab_set).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent myIntent = new Intent(EntryActivity.this, SetInputActivity.class);
                 EntryActivity.this.startActivity(myIntent);
             }
         });
-        fabMenu.setOnClickListener(new View.OnClickListener() {
+        findViewById(R.id.fab_dictionary).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent myIntent = new Intent(EntryActivity.this, DictionaryInputActivity.class);
                 EntryActivity.this.startActivity(myIntent);
             }
         });
+        fabMenu.setVisibility(View.VISIBLE);
     }
 
     @Override
@@ -189,8 +194,7 @@ public class EntryActivity extends AppCompatActivity {
             private TextView txtFooter;
             private ImageView imageType;
             private ImageView imageFav;
-
-
+            private ImageView imageDel;
 
             public ViewHolder(View v) {
                 super(v);
@@ -198,6 +202,7 @@ public class EntryActivity extends AppCompatActivity {
                 txtFooter = (TextView) v.findViewById(R.id.secondLine);
                 imageType = (ImageView) v.findViewById(R.id.icon_type);
                 imageFav= (ImageView) v.findViewById(R.id.icon_favorite);
+                imageDel= (ImageView) v.findViewById(R.id.icon_delete);
             }
         }
 
@@ -258,7 +263,10 @@ public class EntryActivity extends AppCompatActivity {
             } else {
                 holder.imageFav.setImageResource(R.drawable.ic_favorite_false_24dp);
             }
+            holder.imageDel.setImageResource(R.drawable.ic_delete_inverted_24dp);
         }
+
+
 
         // Return the size of your dataset (invoked by the layout manager)
         @Override

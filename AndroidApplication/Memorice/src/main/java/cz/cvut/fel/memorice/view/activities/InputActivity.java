@@ -41,6 +41,19 @@ public class InputActivity extends AppCompatActivity {
         alert.show();
     }
 
+    protected void showLabelEmptyDialog(AlertDialog.Builder alertDialogBuilder) {
+        alertDialogBuilder.setTitle("Name cannot be empty!");
+        alertDialogBuilder.setMessage("Please insert another one");
+        alertDialogBuilder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+            }
+        });
+        AlertDialog alert = alertDialogBuilder.create();
+        alert.show();
+    }
+
     protected void prepareInputLabels() {
         labelInput = (EditText) findViewById(R.id.entry_title);
         labelWarn = (TextView) findViewById(R.id.text_used_label);
@@ -61,9 +74,14 @@ public class InputActivity extends AppCompatActivity {
                 String label = s.toString().trim();
                 SQLiteHelper h = new SQLiteHelper(getApplicationContext());
                 if (h.getEntity(label) != null) {
+                    labelWarn.setText(R.string.used_label);
+                    labelWarn.setVisibility(View.VISIBLE);
+                } else if (s.toString().length() == 0) {
+                    labelWarn.setText(R.string.empty_label);
                     labelWarn.setVisibility(View.VISIBLE);
                 } else {
-                    labelWarn.setVisibility(View.INVISIBLE);
+                    labelWarn.setText("");
+                    labelWarn.setVisibility(View.GONE);
                 }
             }
         });

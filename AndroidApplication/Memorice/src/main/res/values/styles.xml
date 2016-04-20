@@ -9,6 +9,15 @@
         <item name="colorButtonNormal">@color/colorPrimary</item>
     </style>
 
+    <!-- Inverted application theme. -->
+    <style name="AppInvertedTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <item name="colorPrimary">@color/colorInvert</item>
+        <item name="colorPrimaryDark">@color/colorInvertDarker</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:actionMenuTextColor">@color/colorAccent</item>
+        <item name="colorButtonNormal">@color/colorPrimary</item>
+    </style>
+
     <style name="menu_labels_style">
         <item name="android:background">@drawable/fab_background</item>
         <item name="android:textColor">@color/white</item>

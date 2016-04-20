@@ -17,6 +17,7 @@ import android.widget.TextView;
 import cz.cvut.fel.memorice.R;
 import cz.cvut.fel.memorice.model.database.SQLiteHelper;
 import cz.cvut.fel.memorice.model.entities.builders.DictionaryBuilder;
+import cz.cvut.fel.memorice.model.util.EmptyNameException;
 import cz.cvut.fel.memorice.model.util.NameAlreadyUsedException;
 
 /**
@@ -52,17 +53,22 @@ public class DictionaryInputActivity extends InputActivity {
                     finish();
                 } catch (NameAlreadyUsedException e) {
                     showLabelUsedDialog(new AlertDialog.Builder(DictionaryInputActivity.this));
+                } catch (EmptyNameException e) {
+                    showLabelEmptyDialog(new AlertDialog.Builder(DictionaryInputActivity.this));
                 }
         }
         return super.onOptionsItemSelected(item);
     }
 
-    private void buildNewDictionary() throws NameAlreadyUsedException {
+    private void buildNewDictionary() throws NameAlreadyUsedException, EmptyNameException {
         labelInput = (EditText) findViewById(R.id.entry_title);
         String label = labelInput.getText().toString().trim();
         SQLiteHelper helper = new SQLiteHelper(getApplicationContext());
         if (helper.getEntity(label) != null) {
             throw new NameAlreadyUsedException();
+        }
+        if (label.length() == 0) {
+            throw new EmptyNameException();
         }
         DictionaryBuilder builder = DictionaryBuilder.getInstance();
         builder.init(label);

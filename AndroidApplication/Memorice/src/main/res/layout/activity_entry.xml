@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.design.widget.CoordinatorLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:fab="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -9,79 +8,94 @@
     android:fitsSystemWindows="true"
     tools:context=".view.activities.EntryActivity">
 
-    <android.support.design.widget.AppBarLayout
+    <View
+        android:id="@+id/shadowView"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:theme="@style/AppTheme.AppBarOverlay">
+        android:layout_height="match_parent"
+        android:background="@color/colorPrimary"
+        android:visibility="gone" />
 
-        <android.support.v7.widget.Toolbar
-            android:id="@+id/entry_toolbar"
-            android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            android:background="?attr/colorPrimary"
-            app:popupTheme="@style/AppTheme.PopupOverlay" />
-
-    </android.support.design.widget.AppBarLayout>
-
-    <FrameLayout
+    <LinearLayout
         android:id="@+id/frame_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/white_overlay"
-        >
+        android:background="@color/colorPrimary"
+        android:orientation="vertical"
+        android:weightSum="1">
 
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/recycler_view"
-            android:scrollbars="vertical"
+        <android.support.design.widget.AppBarLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            />
+            android:layout_height="wrap_content"
+            android:theme="@style/AppTheme.AppBarOverlay">
 
-        <com.getbase.floatingactionbutton.FloatingActionsMenu
-            android:id="@+id/fab_menu"
+            <android.support.v7.widget.Toolbar
+                android:id="@+id/entry_toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                android:background="?attr/colorPrimary"
+                app:popupTheme="@style/AppTheme.PopupOverlay" />
+        </android.support.design.widget.AppBarLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="36dp"
+            android:layout_weight="0.90">
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/recycler_view"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/white"
+                android:scrollbars="vertical" />
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <com.getbase.floatingactionbutton.FloatingActionsMenu
+        android:id="@+id/fab_menu"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_gravity="right|bottom"
+        fab:fab_addButtonColorNormal="@color/colorInvert"
+        fab:fab_addButtonColorPressed="@color/colorInvert"
+        fab:fab_addButtonPlusIconColor="@color/white"
+        fab:fab_addButtonStrokeVisible="false"
+        fab:fab_labelStyle="@style/menu_labels_style"
+        fab:fab_labelsPosition="left">
+
+        <com.getbase.floatingactionbutton.FloatingActionButton
+            android:id="@+id/fab_dictionary"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="right|bottom"
-            fab:fab_addButtonColorNormal="@color/colorPrimary"
-            fab:fab_addButtonPlusIconColor="@color/white"
-            fab:fab_addButtonColorPressed="@color/colorInvert"
-            fab:fab_addButtonStrokeVisible="false"
-            fab:fab_labelStyle="@style/menu_labels_style"
-            fab:fab_labelsPosition="left">
+            fab:fab_colorNormal="@color/colorInvert"
+            fab:fab_colorPressed="@color/colorPrimary"
+            fab:fab_icon="@drawable/ic_dictionary_white_24dp"
+            fab:fab_size="normal"
+            fab:fab_title="@string/dictionary" />
 
-            <com.getbase.floatingactionbutton.FloatingActionButton
-                android:id="@+id/fab_dictionary"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                fab:fab_colorNormal="@color/colorInvert"
-                fab:fab_colorPressed="@color/colorPrimary"
-                fab:fab_icon="@drawable/ic_dictionary_white_24dp"
-                fab:fab_size="normal"
-                fab:fab_title="@string/dictionary" />
+        <com.getbase.floatingactionbutton.FloatingActionButton
+            android:id="@+id/fab_list"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            fab:fab_colorNormal="@color/colorInvert"
+            fab:fab_colorPressed="@color/colorPrimary"
+            fab:fab_icon="@drawable/ic_list_white_24dp"
+            fab:fab_size="normal"
+            fab:fab_title="@string/list" />
 
-            <com.getbase.floatingactionbutton.FloatingActionButton
-                android:id="@+id/fab_list"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                fab:fab_colorNormal="@color/colorInvert"
-                fab:fab_colorPressed="@color/colorPrimary"
-                fab:fab_icon="@drawable/ic_list_white_24dp"
-                fab:fab_size="normal"
-                fab:fab_title="@string/list" />
-
-            <com.getbase.floatingactionbutton.FloatingActionButton
-                android:id="@+id/fab_set"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                fab:fab_colorNormal="@color/colorInvert"
-                fab:fab_colorPressed="@color/colorPrimary"
-                fab:fab_icon="@drawable/ic_set_white_24dp"
-                fab:fab_size="normal"
-                fab:fab_title="@string/set" />
-
-        </com.getbase.floatingactionbutton.FloatingActionsMenu>
-
-    </FrameLayout>
+        <com.getbase.floatingactionbutton.FloatingActionButton
+            android:id="@+id/fab_set"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            fab:fab_colorNormal="@color/colorInvert"
+            fab:fab_colorPressed="@color/colorPrimary"
+            fab:fab_icon="@drawable/ic_set_white_24dp"
+            fab:fab_size="normal"
+            fab:fab_title="@string/set" />
+    </com.getbase.floatingactionbutton.FloatingActionsMenu>
 
 
 </android.support.design.widget.CoordinatorLayout>

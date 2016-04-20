@@ -4,6 +4,7 @@
     tools:context=".view.activities.DictionaryInputActivity" >
 
     <item android:id="@+id/action_save"
+
         android:title="@string/save_entity"
         app:showAsAction="withText|always" />
 </menu>

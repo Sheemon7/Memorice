@@ -18,5 +18,6 @@
     <string name="add_entity">Label</string>
     <string name="save_entity">Save</string>
     <string name="used_label">Name has already been used!</string>
+    <string name="empty_label">Name cannot be empty!</string>
 
 </resources>

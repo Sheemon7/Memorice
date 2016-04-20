@@ -9,7 +9,7 @@
         android:layout_height="fill_parent"
         android:layout_alignParentBottom="true"
         android:layout_alignParentTop="true"
-        android:layout_marginRight="12dp"/>
+        android:paddingRight="12dp"/>
 
     <TextView
         android:id="@+id/secondLine"
@@ -35,11 +35,21 @@
         android:layout_above="@+id/secondLine" />
 
     <ImageView
+        android:id="@+id/icon_delete"
+        android:layout_width="wrap_content"
+        android:layout_height="fill_parent"
+        android:paddingLeft="12dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        />
+
+    <ImageView
         android:id="@+id/icon_favorite"
         android:layout_width="wrap_content"
         android:layout_height="fill_parent"
         android:layout_alignParentBottom="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true" />
+        android:layout_toLeftOf="@id/icon_delete"/>
+
+
 
 </RelativeLayout> 

@@ -13,6 +13,7 @@ import android.widget.EditText;
 import cz.cvut.fel.memorice.R;
 import cz.cvut.fel.memorice.model.database.SQLiteHelper;
 import cz.cvut.fel.memorice.model.entities.builders.SequenceBuilder;
+import cz.cvut.fel.memorice.model.util.EmptyNameException;
 import cz.cvut.fel.memorice.model.util.NameAlreadyUsedException;
 
 /**
@@ -50,17 +51,22 @@ public class SequenceInputActivity extends InputActivity {
                     finish();
                 } catch (NameAlreadyUsedException e) {
                     showLabelUsedDialog(new AlertDialog.Builder(SequenceInputActivity.this));
+                } catch (EmptyNameException e) {
+                    showLabelEmptyDialog(new AlertDialog.Builder(SequenceInputActivity.this));
                 }
         }
         return super.onOptionsItemSelected(item);
     }
 
-    private void buildNewSequence() throws NameAlreadyUsedException{
+    private void buildNewSequence() throws NameAlreadyUsedException, EmptyNameException {
         EditText labelInput = (EditText) findViewById(R.id.entry_title);
         String label = labelInput.getText().toString();
         SQLiteHelper helper = new SQLiteHelper(getApplicationContext());
-        if (helper.getEntity(label) != null) {
+        if (helper.getEntity(label) != null || label.length() == 0) {
             throw new NameAlreadyUsedException();
+        }
+        if (label.length() == 0) {
+            throw new EmptyNameException();
         }
         SequenceBuilder builder = SequenceBuilder.getInstance();
         builder.init(label);
