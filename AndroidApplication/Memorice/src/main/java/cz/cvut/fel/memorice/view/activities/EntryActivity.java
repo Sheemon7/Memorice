@@ -169,9 +169,9 @@ public class EntryActivity extends AppCompatActivity {
                 myIntent = new Intent(EntryActivity.this, SettingsActivity.class);
                 EntryActivity.this.startActivity(myIntent);
                 return true;
-//            case android.R.id.home: // Intercept the click on the home button
-//                finish();
-//                return true;
+            case android.R.id.home: // Intercept the click on the home button
+                finish();
+                return true;
             case R.id.action_help:
                 myIntent = new Intent(EntryActivity.this, HelpActivity.class);
                 EntryActivity.this.startActivity(myIntent);
