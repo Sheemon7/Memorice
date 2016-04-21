@@ -34,7 +34,6 @@ public class EntryActivity extends AppCompatActivity {
     private RecyclerView.LayoutManager mLayoutManager;
     private FloatingActionsMenu fabMenu;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -160,16 +159,22 @@ public class EntryActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        Intent myIntent;
         switch (item.getItemId()) {
             case R.id.action_search:
                 Toast.makeText(getApplicationContext(), "Search pressed", Toast.LENGTH_SHORT).show();
                 //TODO - search action
                 return true;
             case R.id.action_settings:
-                Intent myIntent = new Intent(EntryActivity.this, SettingsActivity.class);
+                myIntent = new Intent(EntryActivity.this, SettingsActivity.class);
                 EntryActivity.this.startActivity(myIntent);
-            case android.R.id.home: // Intercept the click on the home button
-                finish();
+                return true;
+//            case android.R.id.home: // Intercept the click on the home button
+//                finish();
+//                return true;
+            case R.id.action_help:
+                myIntent = new Intent(EntryActivity.this, HelpActivity.class);
+                EntryActivity.this.startActivity(myIntent);
                 return true;
             default:
                 return super.onOptionsItemSelected(item);

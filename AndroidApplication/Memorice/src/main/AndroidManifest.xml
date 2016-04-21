@@ -63,6 +63,11 @@
             android:label="@string/title_activity_input">
         </activity>
 
+        <activity
+            android:name=".view.activities.HelpActivity"
+            android:parentActivityName=".view.activities.HelpActivity"
+            android:label="@string/title_activity_help">
+        </activity>
 
     </application>
 

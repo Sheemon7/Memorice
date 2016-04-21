@@ -32,7 +32,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        ImageView mImageView = (ImageView)findViewById(R.id.rice_pic);
+        ImageView mImageView = (ImageView) findViewById(R.id.rice_pic);
         mImageView.setImageBitmap(
                 decodeSampledBitmapFromResource(getResources(), R.drawable.rice_chopsticks_bowl, 300, 300));
 
@@ -89,13 +89,18 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
-        if (id == R.id.action_settings) {
-            Intent myIntent = new Intent(MainActivity.this, SettingsActivity.class);
-            MainActivity.this.startActivity(myIntent);
-            return true;
+        Intent myIntent;
+        switch (item.getItemId()) {
+            case R.id.action_settings:
+                myIntent = new Intent(MainActivity.this, SettingsActivity.class);
+                MainActivity.this.startActivity(myIntent);
+                return true;
+            case R.id.action_help:
+                myIntent = new Intent(MainActivity.this, HelpActivity.class);
+                MainActivity.this.startActivity(myIntent);
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
         }
-
-        return super.onOptionsItemSelected(item);
     }
 }
