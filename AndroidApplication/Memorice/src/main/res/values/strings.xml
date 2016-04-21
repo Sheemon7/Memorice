@@ -5,6 +5,7 @@
 
     <string name="settings_action_label">Settings</string>
     <string name="search_action_label">Search</string>
+    <string name="help_action_label">Help</string>
 
     <string name="list">List</string>
     <string name="set">Set</string>
@@ -14,6 +15,7 @@
     <string name="title_activity_input"></string>
 
     <string name="welcome_entry">WELCOME</string>
+    <string name="help_text">Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Maecenas ipsum velit, consectetuer eu lobortis ut, dictum at dui. Et harum quidem rerum facilis est et expedita distinctio. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Itaque earum rerum hic tenetur a sapiente delectus, ut aut reiciendis voluptatibus maiores alias consequatur aut perferendis doloribus asperiores repellat. Nulla accumsan, elit sit amet varius semper, nulla mauris mollis quam, tempor suscipit diam nulla vel leo. Proin in tellus sit amet nibh dignissim sagittis. Aliquam ante. Nunc dapibus tortor vel mi dapibus sollicitudin. In enim a arcu imperdiet malesuada.</string>
 
     <string name="add_entity">Label</string>
     <string name="save_entity">Save</string>

@@ -12,6 +12,7 @@ import java.util.logging.Logger;
 import cz.cvut.fel.memorice.model.entities.Entity;
 import cz.cvut.fel.memorice.model.entities.EntityEnum;
 import cz.cvut.fel.memorice.model.entities.builders.Builder;
+import cz.cvut.fel.memorice.model.util.WrongNameException;
 
 /**
  * Created by sheemon on 16.4.16.
@@ -94,6 +95,21 @@ public class SQLiteHelper extends SQLiteOpenHelper {
         }
     }
 
+    public ArrayList<Entity> getAllEntitiesFiltered(String filter) {
+        ArrayList<Entity> ret = new ArrayList<>();
+        String query = "SELECT " + KEY_LABEL + " FROM " + TABLE_ENTITIES +
+                " WHERE " + KEY_LABEL + " LIKE " + "\"%" + filter + "%\"";
+        System.out.println(query);
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(query, null);
+        if (cursor != null && cursor.moveToFirst()) {
+            do {
+                ret.add(getEntity(cursor.getString(0)));
+            } while (cursor.moveToNext());
+        }
+        return ret;
+    }
+
     public ArrayList<Entity> getAllEntities() {
         LOG.info("Getting all entities:");
         ArrayList<Entity> ret = new ArrayList<>();
@@ -118,11 +134,20 @@ public class SQLiteHelper extends SQLiteOpenHelper {
         return ret;
     }
 
-    public void deleteEntity(String label) {
-        LOG.info("Deleting entity: " + label);
+    public void deleteEntity(Entity e) {
+        LOG.info("Deleting entity: " + e.getName());
         SQLiteDatabase db = this.getWritableDatabase();
-        db.delete(TABLE_ENTITIES, KEY_LABEL + " =?", new String[]{label});
+        db.delete(TABLE_ENTITIES, KEY_LABEL + " =?", new String[]{e.getName()});
         db.close();
+    }
+
+    public void toggleFavorite(Entity e) throws WrongNameException {
+        String query = "UPDATE " + TABLE_ENTITIES + " SET " + KEY_FAVORITE + "=" + (e.isFavourite() ? 0 : 1) +
+                " WHERE " + KEY_LABEL + "=" + "\'" + e.getName() + "\'";
+        System.out.println(query);
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.execSQL(query);
+        e.setFavourite(!e.isFavourite());
     }
 
     public ArrayList<String> getAllLabels() {
@@ -140,5 +165,18 @@ public class SQLiteHelper extends SQLiteOpenHelper {
             }
         }
         return ret;
+    }
+
+
+    public boolean isEntityFavourite(Entity e) throws WrongNameException {
+        String query = "SELECT " + KEY_FAVORITE + " FROM " + TABLE_ENTITIES + " WHERE " + KEY_LABEL + "=" + "\'" + e.getName() + "\'";
+        System.out.println(query);
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(query, null);
+        if (cursor != null && cursor.moveToFirst()) {
+            return 1 == Integer.parseInt(cursor.getString(0));
+        } else {
+            throw new WrongNameException();
+        }
     }
 }

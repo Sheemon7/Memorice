@@ -12,7 +12,7 @@
         android:id="@+id/shadowView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/colorPrimary"
+        android:background="@color/white_overlay"
         android:visibility="gone" />
 
     <LinearLayout
@@ -37,9 +37,11 @@
         </android.support.design.widget.AppBarLayout>
 
         <LinearLayout
+            android:id="@+id/recycler_layout"
             android:layout_width="match_parent"
             android:layout_height="36dp"
-            android:layout_weight="0.90">
+            android:layout_weight="0.90"
+            android:clickable="true">
 
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/recycler_view"

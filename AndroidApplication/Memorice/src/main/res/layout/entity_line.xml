@@ -12,33 +12,23 @@
         android:paddingRight="12dp"/>
 
     <TextView
-        android:id="@+id/secondLine"
-        android:layout_width="fill_parent"
-        android:layout_height="2dp"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentRight="true"
-        android:layout_toRightOf="@id/icon_type"
-        android:ellipsize="marquee"
-        android:singleLine="true"
-        android:textSize="12sp" />
-
-    <TextView
-        android:id="@+id/firstLine"
+        android:id="@+id/labelLine"
+        android:textColorHighlight="@color/pink"
         android:layout_width="fill_parent"
         android:layout_height="20dp"
         android:layout_alignParentRight="true"
         android:layout_alignParentTop="true"
+        android:layout_alignParentBottom="true"
         android:layout_alignWithParentIfMissing="true"
         android:layout_toRightOf="@id/icon_type"
         android:gravity="center_vertical"
-        android:textSize="16sp"
-        android:layout_above="@+id/secondLine" />
+        android:textSize="16sp"/>
 
     <ImageView
         android:id="@+id/icon_delete"
         android:layout_width="wrap_content"
         android:layout_height="fill_parent"
-        android:paddingLeft="12dp"
+        android:paddingLeft="24dp"
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
         />
