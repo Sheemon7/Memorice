@@ -8,7 +8,7 @@
     <color name="colorPrimaryDark">#FF6F00</color>
     <color name="colorAccent">#FFFFFF</color>
     <color name="colorInvert">#0277BD</color>
-    <color name="colorInvertDarker">#0277BD</color>
+    <color name="colorInvertDarker">#01579B</color>
 
     <color name="black_semi_transparent">#B2000000</color>
     <color name="black">#000000</color>
