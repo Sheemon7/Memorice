@@ -1,7 +1,13 @@
 package cz.cvut.fel.memorice.view.activities;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.res.TypedArray;
+import android.graphics.Canvas;
+import android.graphics.Rect;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -22,6 +28,7 @@ import java.util.ArrayList;
 import cz.cvut.fel.memorice.R;
 import cz.cvut.fel.memorice.model.database.SQLiteHelper;
 import cz.cvut.fel.memorice.model.entities.Entity;
+import cz.cvut.fel.memorice.view.fragments.DividerItemDecoration;
 import cz.cvut.fel.memorice.view.fragments.EntityListAdapter;
 
 /**
@@ -46,20 +53,23 @@ public class EntryActivity extends AppCompatActivity {
 
         prepareRecyclerView();
         prepareFAB();
-
-        findViewById(R.id.shadowView).bringToFront();
-        findViewById(R.id.shadowView).setAlpha(0.6f);
-        findViewById(R.id.fab_menu).bringToFront();
+        prepareShadowView();
 
         ActionBar ab = getSupportActionBar();
         ab.setDisplayHomeAsUpEnabled(true);
+    }
+
+    private void prepareShadowView() {
+        findViewById(R.id.shadowView).bringToFront();
+        findViewById(R.id.shadowView).setAlpha(0.6f);
+        findViewById(R.id.fab_menu).bringToFront();
     }
 
     @Override
     protected void onPostResume() {
         super.onPostResume();
         fabMenu.collapse();
-        findViewById(R.id.shadowView).setAlpha(0);
+        prepareShadowView();
         mAdapter.showAll(getApplicationContext());
     }
 
@@ -95,6 +105,8 @@ public class EntryActivity extends AppCompatActivity {
         mLayoutManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(mLayoutManager);
         mAdapter = new EntityListAdapter(mRecyclerView);
+        mRecyclerView.addItemDecoration(
+                new DividerItemDecoration(getApplicationContext(), R.drawable.separator));
         mAdapter.showAll(getApplicationContext());
     }
 
@@ -181,6 +193,9 @@ public class EntryActivity extends AppCompatActivity {
         }
 
     }
+
+
+
 
 
 
