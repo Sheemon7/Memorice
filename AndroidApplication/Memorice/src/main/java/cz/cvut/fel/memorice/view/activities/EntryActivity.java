@@ -7,9 +7,11 @@ import android.graphics.Canvas;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.ActionBar;
+import android.support.v7.app.ActionBar.TabListener;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -36,6 +38,9 @@ import cz.cvut.fel.memorice.view.fragments.EntityListAdapter;
  */
 public class EntryActivity extends AppCompatActivity {
 
+    private static final int FAB_ANIMATION_DURATION = 300;
+    private static final int FAB_ANIMATION_OFFSET = 150;
+
     private RecyclerView mRecyclerView;
     private EntityListAdapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
@@ -55,8 +60,35 @@ public class EntryActivity extends AppCompatActivity {
         prepareFAB();
         prepareShadowView();
 
-        ActionBar ab = getSupportActionBar();
+        final ActionBar ab = getSupportActionBar();
         ab.setDisplayHomeAsUpEnabled(true);
+
+
+//        // Specify that tabs should be displayed in the action bar.
+//        ab.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
+//
+//        // Create a tab listener that is called when the user changes tabs.
+//        TabListener tabListener = new TabListener() {
+//            public void onTabSelected(ActionBar.Tab tab, FragmentTransaction ft) {
+//                // show the given tab
+//            }
+//
+//            public void onTabUnselected(ActionBar.Tab tab, FragmentTransaction ft) {
+//                // hide the given tab
+//            }
+//
+//            public void onTabReselected(ActionBar.Tab tab, FragmentTransaction ft) {
+//                // probably ignore this event
+//            }
+//        };
+//
+//        // Add 3 tabs, specifying the tab's text and TabListener
+//        for (int i = 0; i < 3; i++) {
+//            ab.addTab(
+//                    ab.newTab()
+//                            .setText("Tab " + (i + 1))
+//                            .setTabListener(tabListener));
+//        }
     }
 
     private void prepareShadowView() {
@@ -84,13 +116,13 @@ public class EntryActivity extends AppCompatActivity {
                 if (newState == RecyclerView.SCROLL_STATE_DRAGGING) {
                     fabMenu.collapse();
                     AlphaAnimation animation1 = new AlphaAnimation(1, 0);
-                    animation1.setDuration(500);
-                    animation1.setStartOffset(150);
+                    animation1.setDuration(FAB_ANIMATION_DURATION);
+                    animation1.setStartOffset(FAB_ANIMATION_OFFSET);
                     animation1.setFillAfter(true);
                     fabMenu.startAnimation(animation1);
                 } else if (newState == RecyclerView.SCROLL_STATE_IDLE) {
                     AlphaAnimation animation1 = new AlphaAnimation(0, 1);
-                    animation1.setDuration(500);
+                    animation1.setDuration(FAB_ANIMATION_DURATION);
                     animation1.setFillAfter(true);
                     fabMenu.startAnimation(animation1);
                 }

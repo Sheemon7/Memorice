@@ -69,6 +69,24 @@
             android:label="@string/title_activity_help">
         </activity>
 
+        <activity
+            android:name=".view.activities.DictionaryDetailActivity"
+            android:parentActivityName=".view.activities.EntryActivity"
+            android:label="@string/title_activity_detail">
+        </activity>
+
+        <activity
+            android:name=".view.activities.SequenceDetailActivity"
+            android:parentActivityName=".view.activities.EntryActivity"
+            android:label="@string/title_activity_detail">
+        </activity>
+
+        <activity
+            android:name=".view.activities.SetDetailActivity"
+            android:parentActivityName=".view.activities.EntryActivity"
+            android:label="@string/title_activity_detail">
+        </activity>
+
     </application>
 
 </manifest>

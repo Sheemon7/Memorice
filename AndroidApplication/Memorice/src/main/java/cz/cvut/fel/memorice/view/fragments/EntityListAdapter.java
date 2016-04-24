@@ -1,8 +1,11 @@
 package cz.cvut.fel.memorice.view.fragments;
 
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Rect;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
 import android.text.Spannable;
 import android.text.style.ForegroundColorSpan;
@@ -18,6 +21,10 @@ import cz.cvut.fel.memorice.R;
 import cz.cvut.fel.memorice.model.database.SQLiteHelper;
 import cz.cvut.fel.memorice.model.entities.Entity;
 import cz.cvut.fel.memorice.model.util.WrongNameException;
+import cz.cvut.fel.memorice.view.activities.DictionaryDetailActivity;
+import cz.cvut.fel.memorice.view.activities.EntryActivity;
+import cz.cvut.fel.memorice.view.activities.SequenceDetailActivity;
+import cz.cvut.fel.memorice.view.activities.SetDetailActivity;
 
 /**
  * Created by sheemon on 21.4.16.
@@ -63,20 +70,14 @@ public class EntityListAdapter extends RecyclerView.Adapter<EntityListAdapter.Vi
         notifyDataSetChanged();
     }
 
-
-    // Create new views (invoked by the layout manager)
     @Override
     public EntityListAdapter.ViewHolder onCreateViewHolder(ViewGroup parent,
-                                                   int viewType) {
-        // init a new view
+                                                           int viewType) {
         View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.entity_line, parent, false);
-        // set the view's size, margins, paddings and layout parameters
         ViewHolder vh = new ViewHolder(v);
         return vh;
     }
 
-
-    // Replace the contents of a view (invoked by the layout manager)
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         final Entity e = mDataset.get(position);
@@ -84,7 +85,7 @@ public class EntityListAdapter extends RecyclerView.Adapter<EntityListAdapter.Vi
 
         if (filter != null) {
             int i = e.getName().toLowerCase().indexOf(filter.toLowerCase());
-            if (i != - 1) {
+            if (i != -1) {
                 Spannable str = (Spannable) holder.txtHeader.getText();
                 int color;
                 if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.JELLY_BEAN) {
@@ -96,15 +97,36 @@ public class EntityListAdapter extends RecyclerView.Adapter<EntityListAdapter.Vi
             }
         }
 
-    switch (e.getType()) {
+        switch (e.getType()) {
             case GROUP:
                 holder.imageType.setImageResource(R.drawable.ic_set_inverted_24dp);
+                holder.txtHeader.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        final Intent myIntent = new Intent(view.getContext(), SetDetailActivity.class);
+                        view.getContext().startActivity(myIntent);
+                    }
+                });
                 break;
             case SEQUENCE:
                 holder.imageType.setImageResource(R.drawable.ic_list_inverted_24dp);
+                holder.txtHeader.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        final Intent myIntent = new Intent(view.getContext(), SequenceDetailActivity.class);
+                        view.getContext().startActivity(myIntent);
+                    }
+                });
                 break;
             case DICTIONARY:
                 holder.imageType.setImageResource(R.drawable.ic_dictionary_inverted_24dp);
+                holder.txtHeader.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        final Intent myIntent = new Intent(view.getContext(), DictionaryDetailActivity.class);
+                        view.getContext().startActivity(myIntent);
+                    }
+                });
                 break;
         }
 
@@ -124,7 +146,24 @@ public class EntityListAdapter extends RecyclerView.Adapter<EntityListAdapter.Vi
         holder.imageDel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                remove(e, view.getContext());
+                AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(view.getContext());
+                alertDialogBuilder.setTitle("Delete " + e.getName());
+                alertDialogBuilder.setMessage("Are you sure?");
+                alertDialogBuilder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        remove(e, view.getContext());
+                        dialog.cancel();
+                    }
+                });
+                alertDialogBuilder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                    }
+                });
+                AlertDialog alert = alertDialogBuilder.create();
+                alert.show();
             }
         });
     }
@@ -145,8 +184,8 @@ public class EntityListAdapter extends RecyclerView.Adapter<EntityListAdapter.Vi
             super(v);
             txtHeader = (TextView) v.findViewById(R.id.labelLine);
             imageType = (ImageView) v.findViewById(R.id.icon_type);
-            imageFav= (ImageView) v.findViewById(R.id.icon_favorite);
-            imageDel= (ImageView) v.findViewById(R.id.icon_delete);
+            imageFav = (ImageView) v.findViewById(R.id.icon_favorite);
+            imageDel = (ImageView) v.findViewById(R.id.icon_delete);
         }
     }
 }

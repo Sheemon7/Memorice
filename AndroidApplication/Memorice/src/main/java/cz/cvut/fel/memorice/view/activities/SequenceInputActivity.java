@@ -25,8 +25,6 @@ import cz.cvut.fel.memorice.model.util.NameAlreadyUsedException;
  */
 public class SequenceInputActivity extends InputActivity {
 
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -40,7 +38,7 @@ public class SequenceInputActivity extends InputActivity {
             Window window = getWindow();
             window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
             window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-            ContextCompat.getColor(getApplicationContext(), R.color.colorInvertDarker);
+            window.setStatusBarColor(ContextCompat.getColor(getApplicationContext(), R.color.colorInvertDarker));
         }
 
         ActionBar ab = getSupportActionBar();
