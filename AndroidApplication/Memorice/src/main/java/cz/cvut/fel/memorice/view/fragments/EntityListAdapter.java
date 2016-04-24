@@ -19,6 +19,7 @@ import java.util.ArrayList;
 
 import cz.cvut.fel.memorice.R;
 import cz.cvut.fel.memorice.model.database.SQLiteHelper;
+import cz.cvut.fel.memorice.model.entities.Dictionary;
 import cz.cvut.fel.memorice.model.entities.Entity;
 import cz.cvut.fel.memorice.model.util.WrongNameException;
 import cz.cvut.fel.memorice.view.activities.DictionaryDetailActivity;
@@ -96,39 +97,41 @@ public class EntityListAdapter extends RecyclerView.Adapter<EntityListAdapter.Vi
                 str.setSpan(new ForegroundColorSpan(color), i, i + filter.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
             }
         }
-
+        View.OnClickListener listener = null;
         switch (e.getType()) {
             case GROUP:
                 holder.imageType.setImageResource(R.drawable.ic_set_inverted_24dp);
-                holder.txtHeader.setOnClickListener(new View.OnClickListener() {
+                listener = new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        final Intent myIntent = new Intent(view.getContext(), SetDetailActivity.class);
+                        Intent myIntent = new Intent(view.getContext(), SetDetailActivity.class);
                         view.getContext().startActivity(myIntent);
                     }
-                });
+                };
                 break;
             case SEQUENCE:
                 holder.imageType.setImageResource(R.drawable.ic_list_inverted_24dp);
-                holder.txtHeader.setOnClickListener(new View.OnClickListener() {
+                listener = new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        final Intent myIntent = new Intent(view.getContext(), SequenceDetailActivity.class);
+                        Intent myIntent = new Intent(view.getContext(), SequenceDetailActivity.class);
                         view.getContext().startActivity(myIntent);
                     }
-                });
+                };
                 break;
             case DICTIONARY:
                 holder.imageType.setImageResource(R.drawable.ic_dictionary_inverted_24dp);
-                holder.txtHeader.setOnClickListener(new View.OnClickListener() {
+                listener = new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        final Intent myIntent = new Intent(view.getContext(), DictionaryDetailActivity.class);
+                        Intent myIntent = new Intent(view.getContext(), DictionaryDetailActivity.class);
                         view.getContext().startActivity(myIntent);
                     }
-                });
+                };
                 break;
         }
+        holder.txtHeader.setOnClickListener(listener);
+        holder.imageType.setOnClickListener(listener);
 
         if (e.isFavourite()) {
             holder.imageFav.setImageResource(R.drawable.ic_favorite_true_24dp);

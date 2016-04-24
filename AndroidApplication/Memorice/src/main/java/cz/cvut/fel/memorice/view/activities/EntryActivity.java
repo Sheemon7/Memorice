@@ -120,11 +120,14 @@ public class EntryActivity extends AppCompatActivity {
                     animation1.setStartOffset(FAB_ANIMATION_OFFSET);
                     animation1.setFillAfter(true);
                     fabMenu.startAnimation(animation1);
+                    //todo
+                    getSupportActionBar().hide();
                 } else if (newState == RecyclerView.SCROLL_STATE_IDLE) {
                     AlphaAnimation animation1 = new AlphaAnimation(0, 1);
                     animation1.setDuration(FAB_ANIMATION_DURATION);
                     animation1.setFillAfter(true);
                     fabMenu.startAnimation(animation1);
+                    getSupportActionBar().show();
                 }
             }
 
