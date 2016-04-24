@@ -23,7 +23,7 @@
                 android:layout_height="?attr/actionBarSize"
                 android:background="@color/colorInvert"
                 android:paddingRight="12dp"
-                app:theme="@style/AppInvertedTheme"
+                android:theme="@style/AppInvertedTheme"
                 app:popupTheme="@style/AppTheme.PopupOverlay" />
 
             <LinearLayout android:layout_width="match_parent"
@@ -41,6 +41,13 @@
 
                 <TextView
                     android:id="@+id/entry_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:background="@color/colorInvert"
+                    android:layout_weight="1.02" />
+
+                <TextView
+                    android:id="@+id/test_content"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:background="@color/colorInvert"

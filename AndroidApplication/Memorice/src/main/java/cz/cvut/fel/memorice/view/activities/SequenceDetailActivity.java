@@ -7,14 +7,17 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.TextView;
 
 import cz.cvut.fel.memorice.R;
+import cz.cvut.fel.memorice.model.entities.Sequence;
 
 /**
  * Created by sheemon on 24.4.16.
  */
 public class SequenceDetailActivity extends DetailActivity {
 
+    private Sequence s;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -31,6 +34,10 @@ public class SequenceDetailActivity extends DetailActivity {
             window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
             window.setStatusBarColor(ContextCompat.getColor(getApplicationContext(), R.color.colorInvertDarker));
         }
+
+        s = (Sequence) getIntent().getSerializableExtra("entity");
+        TextView label = (TextView) findViewById(R.id.entry_title);
+        label.setText(s.getName());
 
         ActionBar ab = getSupportActionBar();
         ab.setDisplayHomeAsUpEnabled(true);

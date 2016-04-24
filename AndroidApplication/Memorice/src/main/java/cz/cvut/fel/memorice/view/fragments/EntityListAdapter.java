@@ -105,6 +105,7 @@ public class EntityListAdapter extends RecyclerView.Adapter<EntityListAdapter.Vi
                     @Override
                     public void onClick(View v) {
                         Intent myIntent = new Intent(view.getContext(), SetDetailActivity.class);
+                        myIntent.putExtra("entity", e);
                         view.getContext().startActivity(myIntent);
                     }
                 };
@@ -115,6 +116,7 @@ public class EntityListAdapter extends RecyclerView.Adapter<EntityListAdapter.Vi
                     @Override
                     public void onClick(View v) {
                         Intent myIntent = new Intent(view.getContext(), SequenceDetailActivity.class);
+                        myIntent.putExtra("entity", e);
                         view.getContext().startActivity(myIntent);
                     }
                 };
@@ -125,6 +127,7 @@ public class EntityListAdapter extends RecyclerView.Adapter<EntityListAdapter.Vi
                     @Override
                     public void onClick(View v) {
                         Intent myIntent = new Intent(view.getContext(), DictionaryDetailActivity.class);
+                        myIntent.putExtra("entity", e);
                         view.getContext().startActivity(myIntent);
                     }
                 };

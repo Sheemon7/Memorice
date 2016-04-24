@@ -11,7 +11,11 @@ import java.util.logging.Logger;
 
 import cz.cvut.fel.memorice.model.entities.Entity;
 import cz.cvut.fel.memorice.model.entities.EntityEnum;
+import cz.cvut.fel.memorice.model.entities.Sequence;
 import cz.cvut.fel.memorice.model.entities.builders.Builder;
+import cz.cvut.fel.memorice.model.entities.builders.SequenceBuilder;
+import cz.cvut.fel.memorice.model.entities.entries.Entry;
+import cz.cvut.fel.memorice.model.entities.entries.SequenceEntry;
 import cz.cvut.fel.memorice.model.util.WrongNameException;
 
 /**
@@ -27,15 +31,20 @@ public class SQLiteHelper extends SQLiteOpenHelper {
 
     // Entities table name
     private static final String TABLE_ENTITIES = "entities";
-    // Entities Table Columns names
+    // Entities table Columns names
     private static final String KEY_LABEL = "label";
     private static final String KEY_TYPE = "type";
     private static final String KEY_FAVORITE = "favorite";
     private static final String[] ENTITIES_COLUMNS = {KEY_LABEL, KEY_TYPE, KEY_FAVORITE};
 
     // Entries table name
-    private static final String TABLE_BOOKS = "books";
-    //TODO - tabulky
+    private static final String TABLE_ENTRIES_SEQUENCES = "sequences";
+    // Entries table Columns names
+    private static final String KEY_ORDER = "order";
+    private static final String KEY_VALUE = "value";
+    private static final String KEY_ENTITY = "entity";
+    private static final String[] ENTRIES_SEQUENCES_COLUMNS = {KEY_ORDER, KEY_VALUE, KEY_ENTITY};
+
 
 
     public SQLiteHelper(Context context) {
@@ -44,19 +53,28 @@ public class SQLiteHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        String CREATE_TABLE_ENTITIES =
-                "CREATE TABLE entities (" +
+        String createTableEntities =
+                "CREATE TABLE " + TABLE_ENTITIES + " (" +
                         KEY_LABEL + " TEXT PRIMARY KEY, " +
                         KEY_TYPE + " TEXT, " +
                         KEY_FAVORITE + " INTEGER " +
                         ");";
-        db.execSQL(CREATE_TABLE_ENTITIES);
+        String createTableEntriesSequences =
+                "CREATE TABLE " + TABLE_ENTRIES_SEQUENCES +" (" +
+                        KEY_ORDER + " INTEGER, " +
+                        KEY_VALUE + " TEXT, " +
+                        KEY_ENTITY + " TEXT, " +
+                        ");";
+        db.execSQL(createTableEntities);
+        db.execSQL(createTableEntriesSequences);
+        //TODO - sets
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_ENTITIES);
-        //TODO
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_ENTRIES_SEQUENCES);
+        //TODO -sets, dics
         this.onCreate(db);
     }
 
@@ -69,7 +87,39 @@ public class SQLiteHelper extends SQLiteOpenHelper {
         values.put(KEY_TYPE, entity.getType().toString());
         values.put(KEY_FAVORITE, entity.isFavourite() ? 1 : 0);
 
+        if (entity.getType() == EntityEnum.SEQUENCE) {
+            for (SequenceEntry entry : (Iterable<SequenceEntry>) entity) {
+                addSequenceEntry(entry, entity);
+            }
+        } else {
+            //TODO
+        }
+
         db.insert(TABLE_ENTITIES, null, values);
+        db.close();
+    }
+
+    public void addSequenceEntry(SequenceEntry entry, Entity entity) {
+        LOG.info("Adding entry: " + entry.getValue());
+
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(KEY_ORDER, entry.getNumber());
+        values.put(KEY_VALUE, entry.getValue());
+        values.put(KEY_ENTITY, entity.getName());
+        db.insert(TABLE_ENTRIES_SEQUENCES, null, values);
+        db.close();
+    }
+
+    public void addEntry(Entry entry, Entity entity) {
+        LOG.info("Adding entry: " + entry.getValue());
+
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(KEY_VALUE, entry.getValue());
+        values.put(KEY_ENTITY, entity.getName());
+
+        db.insert(TABLE_ENTRIES_SEQUENCES, null, values);
         db.close();
     }
 
@@ -84,11 +134,19 @@ public class SQLiteHelper extends SQLiteOpenHelper {
                 new String[]{label},
                 null, null, null, null);
 
+        ArrayList<? extends Entry> entries = null;
         if (cursor != null && cursor.moveToFirst()) {
             EntityEnum type = EntityEnum.getType(cursor.getString(1));
             Builder b = Builder.getCorrectBuilder(type);
             b.init(label);
-            //TODO - add entries
+            if (type == EntityEnum.SEQUENCE) {
+                entries = getAllSequenceEntries(label);
+            } else {
+                //TODO
+            }
+            for (Entry e : entries) {
+                b.add(e);
+            }
             return b.wrap();
         } else {
             return null;
@@ -99,7 +157,6 @@ public class SQLiteHelper extends SQLiteOpenHelper {
         ArrayList<Entity> ret = new ArrayList<>();
         String query = "SELECT " + KEY_LABEL + " FROM " + TABLE_ENTITIES +
                 " WHERE " + KEY_LABEL + " LIKE " + "\"%" + filter + "%\"";
-        System.out.println(query);
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery(query, null);
         if (cursor != null && cursor.moveToFirst()) {
@@ -107,6 +164,36 @@ public class SQLiteHelper extends SQLiteOpenHelper {
                 ret.add(getEntity(cursor.getString(0)));
             } while (cursor.moveToNext());
         }
+        return ret;
+    }
+
+    public ArrayList<SequenceEntry> getAllSequenceEntries(String label) {
+        ArrayList<SequenceEntry> ret = new ArrayList<>();
+        String query = "SELECT " + KEY_ORDER +", " + KEY_VALUE + " FROM " + TABLE_ENTRIES_SEQUENCES +
+                " WHERE " + KEY_LABEL + "=" + label;
+        System.out.println(query);
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(query, null);
+        if (cursor != null && cursor.moveToFirst()) {
+            do {
+                ret.add(new SequenceEntry(cursor.getString(1), Integer.parseInt(cursor.getString(0))));
+            } while (cursor.moveToNext());
+        }
+        return ret;
+    }
+
+    public ArrayList<SequenceEntry> getAllEntries(String label) {
+        ArrayList<SequenceEntry> ret = new ArrayList<>();
+        //TODO
+//        String query = "SELECT " + KEY_ORDER +", " + KEY_VALUE + " FROM " + TABLE_ENTRIES_SEQUENCES +
+//                " WHERE " + KEY_LABEL + "=" + label;
+//        SQLiteDatabase db = this.getReadableDatabase();
+//        Cursor cursor = db.rawQuery(query, null);
+//        if (cursor != null && cursor.moveToFirst()) {
+//            do {
+//                ret.add(new SequenceEntry(cursor.getString(1), Integer.parseInt(cursor.getString(0))));
+//            } while (cursor.moveToNext());
+//        }
         return ret;
     }
 
@@ -118,14 +205,23 @@ public class SQLiteHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery(query, null);
 
-        Entity entity = null;
+        Entity entity;
+        ArrayList<? extends Entry> entries = null;
         if (cursor.moveToFirst() && cursor != null) {
             do {
                 EntityEnum type = EntityEnum.getType(cursor.getString(1));
                 Builder b = Builder.getCorrectBuilder(type);
                 String label = cursor.getString(0);
                 b.init(label);
-                //TODO - add entries
+                if (type == EntityEnum.SEQUENCE) {
+                    entries = getAllSequenceEntries(label);
+                } else {
+                    entries = getAllEntries(label);
+                    //TODO
+                }
+                for (Entry e : entries) {
+                    b.add(e);
+                }
                 entity = b.wrap();
                 entity.setFavourite(cursor.getInt(2) == 1);
                 ret.add(entity);
@@ -138,6 +234,15 @@ public class SQLiteHelper extends SQLiteOpenHelper {
         LOG.info("Deleting entity: " + e.getName());
         SQLiteDatabase db = this.getWritableDatabase();
         db.delete(TABLE_ENTITIES, KEY_LABEL + " =?", new String[]{e.getName()});
+        db.delete(TABLE_ENTRIES_SEQUENCES, KEY_ENTITY + " =?", new String[]{e.getName()});
+        //TODO
+        db.close();
+    }
+
+    public void deleteSequenceEntry(SequenceEntry entry) {
+        LOG.info("Deleting entry: " + entry.getValue());
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.delete(TABLE_ENTRIES_SEQUENCES, KEY_VALUE + " =?", new String[]{entry.getValue()});
         db.close();
     }
 

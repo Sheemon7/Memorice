@@ -17,6 +17,8 @@ import android.widget.EditText;
 import cz.cvut.fel.memorice.R;
 import cz.cvut.fel.memorice.model.database.SQLiteHelper;
 import cz.cvut.fel.memorice.model.entities.builders.SequenceBuilder;
+import cz.cvut.fel.memorice.model.entities.entries.Entry;
+import cz.cvut.fel.memorice.model.entities.entries.SequenceEntry;
 import cz.cvut.fel.memorice.model.util.EmptyNameException;
 import cz.cvut.fel.memorice.model.util.NameAlreadyUsedException;
 
@@ -79,6 +81,13 @@ public class SequenceInputActivity extends InputActivity {
         }
         SequenceBuilder builder = SequenceBuilder.getInstance();
         builder.init(label);
+        builder.add(new SequenceEntry("A", 0));
+        builder.add(new SequenceEntry("A", 1));
+        builder.add(new SequenceEntry("A", 2));
+        builder.add(new SequenceEntry("A", 3));
+        builder.add(new SequenceEntry("A", 4));
+        builder.add(new SequenceEntry("A", 5));
+
         helper.addEntity(builder.wrap());
     }
 }

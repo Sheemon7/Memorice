@@ -37,7 +37,8 @@ public class SequenceBuilder extends Builder {
 
     @Override
     public void add(Entry e) {
-        //TODO
+        //TODO spatny navrh?
+        beingBuilt.addEntry((SequenceEntry)e);
     }
 
     @Override
