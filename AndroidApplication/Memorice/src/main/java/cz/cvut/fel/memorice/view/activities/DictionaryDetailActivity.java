@@ -57,6 +57,7 @@ public class DictionaryDetailActivity extends DetailActivity{
         String testName = d.getName();
         for (DictionaryEntry entry : (Iterable<DictionaryEntry>) d) {
             testName += entry.getValue();
+            testName += entry.getDefinition();
         }
         label.setText(testName);
 //        label.setText(s.getName());

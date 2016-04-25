@@ -25,9 +25,9 @@ public class SQLiteHelper extends SQLiteOpenHelper {
     private static final Logger LOG = Logger.getLogger(SQLiteHelper.class.getName());
 
     // Database Version
-    private static final int DATABASE_VERSION = 3;
+    private static final int DATABASE_VERSION = 4;
     // Database Name
-    private static final String DATABASE_NAME = "MemoriceDB_3";
+    private static final String DATABASE_NAME = "MemoriceDB_4";
 
     // Entities table name
     private static final String TABLE_ENTITIES = "entities";
@@ -46,12 +46,15 @@ public class SQLiteHelper extends SQLiteOpenHelper {
     private static final String[] ENTRIES_SEQUENCES_COLUMNS = {KEY_NUMBER, KEY_VALUE, KEY_ENTITY};
 
     // Entries table name
-    private static final String TABLE_ENTRIES_GROUPS = "grps";
+    private static final String TABLE_ENTRIES_DICTS = "dicts";
     // Entries table Columns names
     private static final String KEY_PASS = "pass";
-//    private static final String KEY_VALUE = "entry";
-//    private static final String KEY_ENTITY = "entity";
-    private static final String[] ENTRIES_GROUPS_COLUMNS = {KEY_PASS, KEY_VALUE, KEY_ENTITY};
+    private static final String[] ENTRIES_DICTS_COLUMNS = {KEY_PASS, KEY_VALUE, KEY_ENTITY};
+
+    // Entries table name
+    private static final String TABLE_ENTRIES_GROUPS = "grps";
+    // Entries table Columns names
+    private static final String[] ENTRIES_GROUPS_COLUMNS = {KEY_VALUE, KEY_ENTITY};
 
     public SQLiteHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -73,6 +76,11 @@ public class SQLiteHelper extends SQLiteOpenHelper {
                         ");";
         String createTableEntriesGroups =
                 "CREATE TABLE " + TABLE_ENTRIES_GROUPS + " (" +
+                        KEY_VALUE + " TEXT, " +
+                        KEY_ENTITY + " TEXT " +
+                        ");";
+        String createTableEntriesDicts =
+                "CREATE TABLE " + TABLE_ENTRIES_DICTS + " (" +
                         KEY_PASS + " TEXT, " +
                         KEY_VALUE + " TEXT, " +
                         KEY_ENTITY + " TEXT " +
@@ -80,6 +88,7 @@ public class SQLiteHelper extends SQLiteOpenHelper {
         db.execSQL(createTableEntities);
         db.execSQL(createTableEntriesSequences);
         db.execSQL(createTableEntriesGroups);
+        db.execSQL(createTableEntriesDicts);
     }
 
     @Override
@@ -87,6 +96,7 @@ public class SQLiteHelper extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_ENTITIES);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_ENTRIES_SEQUENCES);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_ENTRIES_GROUPS);
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_ENTRIES_DICTS);
         this.onCreate(db);
     }
 
@@ -138,7 +148,7 @@ public class SQLiteHelper extends SQLiteOpenHelper {
         values.put(KEY_VALUE, entry.getValue());
         values.put(KEY_ENTITY, entity.getName());
 
-        db.insert(TABLE_ENTRIES_GROUPS, null, values);
+        db.insert(TABLE_ENTRIES_DICTS, null, values);
         db.close();
     }
 
@@ -147,7 +157,6 @@ public class SQLiteHelper extends SQLiteOpenHelper {
 
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
-        values.put(KEY_PASS, "");
         values.put(KEY_VALUE, entry.getValue());
         values.put(KEY_ENTITY, entity.getName());
 
@@ -218,8 +227,8 @@ public class SQLiteHelper extends SQLiteOpenHelper {
     public ArrayList<DictionaryEntry> getAllDictEntries(String label) {
         ArrayList<DictionaryEntry> ret = new ArrayList<>();
 
-        String query = "SELECT " + KEY_PASS +", " + KEY_VALUE + " FROM " + TABLE_ENTRIES_GROUPS +
-                " WHERE " + KEY_LABEL + "=" + label;
+        String query = "SELECT " + KEY_PASS +", " + KEY_VALUE + " FROM " + TABLE_ENTRIES_DICTS +
+                " WHERE " + KEY_ENTITY + "=" + "\"" + label + "\"";
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery(query, null);
         if (cursor != null && cursor.moveToFirst()) {
@@ -234,7 +243,7 @@ public class SQLiteHelper extends SQLiteOpenHelper {
         ArrayList<Entry> ret = new ArrayList<>();
 
         String query = "SELECT " + KEY_VALUE + " FROM " + TABLE_ENTRIES_GROUPS +
-                " WHERE " + KEY_LABEL + "=" + label;
+                " WHERE " + KEY_ENTITY + "=" + "\"" + label + "\"";
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery(query, null);
         if (cursor != null && cursor.moveToFirst()) {
@@ -270,6 +279,7 @@ public class SQLiteHelper extends SQLiteOpenHelper {
         db.delete(TABLE_ENTITIES, KEY_LABEL + " =?", new String[]{e.getName()});
         db.delete(TABLE_ENTRIES_SEQUENCES, KEY_ENTITY + " =?", new String[]{e.getName()});
         db.delete(TABLE_ENTRIES_GROUPS, KEY_ENTITY + " =?", new String[]{e.getName()});
+        db.delete(TABLE_ENTRIES_DICTS, KEY_ENTITY + " =?", new String[]{e.getName()});
         db.close();
     }
 

@@ -43,7 +43,7 @@ public class Dictionary extends Entity implements Serializable {
 
     @Override
     public Iterator iterator() {
-        return null;
+        return entries.iterator();
     }
 
     @Override
