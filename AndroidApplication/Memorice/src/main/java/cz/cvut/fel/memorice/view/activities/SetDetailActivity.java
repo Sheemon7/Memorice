@@ -7,13 +7,20 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.TextView;
 
 import cz.cvut.fel.memorice.R;
+import cz.cvut.fel.memorice.model.entities.Group;
+import cz.cvut.fel.memorice.model.entities.Sequence;
+import cz.cvut.fel.memorice.model.entities.entries.Entry;
+import cz.cvut.fel.memorice.model.entities.entries.SequenceEntry;
 
 /**
  * Created by sheemon on 24.4.16.
  */
 public class SetDetailActivity extends DetailActivity {
+
+    private Group g;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,6 +38,15 @@ public class SetDetailActivity extends DetailActivity {
             window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
             window.setStatusBarColor(ContextCompat.getColor(getApplicationContext(), R.color.colorInvertDarker));
         }
+
+        g = (Group) getIntent().getSerializableExtra("entity");
+        TextView label = (TextView) findViewById(R.id.entry_title);
+        String testName = g.getName();
+        for (Entry entry : (Iterable<Entry>) g) {
+            testName += entry.getValue();
+        }
+        label.setText(testName);
+//        label.setText(s.getName());
 
         ActionBar ab = getSupportActionBar();
         ab.setDisplayHomeAsUpEnabled(true);

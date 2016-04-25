@@ -20,7 +20,11 @@ import android.widget.TextView;
 
 import cz.cvut.fel.memorice.R;
 import cz.cvut.fel.memorice.model.database.SQLiteHelper;
+import cz.cvut.fel.memorice.model.entities.Dictionary;
+import cz.cvut.fel.memorice.model.entities.Group;
 import cz.cvut.fel.memorice.model.entities.builders.DictionaryBuilder;
+import cz.cvut.fel.memorice.model.entities.entries.DictionaryEntry;
+import cz.cvut.fel.memorice.model.entities.entries.Entry;
 import cz.cvut.fel.memorice.model.util.EmptyNameException;
 import cz.cvut.fel.memorice.model.util.NameAlreadyUsedException;
 
@@ -28,6 +32,8 @@ import cz.cvut.fel.memorice.model.util.NameAlreadyUsedException;
  * Created by sheemon on 18.4.16.
  */
 public class DictionaryDetailActivity extends DetailActivity{
+
+    private Dictionary d;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,6 +51,15 @@ public class DictionaryDetailActivity extends DetailActivity{
             window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
             window.setStatusBarColor(ContextCompat.getColor(getApplicationContext(), R.color.colorInvertDarker));
         }
+
+        d = (Dictionary) getIntent().getSerializableExtra("entity");
+        TextView label = (TextView) findViewById(R.id.entry_title);
+        String testName = d.getName();
+        for (DictionaryEntry entry : (Iterable<DictionaryEntry>) d) {
+            testName += entry.getValue();
+        }
+        label.setText(testName);
+//        label.setText(s.getName());
 
         ActionBar ab = getSupportActionBar();
         ab.setDisplayHomeAsUpEnabled(true);

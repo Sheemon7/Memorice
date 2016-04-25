@@ -21,6 +21,8 @@ import android.widget.TextView;
 import cz.cvut.fel.memorice.R;
 import cz.cvut.fel.memorice.model.database.SQLiteHelper;
 import cz.cvut.fel.memorice.model.entities.builders.DictionaryBuilder;
+import cz.cvut.fel.memorice.model.entities.entries.DictionaryEntry;
+import cz.cvut.fel.memorice.model.entities.entries.SequenceEntry;
 import cz.cvut.fel.memorice.model.util.EmptyNameException;
 import cz.cvut.fel.memorice.model.util.NameAlreadyUsedException;
 
@@ -83,6 +85,9 @@ public class DictionaryInputActivity extends InputActivity {
         }
         DictionaryBuilder builder = DictionaryBuilder.getInstance();
         builder.init(label);
+
+        builder.add(new DictionaryEntry("A", "B"));
+
         helper.addEntity(builder.wrap());
     }
 

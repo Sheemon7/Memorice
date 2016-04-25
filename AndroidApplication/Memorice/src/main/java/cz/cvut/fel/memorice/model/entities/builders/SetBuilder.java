@@ -3,6 +3,7 @@ package cz.cvut.fel.memorice.model.entities.builders;
 import cz.cvut.fel.memorice.model.entities.Group;
 import cz.cvut.fel.memorice.model.entities.entries.Entry;
 import cz.cvut.fel.memorice.model.util.ConcurrentBuildingException;
+import cz.cvut.fel.memorice.model.util.TermAlreadyUsedException;
 
 /**
  * Created by sheemon on 21.3.16.
@@ -31,7 +32,11 @@ public class SetBuilder extends Builder {
 
     @Override
     public void add(Entry e) {
-        //TODO
+        try {
+            beingBuilt.addEntry(e);
+        } catch (TermAlreadyUsedException e1) {
+            e1.printStackTrace();
+        }
     }
 
     @Override

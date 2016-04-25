@@ -37,7 +37,11 @@ public class DictionaryBuilder extends Builder {
 
     @Override
     public void add(Entry e) {
-        //TODO
+        try {
+            beingBuilt.addEntry((DictionaryEntry) e);
+        } catch (TermAlreadyUsedException e1) {
+            e1.printStackTrace();
+        }
     }
 
     @Override

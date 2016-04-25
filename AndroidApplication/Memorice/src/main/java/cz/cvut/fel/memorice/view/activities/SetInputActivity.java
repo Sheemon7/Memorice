@@ -20,6 +20,8 @@ import android.widget.TextView;
 import cz.cvut.fel.memorice.R;
 import cz.cvut.fel.memorice.model.database.SQLiteHelper;
 import cz.cvut.fel.memorice.model.entities.builders.SetBuilder;
+import cz.cvut.fel.memorice.model.entities.entries.Entry;
+import cz.cvut.fel.memorice.model.entities.entries.SequenceEntry;
 import cz.cvut.fel.memorice.model.util.EmptyNameException;
 import cz.cvut.fel.memorice.model.util.NameAlreadyUsedException;
 
@@ -82,6 +84,12 @@ public class SetInputActivity extends InputActivity {
         }
         SetBuilder builder = SetBuilder.getInstance();
         builder.init(label);
+
+        builder.add(new Entry("A"));
+        builder.add(new Entry("B"));
+        builder.add(new Entry("C"));
+        builder.add(new Entry("D"));
+
         helper.addEntity(builder.wrap());
     }
 }

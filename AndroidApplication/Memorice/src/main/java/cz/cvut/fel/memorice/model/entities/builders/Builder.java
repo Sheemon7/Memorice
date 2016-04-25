@@ -3,6 +3,7 @@ package cz.cvut.fel.memorice.model.entities.builders;
 import cz.cvut.fel.memorice.model.entities.Entity;
 import cz.cvut.fel.memorice.model.entities.EntityEnum;
 import cz.cvut.fel.memorice.model.entities.entries.Entry;
+import cz.cvut.fel.memorice.model.util.TermAlreadyUsedException;
 
 /**
  * Created by sheemon on 21.3.16.

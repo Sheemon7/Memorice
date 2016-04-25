@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import cz.cvut.fel.memorice.R;
 import cz.cvut.fel.memorice.model.entities.Sequence;
+import cz.cvut.fel.memorice.model.entities.entries.SequenceEntry;
 
 /**
  * Created by sheemon on 24.4.16.
@@ -37,7 +38,12 @@ public class SequenceDetailActivity extends DetailActivity {
 
         s = (Sequence) getIntent().getSerializableExtra("entity");
         TextView label = (TextView) findViewById(R.id.entry_title);
-        label.setText(s.getName());
+        String testName = s.getName();
+        for (SequenceEntry entry : (Iterable<SequenceEntry>) s) {
+            testName += entry.getValue();
+        }
+        label.setText(testName);
+//        label.setText(s.getName());
 
         ActionBar ab = getSupportActionBar();
         ab.setDisplayHomeAsUpEnabled(true);
