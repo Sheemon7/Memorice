@@ -55,7 +55,7 @@ public class InputActivity extends AppCompatActivity {
     }
 
     protected void prepareInputLabels() {
-        labelInput = (EditText) findViewById(R.id.entry_title);
+        labelInput = (EditText) findViewById(R.id.entity_type);
         labelWarn = (TextView) findViewById(R.id.text_used_label);
         labelWarn.setVisibility(View.INVISIBLE);
         labelInput.addTextChangedListener(new TextWatcher() {

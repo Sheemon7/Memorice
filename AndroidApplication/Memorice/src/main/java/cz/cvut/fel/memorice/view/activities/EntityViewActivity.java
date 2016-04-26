@@ -1,17 +1,9 @@
 package cz.cvut.fel.memorice.view.activities;
 
-import android.content.Context;
 import android.content.Intent;
-import android.content.res.TypedArray;
-import android.graphics.Canvas;
-import android.graphics.Rect;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.support.v4.app.FragmentTransaction;
-import android.support.v4.content.ContextCompat;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.ActionBar;
-import android.support.v7.app.ActionBar.TabListener;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -25,18 +17,14 @@ import android.widget.Toast;
 
 import com.getbase.floatingactionbutton.FloatingActionsMenu;
 
-import java.util.ArrayList;
-
 import cz.cvut.fel.memorice.R;
-import cz.cvut.fel.memorice.model.database.SQLiteHelper;
-import cz.cvut.fel.memorice.model.entities.Entity;
 import cz.cvut.fel.memorice.view.fragments.DividerItemDecoration;
 import cz.cvut.fel.memorice.view.fragments.EntityListAdapter;
 
 /**
  * Created by sheemon on 14.4.16.
  */
-public class EntryActivity extends AppCompatActivity {
+public class EntityViewActivity extends AppCompatActivity {
 
     private static final int FAB_ANIMATION_DURATION = 300;
     private static final int FAB_ANIMATION_OFFSET = 150;
@@ -150,33 +138,43 @@ public class EntryActivity extends AppCompatActivity {
         fabMenu.setOnFloatingActionsMenuUpdateListener(new FloatingActionsMenu.OnFloatingActionsMenuUpdateListener() {
             @Override
             public void onMenuExpanded() {
-                findViewById(R.id.shadowView).setVisibility(View.VISIBLE);
+//                findViewById(R.id.shadowView).setVisibility(View.VISIBLE);
+                AlphaAnimation fadeOut = new AlphaAnimation(0, 1);
+                fadeOut.setDuration(FAB_ANIMATION_DURATION);
+                fadeOut.setFillAfter(true);
+                View shadowView = findViewById(R.id.shadowView);
+                shadowView.startAnimation(fadeOut);
             }
 
             @Override
             public void onMenuCollapsed() {
-                findViewById(R.id.shadowView).setVisibility(View.INVISIBLE);
+                AlphaAnimation fadeIn = new AlphaAnimation(1, 0);
+                fadeIn.setDuration(FAB_ANIMATION_DURATION);
+                fadeIn.setFillAfter(true);
+                View shadowView = findViewById(R.id.shadowView);
+                shadowView.startAnimation(fadeIn);
+//                findViewById(R.id.shadowView).setVisibility(View.INVISIBLE);
             }
         });
         findViewById(R.id.fab_list).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent myIntent = new Intent(EntryActivity.this, SequenceInputActivity.class);
-                EntryActivity.this.startActivity(myIntent);
+                Intent myIntent = new Intent(EntityViewActivity.this, SequenceInputActivity.class);
+                EntityViewActivity.this.startActivity(myIntent);
             }
         });
         findViewById(R.id.fab_set).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent myIntent = new Intent(EntryActivity.this, SetInputActivity.class);
-                EntryActivity.this.startActivity(myIntent);
+                Intent myIntent = new Intent(EntityViewActivity.this, SetInputActivity.class);
+                EntityViewActivity.this.startActivity(myIntent);
             }
         });
         findViewById(R.id.fab_dictionary).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent myIntent = new Intent(EntryActivity.this, DictionaryInputActivity.class);
-                EntryActivity.this.startActivity(myIntent);
+                Intent myIntent = new Intent(EntityViewActivity.this, DictionaryInputActivity.class);
+                EntityViewActivity.this.startActivity(myIntent);
             }
         });
         fabMenu.setVisibility(View.VISIBLE);
@@ -213,15 +211,15 @@ public class EntryActivity extends AppCompatActivity {
                 //TODO - search action
                 return true;
             case R.id.action_settings:
-                myIntent = new Intent(EntryActivity.this, SettingsActivity.class);
-                EntryActivity.this.startActivity(myIntent);
+                myIntent = new Intent(EntityViewActivity.this, SettingsActivity.class);
+                EntityViewActivity.this.startActivity(myIntent);
                 return true;
             case android.R.id.home: // Intercept the click on the home button
                 finish();
                 return true;
             case R.id.action_help:
-                myIntent = new Intent(EntryActivity.this, HelpActivity.class);
-                EntryActivity.this.startActivity(myIntent);
+                myIntent = new Intent(EntityViewActivity.this, HelpActivity.class);
+                EntityViewActivity.this.startActivity(myIntent);
                 return true;
             default:
                 return super.onOptionsItemSelected(item);

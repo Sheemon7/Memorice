@@ -27,7 +27,7 @@ public class MainActivity extends AppCompatActivity {
         findViewById(R.id.btn_my_sets).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent myIntent = new Intent(MainActivity.this, EntryActivity.class);
+                Intent myIntent = new Intent(MainActivity.this, EntityViewActivity.class);
                 MainActivity.this.startActivity(myIntent);
             }
         });

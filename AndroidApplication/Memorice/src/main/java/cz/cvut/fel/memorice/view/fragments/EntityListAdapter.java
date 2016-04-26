@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
-import android.graphics.Rect;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
 import android.text.Spannable;
@@ -19,11 +18,9 @@ import java.util.ArrayList;
 
 import cz.cvut.fel.memorice.R;
 import cz.cvut.fel.memorice.model.database.SQLiteHelper;
-import cz.cvut.fel.memorice.model.entities.Dictionary;
 import cz.cvut.fel.memorice.model.entities.Entity;
 import cz.cvut.fel.memorice.model.util.WrongNameException;
 import cz.cvut.fel.memorice.view.activities.DictionaryDetailActivity;
-import cz.cvut.fel.memorice.view.activities.EntryActivity;
 import cz.cvut.fel.memorice.view.activities.SequenceDetailActivity;
 import cz.cvut.fel.memorice.view.activities.SetDetailActivity;
 
@@ -83,6 +80,7 @@ public class EntityListAdapter extends RecyclerView.Adapter<EntityListAdapter.Vi
     public void onBindViewHolder(ViewHolder holder, int position) {
         final Entity e = mDataset.get(position);
         holder.txtHeader.setText(e.getName(), TextView.BufferType.SPANNABLE);
+        holder.txtType.setText(e.getType().getName(), TextView.BufferType.SPANNABLE);
 
         if (filter != null) {
             int i = e.getName().toLowerCase().indexOf(filter.toLowerCase());
@@ -134,6 +132,7 @@ public class EntityListAdapter extends RecyclerView.Adapter<EntityListAdapter.Vi
                 break;
         }
         holder.txtHeader.setOnClickListener(listener);
+        holder.txtType.setOnClickListener(listener);
         holder.imageType.setOnClickListener(listener);
 
         if (e.isFavourite()) {
@@ -182,6 +181,7 @@ public class EntityListAdapter extends RecyclerView.Adapter<EntityListAdapter.Vi
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
         private TextView txtHeader;
+        private TextView txtType;
         private ImageView imageType;
         private ImageView imageFav;
         private ImageView imageDel;
@@ -189,6 +189,7 @@ public class EntityListAdapter extends RecyclerView.Adapter<EntityListAdapter.Vi
         public ViewHolder(View v) {
             super(v);
             txtHeader = (TextView) v.findViewById(R.id.labelLine);
+            txtType = (TextView) v.findViewById(R.id.typeLine);
             imageType = (ImageView) v.findViewById(R.id.icon_type);
             imageFav = (ImageView) v.findViewById(R.id.icon_favorite);
             imageDel = (ImageView) v.findViewById(R.id.icon_delete);

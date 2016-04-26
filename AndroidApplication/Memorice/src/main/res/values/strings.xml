@@ -6,6 +6,8 @@
     <string name="settings_action_label">Settings</string>
     <string name="search_action_label">Search</string>
     <string name="help_action_label">Help</string>
+    <string name="favourite_action_label">Favourite</string>
+    <string name="delete_action_label">Delete</string>
 
     <string name="list">List</string>
     <string name="set">Set</string>

@@ -1,28 +1,20 @@
 package cz.cvut.fel.memorice.view.activities;
 
-import android.content.DialogInterface;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.text.Editable;
-import android.text.TextWatcher;
-import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.EditText;
-import android.widget.TextView;
 
 import cz.cvut.fel.memorice.R;
 import cz.cvut.fel.memorice.model.database.SQLiteHelper;
 import cz.cvut.fel.memorice.model.entities.builders.DictionaryBuilder;
 import cz.cvut.fel.memorice.model.entities.entries.DictionaryEntry;
-import cz.cvut.fel.memorice.model.entities.entries.SequenceEntry;
 import cz.cvut.fel.memorice.model.util.EmptyNameException;
 import cz.cvut.fel.memorice.model.util.NameAlreadyUsedException;
 
@@ -74,7 +66,7 @@ public class DictionaryInputActivity extends InputActivity {
     }
 
     private void buildNewDictionary() throws NameAlreadyUsedException, EmptyNameException {
-        labelInput = (EditText) findViewById(R.id.entry_title);
+        labelInput = (EditText) findViewById(R.id.entity_type);
         String label = labelInput.getText().toString().trim();
         SQLiteHelper helper = new SQLiteHelper(getApplicationContext());
         if (helper.getEntity(label) != null) {

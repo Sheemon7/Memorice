@@ -1,14 +1,11 @@
 package cz.cvut.fel.memorice.view.activities;
 
-import android.content.DialogInterface;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.Window;
 import android.view.WindowManager;
@@ -17,7 +14,6 @@ import android.widget.EditText;
 import cz.cvut.fel.memorice.R;
 import cz.cvut.fel.memorice.model.database.SQLiteHelper;
 import cz.cvut.fel.memorice.model.entities.builders.SequenceBuilder;
-import cz.cvut.fel.memorice.model.entities.entries.Entry;
 import cz.cvut.fel.memorice.model.entities.entries.SequenceEntry;
 import cz.cvut.fel.memorice.model.util.EmptyNameException;
 import cz.cvut.fel.memorice.model.util.NameAlreadyUsedException;
@@ -70,7 +66,7 @@ public class SequenceInputActivity extends InputActivity {
     }
 
     private void buildNewSequence() throws NameAlreadyUsedException, EmptyNameException {
-        EditText labelInput = (EditText) findViewById(R.id.entry_title);
+        EditText labelInput = (EditText) findViewById(R.id.entity_type);
         String label = labelInput.getText().toString();
         SQLiteHelper helper = new SQLiteHelper(getApplicationContext());
         if (helper.getEntity(label) != null || label.length() == 0) {
