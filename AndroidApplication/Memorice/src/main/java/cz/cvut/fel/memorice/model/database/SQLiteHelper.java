@@ -190,7 +190,13 @@ public class SQLiteHelper extends SQLiteOpenHelper {
             for (Entry e : entries) {
                 b.add(e);
             }
-            return b.wrap();
+            Entity entity = b.wrap();
+            try {
+                entity.setFavourite(isEntityFavourite(entity));
+            } catch (WrongNameException e) {
+                e.printStackTrace();
+            }
+            return entity;
         } else {
             return null;
         }
@@ -291,12 +297,12 @@ public class SQLiteHelper extends SQLiteOpenHelper {
     }
 
     public void toggleFavorite(Entity e) throws WrongNameException {
-        String query = "UPDATE " + TABLE_ENTITIES + " SET " + KEY_FAVORITE + "=" + (e.isFavourite() ? 0 : 1) +
+        e.setFavourite(!e.isFavourite());
+        String query = "UPDATE " + TABLE_ENTITIES + " SET " + KEY_FAVORITE + "=" + (e.isFavourite() ? 1 : 0) +
                 " WHERE " + KEY_LABEL + "=" + "\'" + e.getName() + "\'";
         System.out.println(query);
         SQLiteDatabase db = this.getWritableDatabase();
         db.execSQL(query);
-        e.setFavourite(!e.isFavourite());
     }
 
     public ArrayList<String> getAllLabels() {

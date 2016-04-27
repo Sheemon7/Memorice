@@ -3,7 +3,9 @@ package cz.cvut.fel.memorice.view.activities;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Build;
+import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.content.res.ResourcesCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -13,6 +15,8 @@ import android.view.MenuItem;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ImageView;
+
+import java.util.logging.Logger;
 
 import cz.cvut.fel.memorice.R;
 import cz.cvut.fel.memorice.model.database.SQLiteHelper;
@@ -25,6 +29,13 @@ import cz.cvut.fel.memorice.model.util.WrongNameException;
 public class DetailActivity extends AppCompatActivity {
 
     private Entity entity;
+    private Menu menu;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_detail);
+    }
 
     protected void prepareToolbar() {
         Toolbar toolbar =
@@ -45,7 +56,13 @@ public class DetailActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
+        this.menu = menu;
         getMenuInflater().inflate(R.menu.menu_detail, menu);
+        if (getEntity().isFavourite()) {
+            menu.getItem(0).setIcon(ResourcesCompat.getDrawable(getResources(), R.drawable.ic_favorite_true_pink_24dp, null));
+        } else {
+            menu.getItem(0).setIcon(ResourcesCompat.getDrawable(getResources(), R.drawable.ic_favorite_false_24dp, null));
+        }
         return true;
     }
 
@@ -55,34 +72,37 @@ public class DetailActivity extends AppCompatActivity {
         final SQLiteHelper helper = new SQLiteHelper(getApplicationContext());
         switch (item.getItemId()) {
             case R.id.action_delete:
-                AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(getApplicationContext());
-                alertDialogBuilder.setTitle("Delete " + getEntity().getName());
-                alertDialogBuilder.setMessage("Are you sure?");
-                alertDialogBuilder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        helper.deleteEntity(getEntity());
-                        dialog.cancel();
-                        finish();
-                    }
-                });
-                alertDialogBuilder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.cancel();
-                    }
-                });
-                AlertDialog alert = alertDialogBuilder.create();
-                alert.show();
+//                AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(getApplicationContext());
+//                alertDialogBuilder.setTitle("Delete " + getEntity().getName());
+//                alertDialogBuilder.setMessage("Are you sure?");
+//                alertDialogBuilder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+//                    @Override
+//                    public void onClick(DialogInterface dialog, int which) {
+//                        helper.deleteEntity(getEntity());
+//                        dialog.cancel();
+//                        finish();
+//                    }
+//                });
+//                alertDialogBuilder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+//                    @Override
+//                    public void onClick(DialogInterface dialog, int which) {
+//                        dialog.cancel();
+//                    }
+//                });
+//                AlertDialog alert = alertDialogBuilder.create();
+//                alert.show();
+                helper.deleteEntity(getEntity());
+                finish();
                 return true;
             case R.id.action_favourite:
                 try {
                     helper.toggleFavorite(getEntity());
-                    ImageView favIcon = (ImageView) findViewById(R.id.icon_favorite);
+                    Logger.getLogger(DetailActivity.class.getName()).info(entity.isFavourite() ? "true" : "false");
+                    Logger.getLogger(DetailActivity.class.getName()).info(helper.isEntityFavourite(entity) ? "true" : "false");
                     if (getEntity().isFavourite()) {
-                        favIcon.setImageResource(R.drawable.ic_favorite_true_pink_24dp);
+                        menu.getItem(0).setIcon(ResourcesCompat.getDrawable(getResources(), R.drawable.ic_favorite_true_pink_24dp, null));
                     } else {
-                        favIcon.setImageResource(R.drawable.ic_favorite_false_24dp);
+                        menu.getItem(0).setIcon(ResourcesCompat.getDrawable(getResources(), R.drawable.ic_favorite_false_24dp, null));
                     }
                 } catch (WrongNameException e) {
                     e.printStackTrace();

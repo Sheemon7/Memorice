@@ -11,6 +11,7 @@ import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.animation.AlphaAnimation;
 import android.widget.Toast;
@@ -81,6 +82,13 @@ public class EntityViewActivity extends AppCompatActivity {
 
     private void prepareShadowView() {
         findViewById(R.id.shadowView).bringToFront();
+        findViewById(R.id.shadowView).setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                fabMenu.collapse();
+                return true;
+            }
+        });
         findViewById(R.id.shadowView).setAlpha(0.6f);
         findViewById(R.id.fab_menu).bringToFront();
     }
@@ -88,14 +96,22 @@ public class EntityViewActivity extends AppCompatActivity {
     @Override
     protected void onPostResume() {
         super.onPostResume();
-        fabMenu.collapse();
-        prepareShadowView();
+        //TODO thread?
+//        findViewById(R.id.shadowView).setAlpha(0f);
+//        fabMenu.collapse();
+//        findViewById(R.id.shadowView).setAlpha(0.6f);
+        mAdapter.showAll(getApplicationContext());
+    }
+
+    @Override
+    protected void onResume() {
+        //TODO
+        super.onResume();
         mAdapter.showAll(getApplicationContext());
     }
 
     private void prepareRecyclerView() {
         mRecyclerView = (RecyclerView) findViewById(R.id.recycler_view);
-
         mRecyclerView.setHasFixedSize(true);
         mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
@@ -138,22 +154,28 @@ public class EntityViewActivity extends AppCompatActivity {
         fabMenu.setOnFloatingActionsMenuUpdateListener(new FloatingActionsMenu.OnFloatingActionsMenuUpdateListener() {
             @Override
             public void onMenuExpanded() {
-//                findViewById(R.id.shadowView).setVisibility(View.VISIBLE);
-                AlphaAnimation fadeOut = new AlphaAnimation(0, 1);
-                fadeOut.setDuration(FAB_ANIMATION_DURATION);
-                fadeOut.setFillAfter(true);
-                View shadowView = findViewById(R.id.shadowView);
-                shadowView.startAnimation(fadeOut);
-            }
-
-            @Override
-            public void onMenuCollapsed() {
-                AlphaAnimation fadeIn = new AlphaAnimation(1, 0);
+                findViewById(R.id.shadowView).setOnTouchListener(new View.OnTouchListener() {
+                    @Override
+                    public boolean onTouch(View v, MotionEvent event) {
+                        fabMenu.collapse();
+                        return true;
+                    }
+                });
+                AlphaAnimation fadeIn = new AlphaAnimation(0, 1);
                 fadeIn.setDuration(FAB_ANIMATION_DURATION);
                 fadeIn.setFillAfter(true);
                 View shadowView = findViewById(R.id.shadowView);
                 shadowView.startAnimation(fadeIn);
-//                findViewById(R.id.shadowView).setVisibility(View.INVISIBLE);
+            }
+
+            @Override
+            public void onMenuCollapsed() {
+                AlphaAnimation fadeOut = new AlphaAnimation(1, 0);
+                fadeOut.setDuration(FAB_ANIMATION_DURATION);
+                fadeOut.setFillAfter(true);
+                View shadowView = findViewById(R.id.shadowView);
+                shadowView.startAnimation(fadeOut);
+                shadowView.setOnTouchListener(null);
             }
         });
         findViewById(R.id.fab_list).setOnClickListener(new View.OnClickListener() {
@@ -206,10 +228,6 @@ public class EntityViewActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         Intent myIntent;
         switch (item.getItemId()) {
-            case R.id.action_search:
-                Toast.makeText(getApplicationContext(), "Search pressed", Toast.LENGTH_SHORT).show();
-                //TODO - search action
-                return true;
             case R.id.action_settings:
                 myIntent = new Intent(EntityViewActivity.this, SettingsActivity.class);
                 EntityViewActivity.this.startActivity(myIntent);

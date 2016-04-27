@@ -29,12 +29,12 @@ public class SequenceDetailActivity extends DetailActivity {
         text.setText(EntityEnum.SEQUENCE.getName());
 
         TextView label = (TextView) findViewById(R.id.entity_type);
-        String testName = "";
-        for (SequenceEntry entry : (Iterable<SequenceEntry>) getEntity()
-                ) {
-            testName += entry.getValue();
-        }
-        label.setText(testName);
+//        String testName = "";
+//        for (SequenceEntry entry : (Iterable<SequenceEntry>) getEntity()
+//                ) {
+//            testName += entry.getValue();
+//        }
+        label.setText(EntityEnum.SEQUENCE.getName());
 //        label.setText(s.getName());
 
     }

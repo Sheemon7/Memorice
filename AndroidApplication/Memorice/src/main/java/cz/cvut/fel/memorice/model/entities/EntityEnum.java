@@ -4,17 +4,17 @@ package cz.cvut.fel.memorice.model.entities;
  * Created by sheemon on 19.3.16.
  */
 public enum EntityEnum {
-    DICTIONARY("dictionary"),
-    SEQUENCE("sequence"),
-    GROUP("set");
+    DICTIONARY("Dictionary"),
+    SEQUENCE("Sequence"),
+    GROUP("Set");
 
     public static EntityEnum getType(String typeString) {
         switch (typeString.toLowerCase()) {
-            case "dictionary":
+            case "Dictionary":
                 return DICTIONARY;
-            case "sequence":
+            case "Sequence":
                 return SEQUENCE;
-            case "group":
+            case "Group":
                 return GROUP;
         }
         return null;
