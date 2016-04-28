@@ -1,0 +1,29 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="?android:attr/listPreferredItemHeight"
+    android:paddingLeft="20dp"
+    android:paddingRight="20dp"
+    >
+
+    <TextView
+        android:id="@+id/entry_num"
+        android:textColorHighlight="@color/pink"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_alignParentRight="true"
+        android:layout_alignWithParentIfMissing="true"
+        android:gravity="center_vertical"
+        android:textSize="16sp"
+        android:layout_above="@+id/typeLine" />
+
+    <EditText
+        android:id="@+id/entry_value"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_toRightOf="@id/entry_num"
+        android:textSize="12sp"
+        android:textColor="@color/black"/>
+
+</RelativeLayout> 

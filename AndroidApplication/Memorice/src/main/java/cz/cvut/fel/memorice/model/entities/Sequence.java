@@ -46,6 +46,11 @@ public class Sequence extends Entity implements Serializable {
     }
 
     @Override
+    public List<SequenceEntry> getListOfEntries() {
+        return entries;
+    }
+
+    @Override
     public String toString() {
         StringBuilder builder = new StringBuilder("Sequence: " + getName() +
                 "\nentries= ");

@@ -35,13 +35,14 @@ public class SequenceInputActivity extends InputActivity {
         setColourToStatusBar();
 
         ImageView icon = (ImageView) findViewById(R.id.icon_type);
-        icon.setImageResource(R.drawable.ic_set_white_24dp);
+        icon.setImageResource(R.drawable.ic_list_white_24dp);
 
 
         ActionBar ab = getSupportActionBar();
         ab.setDisplayHomeAsUpEnabled(true);
         ab.setHomeAsUpIndicator(R.drawable.ic_cross_white_24dp);
         prepareInputLabels();
+        prepareRecyclerView();
     }
 
     @Override
@@ -82,7 +83,6 @@ public class SequenceInputActivity extends InputActivity {
         builder.add(new SequenceEntry("A", 3));
         builder.add(new SequenceEntry("A", 4));
         builder.add(new SequenceEntry("A", 5));
-
         helper.addEntity(builder.wrap());
     }
 }

@@ -10,14 +10,13 @@ public enum EntityEnum {
 
     public static EntityEnum getType(String typeString) {
         switch (typeString.toLowerCase()) {
-            case "Dictionary":
+            case "dictionary":
                 return DICTIONARY;
-            case "Sequence":
+            case "sequence":
                 return SEQUENCE;
-            case "Group":
+            default:
                 return GROUP;
         }
-        return null;
     }
 
     EntityEnum(String name) {

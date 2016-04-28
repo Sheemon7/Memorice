@@ -1,8 +1,10 @@
 package cz.cvut.fel.memorice.model.entities;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Set;
 
 import cz.cvut.fel.memorice.model.entities.entries.Entry;
@@ -44,6 +46,11 @@ public class Group extends Entity implements Serializable {
     @Override
     public Iterator iterator() {
         return entries.iterator();
+    }
+
+    @Override
+    public List<Entry> getListOfEntries() {
+        return new ArrayList<Entry>(entries);
     }
 
     @Override

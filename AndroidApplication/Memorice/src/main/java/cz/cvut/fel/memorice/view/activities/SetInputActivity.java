@@ -42,6 +42,7 @@ public class SetInputActivity extends InputActivity {
         ab.setDisplayHomeAsUpEnabled(true);
         ab.setHomeAsUpIndicator(R.drawable.ic_cross_white_24dp);
         prepareInputLabels();
+        prepareRecyclerView();
     }
 
     @Override

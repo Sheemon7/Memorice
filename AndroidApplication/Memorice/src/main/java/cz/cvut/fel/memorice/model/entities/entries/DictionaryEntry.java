@@ -10,7 +10,7 @@ public class DictionaryEntry extends Entry implements Serializable{
     private final String definition;
 
     public DictionaryEntry(String key, String value) {
-        super(key);
+        super(value);
         this.definition = key;
     }
 

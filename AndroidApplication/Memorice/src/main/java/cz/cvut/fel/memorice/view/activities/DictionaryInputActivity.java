@@ -41,6 +41,7 @@ public class DictionaryInputActivity extends InputActivity {
         ab.setDisplayHomeAsUpEnabled(true);
         ab.setHomeAsUpIndicator(R.drawable.ic_cross_white_24dp);
         prepareInputLabels();
+        prepareRecyclerView();
     }
 
 
@@ -77,6 +78,7 @@ public class DictionaryInputActivity extends InputActivity {
         builder.init(label);
 
         builder.add(new DictionaryEntry("A", "B"));
+        builder.add(new DictionaryEntry("FF", "BS"));
 
         helper.addEntity(builder.wrap());
     }

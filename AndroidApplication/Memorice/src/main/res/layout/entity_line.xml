@@ -14,7 +14,7 @@
         android:paddingRight="12dp"/>
 
     <TextView
-        android:id="@+id/labelLine"
+        android:id="@+id/label_line"
         android:textColorHighlight="@color/pink"
         android:layout_width="fill_parent"
         android:layout_height="20dp"
@@ -52,7 +52,5 @@
         android:layout_height="fill_parent"
         android:layout_alignParentBottom="true"
         android:layout_toLeftOf="@id/icon_delete"/>
-
-
 
 </RelativeLayout> 

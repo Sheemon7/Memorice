@@ -43,18 +43,15 @@ public class SQLiteHelper extends SQLiteOpenHelper {
     private static final String KEY_NUMBER = "num";
     private static final String KEY_VALUE = "entry";
     private static final String KEY_ENTITY = "entity";
-    private static final String[] ENTRIES_SEQUENCES_COLUMNS = {KEY_NUMBER, KEY_VALUE, KEY_ENTITY};
 
     // Entries table name
     private static final String TABLE_ENTRIES_DICTS = "dicts";
     // Entries table Columns names
     private static final String KEY_PASS = "pass";
-    private static final String[] ENTRIES_DICTS_COLUMNS = {KEY_PASS, KEY_VALUE, KEY_ENTITY};
 
     // Entries table name
     private static final String TABLE_ENTRIES_GROUPS = "grps";
     // Entries table Columns names
-    private static final String[] ENTRIES_GROUPS_COLUMNS = {KEY_VALUE, KEY_ENTITY};
 
     public SQLiteHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -62,6 +59,7 @@ public class SQLiteHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
+        LOG.info("Creating database " + DATABASE_NAME + " , version: " + DATABASE_VERSION);
         String createTableEntities =
                 "CREATE TABLE " + TABLE_ENTITIES + " (" +
                         KEY_LABEL + " TEXT PRIMARY KEY, " +
@@ -93,6 +91,7 @@ public class SQLiteHelper extends SQLiteOpenHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+        LOG.info("Updating database");
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_ENTITIES);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_ENTRIES_SEQUENCES);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_ENTRIES_GROUPS);
@@ -101,13 +100,14 @@ public class SQLiteHelper extends SQLiteOpenHelper {
     }
 
     public void addEntity(Entity entity) {
-        LOG.info("Adding entity: " + entity.getName());
+        LOG.info("Adding entity: " + entity);
 
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put(KEY_LABEL, entity.getName());
         values.put(KEY_TYPE, entity.getType().toString());
         values.put(KEY_FAVORITE, entity.isFavourite() ? 1 : 0);
+        LOG.info(values.toString());
         db.insert(TABLE_ENTITIES, null, values);
         db.close();
 
@@ -128,19 +128,20 @@ public class SQLiteHelper extends SQLiteOpenHelper {
     }
 
     public void addSequenceEntry(SequenceEntry entry, Entity entity) {
-        LOG.info("Adding entry: " + entry.getValue());
+        LOG.info("Adding entry: " + entry);
 
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put(KEY_NUMBER, entry.getNumber());
         values.put(KEY_VALUE, entry.getValue());
         values.put(KEY_ENTITY, entity.getName());
+
         db.insert(TABLE_ENTRIES_SEQUENCES, null, values);
         db.close();
     }
 
     public void addDictEntry(DictionaryEntry entry, Entity entity) {
-        LOG.info("Adding entry: " + entry.getValue());
+        LOG.info("Adding entry: " + entry);
 
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
@@ -153,7 +154,7 @@ public class SQLiteHelper extends SQLiteOpenHelper {
     }
 
     public void addSetEntry(Entry entry, Entity entity) {
-        LOG.info("Adding entry: " + entry.getValue());
+        LOG.info("Adding entry: " + entry);
 
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
@@ -175,7 +176,7 @@ public class SQLiteHelper extends SQLiteOpenHelper {
                 new String[]{label},
                 null, null, null, null);
 
-        ArrayList<? extends Entry> entries = null;
+        ArrayList<? extends Entry> entries;
         if (cursor != null && cursor.moveToFirst()) {
             EntityEnum type = EntityEnum.getType(cursor.getString(1));
             Builder b = Builder.getCorrectBuilder(type);
@@ -203,6 +204,7 @@ public class SQLiteHelper extends SQLiteOpenHelper {
     }
 
     public ArrayList<Entity> getAllEntitiesFiltered(String filter) {
+        LOG.info("Getting all entities with filter: " + filter);
         ArrayList<Entity> ret = new ArrayList<>();
         String query = "SELECT " + KEY_LABEL + " FROM " + TABLE_ENTITIES +
                 " WHERE " + KEY_LABEL + " LIKE " + "\"%" + filter + "%\"";
@@ -217,6 +219,7 @@ public class SQLiteHelper extends SQLiteOpenHelper {
     }
 
     public ArrayList<SequenceEntry> getAllSequenceEntries(String label) {
+        LOG.info("Getting all sequence entries from " + label);
         ArrayList<SequenceEntry> ret = new ArrayList<>();
         String query = "SELECT " + KEY_NUMBER + ", " + KEY_VALUE + " FROM " + TABLE_ENTRIES_SEQUENCES +
                 " WHERE " + KEY_ENTITY + "=" + "\"" + label + "\"";
@@ -231,6 +234,7 @@ public class SQLiteHelper extends SQLiteOpenHelper {
     }
 
     public ArrayList<DictionaryEntry> getAllDictEntries(String label) {
+        LOG.info("Getting all dictionary entries from " + label);
         ArrayList<DictionaryEntry> ret = new ArrayList<>();
 
         String query = "SELECT " + KEY_PASS +", " + KEY_VALUE + " FROM " + TABLE_ENTRIES_DICTS +
@@ -246,6 +250,7 @@ public class SQLiteHelper extends SQLiteOpenHelper {
     }
 
     public ArrayList<Entry> getAllSetEntries(String label) {
+        LOG.info("Getting all set entries from " + label);
         ArrayList<Entry> ret = new ArrayList<>();
 
         String query = "SELECT " + KEY_VALUE + " FROM " + TABLE_ENTRIES_GROUPS +
@@ -268,8 +273,6 @@ public class SQLiteHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery(query, null);
 
-        Entity entity;
-        ArrayList<? extends Entry> entries = null;
         if (cursor.moveToFirst() && cursor != null) {
             do {
                 String label = cursor.getString(0);
@@ -290,22 +293,39 @@ public class SQLiteHelper extends SQLiteOpenHelper {
     }
 
     public void deleteSequenceEntry(SequenceEntry entry) {
-        LOG.info("Deleting entry: " + entry.getValue());
-        SQLiteDatabase db = this.getWritableDatabase();
-        db.delete(TABLE_ENTRIES_SEQUENCES, KEY_VALUE + " =?", new String[]{entry.getValue()});
+        LOG.info("Deleting sequence entry " + entry);
+        String query = "DELETE FROM " + TABLE_ENTRIES_SEQUENCES + "WHERE " + KEY_VALUE + " = " + "\"" + entry.getValue() +"\"";
+        executeQuery(query);
+    }
+
+    public void deleteSetEntry(Entry entry) {
+        LOG.info("Deleting set entry " + entry);
+        String query = "DELETE FROM " + TABLE_ENTRIES_GROUPS + "WHERE " + KEY_VALUE + " = " + "\"" + entry.getValue() +"\"";
+        executeQuery(query);
+    }
+
+    public void deleteDictionaryEntry(DictionaryEntry entry) {
+        LOG.info("Deleting dictionary entry " + entry);
+        String query = "DELETE FROM " + TABLE_ENTRIES_DICTS + "WHERE " + KEY_VALUE + " = " + "\"" + entry.getValue() +"\"";
+        executeQuery(query);
+    }
+
+    private void executeQuery(String query) {
+        SQLiteDatabase db = getWritableDatabase();
+        db.execSQL(query);
         db.close();
     }
 
     public void toggleFavorite(Entity e) throws WrongNameException {
+        LOG.info("Toggling favourite at " + e.getName());
         e.setFavourite(!e.isFavourite());
         String query = "UPDATE " + TABLE_ENTITIES + " SET " + KEY_FAVORITE + "=" + (e.isFavourite() ? 1 : 0) +
                 " WHERE " + KEY_LABEL + "=" + "\'" + e.getName() + "\'";
-        System.out.println(query);
-        SQLiteDatabase db = this.getWritableDatabase();
-        db.execSQL(query);
+        executeQuery(query);
     }
 
     public ArrayList<String> getAllLabels() {
+        LOG.info("Getting all possible labels");
         SQLiteDatabase db = this.getReadableDatabase();
         String querry = "SELECT " + KEY_LABEL + " FROM " + TABLE_ENTITIES;
         Cursor cursor = db.rawQuery(querry, null);
@@ -324,8 +344,8 @@ public class SQLiteHelper extends SQLiteOpenHelper {
 
 
     public boolean isEntityFavourite(Entity e) throws WrongNameException {
+        LOG.info("Verifying favourite at " + e.getName());
         String query = "SELECT " + KEY_FAVORITE + " FROM " + TABLE_ENTITIES + " WHERE " + KEY_LABEL + "=" + "\'" + e.getName() + "\'";
-        System.out.println(query);
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery(query, null);
         if (cursor != null && cursor.moveToFirst()) {

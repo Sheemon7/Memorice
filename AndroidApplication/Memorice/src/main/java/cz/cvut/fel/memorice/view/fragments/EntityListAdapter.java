@@ -188,7 +188,7 @@ public class EntityListAdapter extends RecyclerView.Adapter<EntityListAdapter.Vi
 
         public ViewHolder(View v) {
             super(v);
-            txtHeader = (TextView) v.findViewById(R.id.labelLine);
+            txtHeader = (TextView) v.findViewById(R.id.label_line);
             txtType = (TextView) v.findViewById(R.id.typeLine);
             imageType = (ImageView) v.findViewById(R.id.icon_type);
             imageFav = (ImageView) v.findViewById(R.id.icon_favorite);

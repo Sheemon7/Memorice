@@ -25,16 +25,17 @@ public class DictionaryDetailActivity extends DetailActivity{
 
         ImageView icon = (ImageView) findViewById(R.id.entity_icon);
         icon.setImageResource(R.drawable.ic_dictionary_white_24dp);
-        TextView text = (TextView) findViewById(R.id.entity_type);
-        text.setText(EntityEnum.DICTIONARY.getName());
+//        TextView text = (TextView) findViewById(R.id.entity_type);
+//        text.setText(EntityEnum.DICTIONARY.getName());
 
         TextView label = (TextView) findViewById(R.id.entity_type);
-//        String testName = "";
-//        for (DictionaryEntry entry : (Iterable<DictionaryEntry>) getEntity()) {
-//            testName += entry.getValue();
-//            testName += entry.getDefinition();
-//        }
-        label.setText(EntityEnum.DICTIONARY.getName());
+        String testName = "";
+        for (DictionaryEntry entry : (Iterable<DictionaryEntry>) getEntity()) {
+            testName += entry.getValue();
+            testName += entry.getDefinition();
+        }
+        label.setText(testName);
+//        label.setText(EntityEnum.DICTIONARY.getName());
 //        label.setText(s.getName());
 
 

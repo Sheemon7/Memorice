@@ -2,6 +2,7 @@ package cz.cvut.fel.memorice.model.entities;
 
 import java.io.Serializable;
 import java.util.Iterator;
+import java.util.List;
 
 import cz.cvut.fel.memorice.model.entities.entries.Entry;
 import cz.cvut.fel.memorice.model.util.TermAlreadyUsedException;
@@ -16,6 +17,7 @@ public abstract class Entity implements Serializable, Iterable {
     public boolean isFavourite() {
         return favourite;
     }
+
 
     public void setFavourite(boolean favourite) {
         this.favourite = favourite;
@@ -38,5 +40,7 @@ public abstract class Entity implements Serializable, Iterable {
     public abstract int size();
 
     public abstract Iterator iterator();
+
+    public abstract List<? extends Entry> getListOfEntries();
 
 }

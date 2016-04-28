@@ -7,7 +7,7 @@ import java.io.Serializable;
  */
 public class Entry implements Serializable {
 
-    private final String value;
+    protected final String value;
 
     public Entry(String value) {
         this.value = value;
