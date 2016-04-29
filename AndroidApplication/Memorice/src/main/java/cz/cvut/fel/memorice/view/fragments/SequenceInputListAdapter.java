@@ -50,7 +50,6 @@ public class SequenceInputListAdapter extends EntryInputListAdapter<SequenceInpu
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 if (holder.getAdapterPosition() != RecyclerView.NO_POSITION) {
                     items.get(holder.getAdapterPosition()).setValue(s.toString());
-                    items.get(holder.getAdapterPosition()).setOrder(position);
                 }
             }
 
@@ -73,15 +72,14 @@ public class SequenceInputListAdapter extends EntryInputListAdapter<SequenceInpu
     @Override
     public ArrayList<SequenceEntry> getInput() {
         ArrayList<SequenceEntry> ret = new ArrayList<>(items.size());
-        for (ItemList item : items) {
-            ret.add(new SequenceEntry(item.getValue(), item.getOrder()));
+        for (int i = 0; i < items.size(); i++) {
+            ret.add(new SequenceEntry(items.get(i).getValue(), i + 1));
         }
         return ret;
     }
 
     @Override
     public void emphasizeErrors() {
-
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {

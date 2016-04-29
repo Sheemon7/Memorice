@@ -12,7 +12,7 @@
 
         <EditText
             android:id="@+id/entry_definition"
-            android:layout_width="109dp"
+            android:layout_width="153dp"
             android:layout_height="match_parent"
             android:layout_above="@+id/typeLine"
             android:layout_alignParentLeft="true"
@@ -20,6 +20,7 @@
             android:layout_toLeftOf="@+id/entry_value"
             android:layout_toStartOf="@+id/entry_value"
             android:gravity="center_vertical"
+            android:textCursorDrawable="@null"
             android:textColor="@color/pink"
             android:textSize="16sp" />
 
@@ -29,6 +30,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_toLeftOf="@+id/icon_minus"
+            android:textCursorDrawable="@null"
             android:textColor="@color/black"
             android:textSize="16sp" />
 

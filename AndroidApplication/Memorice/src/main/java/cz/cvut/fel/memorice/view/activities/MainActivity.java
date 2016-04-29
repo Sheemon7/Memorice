@@ -32,9 +32,13 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        ImageView mImageView = (ImageView) findViewById(R.id.rice_pic);
-        mImageView.setImageBitmap(
+        ImageView rice = (ImageView) findViewById(R.id.rice_pic);
+        rice.setImageBitmap(
                 decodeSampledBitmapFromResource(getResources(), R.drawable.rice_chopsticks_bowl, 300, 300));
+
+        ImageView welcome = (ImageView) findViewById(R.id.welcome);
+        welcome.setImageBitmap(
+                decodeSampledBitmapFromResource(getResources(), R.drawable.coollogo_com_285492341, 300, 300));
 
     }
 

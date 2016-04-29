@@ -52,7 +52,6 @@ public abstract class EntryInputListAdapter<T extends RecyclerView.ViewHolder> e
     protected static class ItemList {
         private String value = "";
         private String definition = "";
-        private int order = -1;
 
         public boolean isCorrect() {
             return correct;
@@ -78,14 +77,6 @@ public abstract class EntryInputListAdapter<T extends RecyclerView.ViewHolder> e
 
         public void setDefinition(String definition) {
             this.definition = definition;
-        }
-
-        public int getOrder() {
-            return order;
-        }
-
-        public void setOrder(int order) {
-            this.order = order;
         }
     }
 

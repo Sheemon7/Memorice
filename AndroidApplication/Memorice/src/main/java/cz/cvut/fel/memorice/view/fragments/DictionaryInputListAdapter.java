@@ -10,10 +10,13 @@ import android.widget.EditText;
 import android.widget.ImageView;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 
 import cz.cvut.fel.memorice.R;
+import cz.cvut.fel.memorice.model.entities.Dictionary;
 import cz.cvut.fel.memorice.model.entities.entries.DictionaryEntry;
 import cz.cvut.fel.memorice.model.entities.entries.Entry;
+import cz.cvut.fel.memorice.model.util.TermAlreadyUsedException;
 
 /**
  * Created by sheemon on 28.4.16.
@@ -34,9 +37,9 @@ public class DictionaryInputListAdapter extends EntryInputListAdapter<Dictionary
     @Override
     public void onBindViewHolder(final ViewHolder holder, final int position) {
         if (!items.get(position).isCorrect()) {
-            holder.txtValue.setError("");
+            holder.txtDefinition.setError("duplicate definition");
         } else {
-            holder.txtValue.setError(null);
+            holder.txtDefinition.setError(null);
         }
         holder.txtValue.setText(items.get(position).getValue());
         holder.txtDefinition.setText(items.get(position).getDefinition());
@@ -87,14 +90,35 @@ public class DictionaryInputListAdapter extends EntryInputListAdapter<Dictionary
     }
 
     @Override
-    public ArrayList<DictionaryEntry> getInput() {
+    public ArrayList<DictionaryEntry> getInput() throws TermAlreadyUsedException {
+        HashSet<String> valueCheck = new HashSet<>(items.size());
         ArrayList<DictionaryEntry> ret = new ArrayList<>(items.size());
+        for (ItemList item :
+                items) {
+            String value = item.getDefinition();
+            if (valueCheck.contains(value)) {
+                throw new TermAlreadyUsedException();
+            } else {
+                valueCheck.add(value);
+                ret.add(new DictionaryEntry(value, item.getValue()));
+            }
+        }
         return ret;
     }
 
     @Override
     public void emphasizeErrors() {
-
+        ArrayList<String> definitionCheck = new ArrayList<>(items.size());
+        for (ItemList list :
+                items) {
+            String definition = list.getDefinition();
+            if (definitionCheck.contains(definition)) {
+                list.setCorrect(false);
+                items.get(definitionCheck.indexOf(definition)).setCorrect(false);
+            }
+            definitionCheck.add(definition);
+        }
+        notifyDataSetChanged();
     }
 
 

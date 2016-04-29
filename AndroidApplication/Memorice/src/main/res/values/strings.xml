@@ -49,5 +49,7 @@
     <string name="used_name_quote">Name already used!</string>
     <string name="empty_name_quote">Name cannot be empty!</string>
     <string name="duplicate_quote">Your set contains duplicates!</string>
+    <string name="duplicate_def_quote">Your set contains duplicate definitions
+        !</string>
 
 </resources>

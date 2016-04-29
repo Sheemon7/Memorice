@@ -39,7 +39,7 @@ public class SetInputListAdapter extends EntryInputListAdapter<SetInputListAdapt
     @Override
     public void onBindViewHolder(final ViewHolder holder, final int position) {
         if (!items.get(position).isCorrect()) {
-            holder.txtValue.setError("");
+            holder.txtValue.setError("duplicate value");
         } else {
             holder.txtValue.setError(null);
         }

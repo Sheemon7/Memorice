@@ -11,12 +11,17 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 
+import java.util.ArrayList;
+
 import cz.cvut.fel.memorice.R;
 import cz.cvut.fel.memorice.model.database.SQLiteHelper;
+import cz.cvut.fel.memorice.model.entities.Dictionary;
 import cz.cvut.fel.memorice.model.entities.builders.DictionaryBuilder;
 import cz.cvut.fel.memorice.model.entities.entries.DictionaryEntry;
+import cz.cvut.fel.memorice.model.entities.entries.Entry;
 import cz.cvut.fel.memorice.model.util.EmptyNameException;
 import cz.cvut.fel.memorice.model.util.NameAlreadyUsedException;
+import cz.cvut.fel.memorice.model.util.TermAlreadyUsedException;
 import cz.cvut.fel.memorice.view.fragments.DictionaryInputListAdapter;
 import cz.cvut.fel.memorice.view.fragments.EntryInputListAdapter;
 
@@ -60,12 +65,14 @@ public class DictionaryInputActivity extends InputActivity {
                     showLabelUsedDialog(new AlertDialog.Builder(DictionaryInputActivity.this));
                 } catch (EmptyNameException e) {
                     showLabelEmptyDialog(new AlertDialog.Builder(DictionaryInputActivity.this));
+                } catch (TermAlreadyUsedException e) {
+                    showDefinitionDuplicateDialog(new AlertDialog.Builder(DictionaryInputActivity.this));
                 }
         }
         return super.onOptionsItemSelected(item);
     }
 
-    private void buildNewDictionary() throws NameAlreadyUsedException, EmptyNameException {
+    private void buildNewDictionary() throws NameAlreadyUsedException, EmptyNameException, TermAlreadyUsedException {
         labelInput = (EditText) findViewById(R.id.entity_type);
         String label = labelInput.getText().toString().trim();
         SQLiteHelper helper = new SQLiteHelper(getApplicationContext());
@@ -78,8 +85,15 @@ public class DictionaryInputActivity extends InputActivity {
         DictionaryBuilder builder = DictionaryBuilder.getInstance();
         builder.init(label);
 
-        builder.add(new DictionaryEntry("A", "B"));
-        builder.add(new DictionaryEntry("FF", "BS"));
+        try {
+            for (DictionaryEntry e: (ArrayList<DictionaryEntry>) mAdapter.getInput()) {
+                builder.add(e);
+            }
+        } catch (TermAlreadyUsedException e) {
+            mAdapter.emphasizeErrors();
+            builder.wrap();
+            throw e;
+        }
 
         helper.addEntity(builder.wrap());
     }

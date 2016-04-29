@@ -54,6 +54,11 @@ public abstract class InputActivity extends AppCompatActivity {
         showDialog(alertDialogBuilder);
     }
 
+    protected void showDefinitionDuplicateDialog(AlertDialog.Builder alertDialogBuilder) {
+        alertDialogBuilder.setTitle(getString(R.string.duplicate_def_quote));
+        showDialog(alertDialogBuilder);
+    }
+
     private void showDialog(AlertDialog.Builder alertDialogBuilder) {
         alertDialogBuilder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
             @Override
