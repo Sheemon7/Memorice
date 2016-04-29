@@ -1,14 +1,13 @@
 package cz.cvut.fel.memorice.view.activities;
 
-import android.os.Build;
 import android.os.Bundle;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
-import android.view.Window;
-import android.view.WindowManager;
+import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 
@@ -18,6 +17,8 @@ import cz.cvut.fel.memorice.model.entities.builders.DictionaryBuilder;
 import cz.cvut.fel.memorice.model.entities.entries.DictionaryEntry;
 import cz.cvut.fel.memorice.model.util.EmptyNameException;
 import cz.cvut.fel.memorice.model.util.NameAlreadyUsedException;
+import cz.cvut.fel.memorice.view.fragments.DictionaryInputListAdapter;
+import cz.cvut.fel.memorice.view.fragments.EntryInputListAdapter;
 
 /**
  * Created by sheemon on 18.4.16.
@@ -84,6 +85,18 @@ public class DictionaryInputActivity extends InputActivity {
     }
 
 
-
-
+    protected void prepareRecyclerView() {
+        mRecyclerView = (RecyclerView) findViewById(R.id.recycler_view);
+        mLayoutManager = new LinearLayoutManager(this);
+        mRecyclerView.setLayoutManager(mLayoutManager);
+        mAdapter = new DictionaryInputListAdapter(mRecyclerView);
+        mAdapter.show();
+        ImageView iconAdd = (ImageView) findViewById(R.id.icon_add);
+        iconAdd.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mAdapter.addRow();
+            }
+        });
+    }
 }

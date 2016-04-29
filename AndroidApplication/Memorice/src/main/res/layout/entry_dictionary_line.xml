@@ -2,28 +2,44 @@
     android:layout_width="fill_parent"
     android:layout_height="?android:attr/listPreferredItemHeight"
     android:paddingLeft="20dp"
-    android:paddingRight="20dp"
-    >
+    android:paddingRight="20dp">
 
-    <TextView
-        android:id="@+id/entry_definition"
-        android:textColorHighlight="@color/pink"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_alignParentRight="true"
-        android:layout_alignWithParentIfMissing="true"
-        android:gravity="center_vertical"
-        android:textSize="16sp"
-        android:layout_above="@+id/typeLine" />
+        android:layout_toLeftOf="@+id/icon_minus"
+        android:layout_toStartOf="@+id/icon_minus">
 
-    <EditText
-        android:id="@+id/entry_value"
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
+        <EditText
+            android:id="@+id/entry_definition"
+            android:layout_width="109dp"
+            android:layout_height="match_parent"
+            android:layout_above="@+id/typeLine"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_toLeftOf="@+id/entry_value"
+            android:layout_toStartOf="@+id/entry_value"
+            android:gravity="center_vertical"
+            android:textColor="@color/pink"
+            android:textSize="16sp" />
+
+        <EditText
+            android:id="@+id/entry_value"
+            android:backgroundTint="@color/pink"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_toLeftOf="@+id/icon_minus"
+            android:textColor="@color/black"
+            android:textSize="16sp" />
+
+    </LinearLayout>
+
+    <ImageView
+        android:id="@+id/icon_minus"
+        android:layout_width="40dp"
+        android:layout_height="fill_parent"
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
-        android:layout_toRightOf="@id/entry_definition"
-        android:textSize="12sp"
-        android:textColor="@color/black"/>
+        android:paddingLeft="24dp" />
 
 </RelativeLayout> 

@@ -5,7 +5,6 @@ import android.os.Build;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -18,18 +17,17 @@ import android.widget.TextView;
 
 import cz.cvut.fel.memorice.R;
 import cz.cvut.fel.memorice.model.database.SQLiteHelper;
-import cz.cvut.fel.memorice.view.fragments.DividerItemDecoration;
-import cz.cvut.fel.memorice.view.fragments.EntityListAdapter;
+import cz.cvut.fel.memorice.view.fragments.EntryInputListAdapter;
 
 /**
  * Created by sheemon on 19.4.16.
  */
-public class InputActivity extends AppCompatActivity {
+public abstract class InputActivity extends AppCompatActivity {
 
     protected EditText labelInput;
     protected TextView labelWarn;
     protected RecyclerView mRecyclerView;
-    protected EntityListAdapter mAdapter;
+    protected EntryInputListAdapter mAdapter;
     protected RecyclerView.LayoutManager mLayoutManager;
 
     @Override
@@ -40,21 +38,23 @@ public class InputActivity extends AppCompatActivity {
     }
 
     protected void showLabelUsedDialog(AlertDialog.Builder alertDialogBuilder) {
-        alertDialogBuilder.setTitle("Name already used!");
         alertDialogBuilder.setMessage("Please insert another one");
-        alertDialogBuilder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.cancel();
-            }
-        });
-        AlertDialog alert = alertDialogBuilder.create();
-        alert.show();
+        alertDialogBuilder.setTitle(getString(R.string.used_name_quote));
+        showDialog(alertDialogBuilder);
     }
 
     protected void showLabelEmptyDialog(AlertDialog.Builder alertDialogBuilder) {
-        alertDialogBuilder.setTitle("Name cannot be empty!");
+        alertDialogBuilder.setTitle(getString(R.string.empty_name_quote));
         alertDialogBuilder.setMessage("Please insert another one");
+        showDialog(alertDialogBuilder);
+    }
+
+    protected void showValueDuplicateDialog(AlertDialog.Builder alertDialogBuilder) {
+        alertDialogBuilder.setTitle(getString(R.string.duplicate_quote));
+        showDialog(alertDialogBuilder);
+    }
+
+    private void showDialog(AlertDialog.Builder alertDialogBuilder) {
         alertDialogBuilder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
@@ -106,15 +106,5 @@ public class InputActivity extends AppCompatActivity {
             window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
             window.setStatusBarColor(ContextCompat.getColor(getApplicationContext(), R.color.colorInvertDarker));
         }
-    }
-
-    protected void prepareRecyclerView() {
-        mRecyclerView = (RecyclerView) findViewById(R.id.recycler_view);
-        mLayoutManager = new LinearLayoutManager(this);
-        mRecyclerView.setLayoutManager(mLayoutManager);
-        mAdapter = new EntityListAdapter(mRecyclerView);
-//        mRecyclerView.addItemDecoration(
-//                new DividerItemDecoration(getApplicationContext(), R.drawable.separator));
-        mAdapter.showAll(getApplicationContext());
     }
 }

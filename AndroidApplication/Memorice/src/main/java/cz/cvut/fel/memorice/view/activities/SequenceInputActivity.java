@@ -1,16 +1,17 @@
 package cz.cvut.fel.memorice.view.activities;
 
-import android.os.Build;
 import android.os.Bundle;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
-import android.view.Window;
-import android.view.WindowManager;
+import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
+
+import java.util.ArrayList;
 
 import cz.cvut.fel.memorice.R;
 import cz.cvut.fel.memorice.model.database.SQLiteHelper;
@@ -18,6 +19,9 @@ import cz.cvut.fel.memorice.model.entities.builders.SequenceBuilder;
 import cz.cvut.fel.memorice.model.entities.entries.SequenceEntry;
 import cz.cvut.fel.memorice.model.util.EmptyNameException;
 import cz.cvut.fel.memorice.model.util.NameAlreadyUsedException;
+import cz.cvut.fel.memorice.model.util.TermAlreadyUsedException;
+import cz.cvut.fel.memorice.view.fragments.SequenceInputListAdapter;
+import cz.cvut.fel.memorice.view.fragments.SetInputListAdapter;
 
 /**
  * Created by sheemon on 18.4.16.
@@ -37,12 +41,26 @@ public class SequenceInputActivity extends InputActivity {
         ImageView icon = (ImageView) findViewById(R.id.icon_type);
         icon.setImageResource(R.drawable.ic_list_white_24dp);
 
-
         ActionBar ab = getSupportActionBar();
         ab.setDisplayHomeAsUpEnabled(true);
         ab.setHomeAsUpIndicator(R.drawable.ic_cross_white_24dp);
         prepareInputLabels();
         prepareRecyclerView();
+    }
+
+    private void prepareRecyclerView() {
+        mRecyclerView = (RecyclerView) findViewById(R.id.recycler_view);
+        mLayoutManager = new LinearLayoutManager(this);
+        mRecyclerView.setLayoutManager(mLayoutManager);
+        mAdapter = new SequenceInputListAdapter(mRecyclerView);
+        mAdapter.show();
+        ImageView iconAdd = (ImageView) findViewById(R.id.icon_add);
+        iconAdd.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mAdapter.addRow();
+            }
+        });
     }
 
     @Override
@@ -60,12 +78,14 @@ public class SequenceInputActivity extends InputActivity {
                     showLabelUsedDialog(new AlertDialog.Builder(SequenceInputActivity.this));
                 } catch (EmptyNameException e) {
                     showLabelEmptyDialog(new AlertDialog.Builder(SequenceInputActivity.this));
+                } catch (TermAlreadyUsedException e) {
+                    showValueDuplicateDialog(new AlertDialog.Builder(SequenceInputActivity.this));
                 }
         }
         return super.onOptionsItemSelected(item);
     }
 
-    private void buildNewSequence() throws NameAlreadyUsedException, EmptyNameException {
+    private void buildNewSequence() throws NameAlreadyUsedException, EmptyNameException, TermAlreadyUsedException {
         EditText labelInput = (EditText) findViewById(R.id.entity_type);
         String label = labelInput.getText().toString();
         SQLiteHelper helper = new SQLiteHelper(getApplicationContext());
@@ -77,12 +97,11 @@ public class SequenceInputActivity extends InputActivity {
         }
         SequenceBuilder builder = SequenceBuilder.getInstance();
         builder.init(label);
-        builder.add(new SequenceEntry("A", 0));
-        builder.add(new SequenceEntry("A", 1));
-        builder.add(new SequenceEntry("A", 2));
-        builder.add(new SequenceEntry("A", 3));
-        builder.add(new SequenceEntry("A", 4));
-        builder.add(new SequenceEntry("A", 5));
+        for (SequenceEntry entry : (ArrayList<SequenceEntry>) mAdapter.getInput()) {
+            builder.add(entry);
+        }
         helper.addEntity(builder.wrap());
     }
+
+
 }

@@ -7,13 +7,13 @@
 
     <TextView
         android:id="@+id/entry_num"
-        android:textColorHighlight="@color/pink"
-        android:layout_width="wrap_content"
+        android:textColor="@color/pink"
+        android:layout_width="40dp"
         android:layout_height="match_parent"
-        android:layout_alignParentRight="true"
+        android:layout_alignParentLeft="true"
         android:layout_alignWithParentIfMissing="true"
-        android:gravity="center_vertical"
-        android:textSize="16sp"
+        android:gravity="center_vertical|center_horizontal"
+        android:textSize="26sp"
         android:layout_above="@+id/typeLine" />
 
     <EditText
@@ -21,9 +21,19 @@
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_alignParentBottom="true"
-        android:layout_alignParentRight="true"
         android:layout_toRightOf="@id/entry_num"
-        android:textSize="12sp"
+        android:layout_toLeftOf="@id/icon_minus"
+        android:textSize="16sp"
         android:textColor="@color/black"/>
+
+    <ImageView
+        android:id="@+id/icon_minus"
+        android:layout_width="40dp"
+        android:layout_height="fill_parent"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:paddingLeft="24dp" />
+
+
 
 </RelativeLayout> 

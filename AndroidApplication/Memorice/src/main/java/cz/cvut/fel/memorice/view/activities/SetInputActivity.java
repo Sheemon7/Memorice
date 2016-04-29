@@ -1,16 +1,17 @@
 package cz.cvut.fel.memorice.view.activities;
 
-import android.os.Build;
 import android.os.Bundle;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
-import android.view.Window;
-import android.view.WindowManager;
+import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
+
+import java.util.ArrayList;
 
 import cz.cvut.fel.memorice.R;
 import cz.cvut.fel.memorice.model.database.SQLiteHelper;
@@ -18,6 +19,9 @@ import cz.cvut.fel.memorice.model.entities.builders.SetBuilder;
 import cz.cvut.fel.memorice.model.entities.entries.Entry;
 import cz.cvut.fel.memorice.model.util.EmptyNameException;
 import cz.cvut.fel.memorice.model.util.NameAlreadyUsedException;
+import cz.cvut.fel.memorice.model.util.TermAlreadyUsedException;
+import cz.cvut.fel.memorice.view.fragments.DictionaryInputListAdapter;
+import cz.cvut.fel.memorice.view.fragments.SetInputListAdapter;
 
 /**
  * Created by sheemon on 18.4.16.
@@ -36,7 +40,6 @@ public class SetInputActivity extends InputActivity {
 
         ImageView icon = (ImageView) findViewById(R.id.icon_type);
         icon.setImageResource(R.drawable.ic_set_white_24dp);
-
 
         ActionBar ab = getSupportActionBar();
         ab.setDisplayHomeAsUpEnabled(true);
@@ -60,12 +63,14 @@ public class SetInputActivity extends InputActivity {
                     showLabelUsedDialog(new AlertDialog.Builder(SetInputActivity.this));
                 } catch (EmptyNameException e) {
                     showLabelEmptyDialog(new AlertDialog.Builder(SetInputActivity.this));
+                } catch (TermAlreadyUsedException e) {
+                    showValueDuplicateDialog(new AlertDialog.Builder(SetInputActivity.this));
                 }
         }
         return super.onOptionsItemSelected(item);
     }
 
-    private void buildNewSet() throws NameAlreadyUsedException, EmptyNameException {
+    private void buildNewSet() throws NameAlreadyUsedException, EmptyNameException, TermAlreadyUsedException {
         EditText labelInput = (EditText) findViewById(R.id.entity_type);
         String label = labelInput.getText().toString();
         SQLiteHelper helper = new SQLiteHelper(getApplicationContext());
@@ -78,11 +83,32 @@ public class SetInputActivity extends InputActivity {
         SetBuilder builder = SetBuilder.getInstance();
         builder.init(label);
 
-        builder.add(new Entry("A"));
-        builder.add(new Entry("B"));
-        builder.add(new Entry("C"));
-        builder.add(new Entry("D"));
+        try {
+            for (Entry e: (ArrayList<Entry>) mAdapter.getInput()) {
+                builder.add(e);
+            }
+        } catch (TermAlreadyUsedException e) {
+            mAdapter.emphasizeErrors();
+            builder.wrap();
+            throw e;
+        }
 
         helper.addEntity(builder.wrap());
     }
+
+    protected void prepareRecyclerView() {
+        mRecyclerView = (RecyclerView) findViewById(R.id.recycler_view);
+        mLayoutManager = new LinearLayoutManager(this);
+        mRecyclerView.setLayoutManager(mLayoutManager);
+        mAdapter = new SetInputListAdapter(mRecyclerView);
+        mAdapter.show();
+        ImageView iconAdd = (ImageView) findViewById(R.id.icon_add);
+        iconAdd.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mAdapter.addRow();
+            }
+        });
+    }
+
 }

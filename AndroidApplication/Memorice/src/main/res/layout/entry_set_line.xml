@@ -4,17 +4,25 @@
     android:paddingLeft="20dp"
     android:paddingRight="20dp"
     >
-
-    <TextView
+    <EditText
         android:id="@+id/entry_value"
-        android:textColorHighlight="@color/pink"
+        android:backgroundTint="@color/pink"
         android:layout_width="fill_parent"
         android:layout_height="20dp"
-        android:layout_alignParentRight="true"
         android:layout_alignWithParentIfMissing="true"
-        android:layout_toRightOf="@id/icon_type"
         android:gravity="center_vertical"
         android:textSize="16sp"
-        android:layout_above="@+id/typeLine" />
+        android:layout_above="@+id/typeLine"
+        android:layout_alignParentTop="true"
+        android:layout_toLeftOf="@+id/icon_minus"
+        />
+
+    <ImageView
+        android:id="@+id/icon_minus"
+        android:layout_width="40dp"
+        android:layout_height="fill_parent"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:paddingLeft="24dp" />
 
 </RelativeLayout> 

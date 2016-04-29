@@ -29,12 +29,12 @@ public class SetDetailActivity extends DetailActivity {
         text.setText(EntityEnum.GROUP.getName());
 
         TextView label = (TextView) findViewById(R.id.entity_type);
-//        String testName = "";
-//        for (Entry entry : (Iterable<Entry>) getEntity()) {
-//            testName += entry.getValue();
-//        }
-        label.setText(EntityEnum.GROUP.getName());
-//        label.setText(s.getName());
+        String testName = "";
+        for (Entry entry : (Iterable<Entry>) getEntity()) {
+            testName += entry.getValue();
+        }
+//        label.setText(EntityEnum.GROUP.getName());
+        label.setText(testName);
 
     }
 

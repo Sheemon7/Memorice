@@ -46,5 +46,8 @@
     <string name="save_entity">Save</string>
     <string name="used_label">Name has already been used!</string>
     <string name="empty_label">Name cannot be empty!</string>
+    <string name="used_name_quote">Name already used!</string>
+    <string name="empty_name_quote">Name cannot be empty!</string>
+    <string name="duplicate_quote">Your set contains duplicates!</string>
 
 </resources>
