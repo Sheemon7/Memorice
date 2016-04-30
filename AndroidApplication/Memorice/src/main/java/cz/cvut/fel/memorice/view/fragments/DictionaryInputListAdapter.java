@@ -43,7 +43,6 @@ public class DictionaryInputListAdapter extends EntryInputListAdapter<Dictionary
         }
         holder.txtValue.setText(items.get(position).getValue());
         holder.txtDefinition.setText(items.get(position).getDefinition());
-        holder.txtDefinition.setHint("definition");
         holder.txtValue.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -78,7 +77,6 @@ public class DictionaryInputListAdapter extends EntryInputListAdapter<Dictionary
             public void afterTextChanged(Editable s) {
             }
         });
-        holder.txtValue.setHint("value");
         holder.txtDefinition.requestFocus();
         holder.icon.setImageResource(R.drawable.ic_minus_24dp);
         holder.icon.setOnClickListener(new View.OnClickListener() {
@@ -122,7 +120,7 @@ public class DictionaryInputListAdapter extends EntryInputListAdapter<Dictionary
     }
 
 
-    public static class ViewHolder extends RecyclerView.ViewHolder {
+    protected static class ViewHolder extends RecyclerView.ViewHolder {
         private EditText txtDefinition;
         private EditText txtValue;
         private ImageView icon;

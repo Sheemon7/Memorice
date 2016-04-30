@@ -4,6 +4,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.ViewGroup;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import cz.cvut.fel.memorice.model.entities.entries.Entry;
 import cz.cvut.fel.memorice.model.util.TermAlreadyUsedException;
@@ -14,7 +15,7 @@ import cz.cvut.fel.memorice.model.util.TermAlreadyUsedException;
 public abstract class EntryInputListAdapter<T extends RecyclerView.ViewHolder> extends RecyclerView.Adapter<T> {
 
     protected static final int INITIAL_CAPACITY = 3;
-    protected ArrayList<ItemList> items;
+    protected List<ItemList> items;
     protected RecyclerView view;
 
     public EntryInputListAdapter(RecyclerView view) {

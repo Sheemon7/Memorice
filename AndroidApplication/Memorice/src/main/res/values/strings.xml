@@ -51,5 +51,8 @@
     <string name="duplicate_quote">Your set contains duplicates!</string>
     <string name="duplicate_def_quote">Your set contains duplicate definitions
         !</string>
+    <string name="definition">definition</string>
+    <string name="value">value</string>
+    <string name="remove">remove</string>
 
 </resources>

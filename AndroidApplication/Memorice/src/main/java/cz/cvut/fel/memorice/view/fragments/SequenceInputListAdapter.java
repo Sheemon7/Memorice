@@ -38,7 +38,6 @@ public class SequenceInputListAdapter extends EntryInputListAdapter<SequenceInpu
     @Override
     public void onBindViewHolder(final ViewHolder holder, final int position) {
         holder.txtValue.setText(items.get(position).getValue());
-        holder.txtValue.setHint("value");
         holder.txtValue.requestFocus();
         holder.txtValue.addTextChangedListener(new TextWatcher() {
             @Override
@@ -82,7 +81,7 @@ public class SequenceInputListAdapter extends EntryInputListAdapter<SequenceInpu
     public void emphasizeErrors() {
     }
 
-    public static class ViewHolder extends RecyclerView.ViewHolder {
+    protected static class ViewHolder extends RecyclerView.ViewHolder {
         private EditText txtValue;
         private TextView number;
         private ImageView icon;

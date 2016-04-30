@@ -9,12 +9,15 @@ import android.support.v4.content.res.ResourcesCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import java.util.logging.Logger;
 
@@ -22,6 +25,8 @@ import cz.cvut.fel.memorice.R;
 import cz.cvut.fel.memorice.model.database.SQLiteHelper;
 import cz.cvut.fel.memorice.model.entities.Entity;
 import cz.cvut.fel.memorice.model.util.WrongNameException;
+import cz.cvut.fel.memorice.view.fragments.EntityDetailListAdapter;
+import cz.cvut.fel.memorice.view.fragments.EntryInputListAdapter;
 
 /**
  * Created by sheemon on 24.4.16.
@@ -30,6 +35,10 @@ public class DetailActivity extends AppCompatActivity {
 
     private Entity entity;
     private Menu menu;
+
+    protected RecyclerView mRecyclerView;
+    protected EntityDetailListAdapter mAdapter;
+    protected RecyclerView.LayoutManager mLayoutManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

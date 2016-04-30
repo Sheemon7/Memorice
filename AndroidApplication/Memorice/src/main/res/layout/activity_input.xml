@@ -55,7 +55,7 @@
                     android:layout_gravity="center_vertical"
                     android:textAppearance="?android:attr/textAppearanceSmall"
                     android:id="@+id/text_used_label"
-                    android:textColor="@color/pink_pressed"
+                    android:textColor="@color/pink"
                     android:paddingRight="16dp"/>
 
                 <ImageView

@@ -104,7 +104,7 @@ public class SetInputListAdapter extends EntryInputListAdapter<SetInputListAdapt
         notifyDataSetChanged();
     }
 
-    public static class ViewHolder extends RecyclerView.ViewHolder {
+    protected static class ViewHolder extends RecyclerView.ViewHolder {
         private EditText txtValue;
         private ImageView icon;
 

@@ -38,7 +38,7 @@ public class MainActivity extends AppCompatActivity {
 
         ImageView welcome = (ImageView) findViewById(R.id.welcome);
         welcome.setImageBitmap(
-                decodeSampledBitmapFromResource(getResources(), R.drawable.coollogo_com_285492341, 300, 300));
+                decodeSampledBitmapFromResource(getResources(), R.drawable.welcome, 300, 300));
 
     }
 
