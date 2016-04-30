@@ -54,5 +54,6 @@
     <string name="definition">definition</string>
     <string name="value">value</string>
     <string name="remove">remove</string>
+    <string name="only_fav">Only Favourites</string>
 
 </resources>

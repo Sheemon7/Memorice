@@ -15,6 +15,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 import cz.cvut.fel.memorice.R;
 import cz.cvut.fel.memorice.model.database.SQLiteHelper;
@@ -42,8 +43,13 @@ public class EntityListAdapter extends RecyclerView.Adapter<EntityListAdapter.Vi
         view.setAdapter(this);
     }
 
-    public void showFavorites() {
-        //TODO
+    public void showFavorites(Context context) {
+        if (filter.equals("")) {
+            mDataset = new SQLiteHelper(context).getAllFavouriteEntities();
+        } else {
+            mDataset = new SQLiteHelper(context).getAllFavouriteFilteredEntities(filter);
+        }
+        view.setAdapter(this);
     }
 
     public void remove(Entity item, Context context) {

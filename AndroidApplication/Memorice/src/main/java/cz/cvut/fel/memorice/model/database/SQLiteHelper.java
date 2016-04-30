@@ -282,6 +282,41 @@ public class SQLiteHelper extends SQLiteOpenHelper {
         return ret;
     }
 
+    public ArrayList<Entity> getAllFavouriteEntities() {
+        LOG.info("Getting all favourite entities:");
+        ArrayList<Entity> ret = new ArrayList<>();
+
+        String query = "SELECT " + KEY_LABEL + " FROM " + TABLE_ENTITIES + " WHERE " + KEY_FAVORITE + "=1";
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(query, null);
+
+        if (cursor.moveToFirst() && cursor != null) {
+            do {
+                String label = cursor.getString(0);
+                ret.add(getEntity(label));
+            } while (cursor.moveToNext());
+        }
+        return ret;
+    }
+
+    public ArrayList<Entity> getAllFavouriteFilteredEntities(String filter) {
+        LOG.info("Getting all favourite and filtered entities:");
+        ArrayList<Entity> ret = new ArrayList<>();
+
+        String query = "SELECT " + KEY_LABEL + " FROM " + TABLE_ENTITIES + " WHERE " + KEY_FAVORITE + "=1 AND "
+                + KEY_LABEL + " LIKE " + "\"%" + filter + "%\"";;
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(query, null);
+
+        if (cursor.moveToFirst() && cursor != null) {
+            do {
+                String label = cursor.getString(0);
+                ret.add(getEntity(label));
+            } while (cursor.moveToNext());
+        }
+        return ret;
+    }
+
     public void deleteEntity(Entity e) {
         LOG.info("Deleting entity: " + e.getName());
         SQLiteDatabase db = this.getWritableDatabase();

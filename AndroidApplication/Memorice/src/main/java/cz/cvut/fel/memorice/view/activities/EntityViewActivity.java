@@ -14,7 +14,8 @@ import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.animation.AlphaAnimation;
-import android.widget.Toast;
+import android.widget.CompoundButton;
+import android.widget.Switch;
 
 import com.getbase.floatingactionbutton.FloatingActionsMenu;
 
@@ -27,13 +28,17 @@ import cz.cvut.fel.memorice.view.fragments.EntityListAdapter;
  */
 public class EntityViewActivity extends AppCompatActivity {
 
-    private static final int FAB_ANIMATION_DURATION = 300;
+    private static final int ANIMATION_DURATION = 200;
+    private static final int FAB_HIDE_DURATION = 3000;
     private static final int FAB_ANIMATION_OFFSET = 150;
 
     private RecyclerView mRecyclerView;
     private EntityListAdapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
     private FloatingActionsMenu fabMenu;
+
+    private Thread fabHideThread;
+    private View shadowView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,65 +52,75 @@ public class EntityViewActivity extends AppCompatActivity {
 
         prepareRecyclerView();
         prepareFAB();
+        shadowView = findViewById(R.id.shadowView);
         prepareShadowView();
+        prepareFABHideThread();
+        prepareSwitch();
+        fabHideThread.start();
 
         final ActionBar ab = getSupportActionBar();
         ab.setDisplayHomeAsUpEnabled(true);
 
+    }
 
-//        // Specify that tabs should be displayed in the action bar.
-//        ab.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
-//
-//        // Create a tab listener that is called when the user changes tabs.
-//        TabListener tabListener = new TabListener() {
-//            public void onTabSelected(ActionBar.Tab tab, FragmentTransaction ft) {
-//                // show the given tab
-//            }
-//
-//            public void onTabUnselected(ActionBar.Tab tab, FragmentTransaction ft) {
-//                // hide the given tab
-//            }
-//
-//            public void onTabReselected(ActionBar.Tab tab, FragmentTransaction ft) {
-//                // probably ignore this event
-//            }
-//        };
-//
-//        // Add 3 tabs, specifying the tab's text and TabListener
-//        for (int i = 0; i < 3; i++) {
-//            ab.addTab(
-//                    ab.newTab()
-//                            .setText("Tab " + (i + 1))
-//                            .setTabListener(tabListener));
-//        }
+    private void prepareSwitch() {
+        final Switch switchFav = (Switch) findViewById(R.id.switch_fav);
+        if (switchFav != null) {
+            switchFav.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                    if (isChecked) {
+                        mAdapter.showFavorites(getApplicationContext());
+                    } else {
+                        mAdapter.showAll(getApplicationContext());
+                    }
+                }
+            });
+        }
+    }
+
+    private void prepareFABHideThread() {
+        fabHideThread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    Thread.sleep(FAB_HIDE_DURATION);
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            if (!fabMenu.isExpanded()) {
+                                fadeOut(fabMenu);
+                            }
+                        }
+                    });
+                } catch (InterruptedException e) {
+                    return;
+                }
+            }
+        });
     }
 
     private void prepareShadowView() {
-        findViewById(R.id.shadowView).bringToFront();
-        findViewById(R.id.shadowView).setOnTouchListener(new View.OnTouchListener() {
+        shadowView.bringToFront();
+        shadowView.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
                 fabMenu.collapse();
                 return true;
             }
         });
-        findViewById(R.id.shadowView).setAlpha(0.6f);
-        findViewById(R.id.fab_menu).bringToFront();
+        shadowView.setAlpha(0.6f);
+        fabMenu.bringToFront();
     }
 
     @Override
     protected void onPostResume() {
         super.onPostResume();
-        //TODO thread?
-//        findViewById(R.id.shadowView).setAlpha(0f);
-//        fabMenu.collapse();
-//        findViewById(R.id.shadowView).setAlpha(0.6f);
         mAdapter.showAll(getApplicationContext());
     }
 
     @Override
     protected void onResume() {
-        //TODO
         super.onResume();
         mAdapter.showAll(getApplicationContext());
     }
@@ -118,26 +133,34 @@ public class EntityViewActivity extends AppCompatActivity {
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
                 super.onScrollStateChanged(recyclerView, newState);
                 if (newState == RecyclerView.SCROLL_STATE_DRAGGING) {
-                    fabMenu.collapse();
-                    AlphaAnimation animation1 = new AlphaAnimation(1, 0);
-                    animation1.setDuration(FAB_ANIMATION_DURATION);
-                    animation1.setStartOffset(FAB_ANIMATION_OFFSET);
-                    animation1.setFillAfter(true);
-                    fabMenu.startAnimation(animation1);
-                    //todo
-                    getSupportActionBar().hide();
+                    fadeIn(fabMenu, FAB_ANIMATION_OFFSET);
+                    if (fabHideThread.isAlive()) {
+                        fabHideThread.interrupt();
+                    }
                 } else if (newState == RecyclerView.SCROLL_STATE_IDLE) {
-                    AlphaAnimation animation1 = new AlphaAnimation(0, 1);
-                    animation1.setDuration(FAB_ANIMATION_DURATION);
-                    animation1.setFillAfter(true);
-                    fabMenu.startAnimation(animation1);
-                    getSupportActionBar().show();
+                    if (fabHideThread.isAlive()) {
+                        fabHideThread.interrupt();
+                    }
+                    prepareFABHideThread();
+                    fabHideThread.start();
                 }
             }
 
             @Override
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
+            }
+        });
+        mRecyclerView.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                fadeIn(fabMenu, FAB_ANIMATION_OFFSET);
+                if (fabHideThread.isAlive()) {
+                    fabHideThread.interrupt();
+                }
+                prepareFABHideThread();
+                fabHideThread.start();
+                return false;
             }
         });
 
@@ -154,28 +177,26 @@ public class EntityViewActivity extends AppCompatActivity {
         fabMenu.setOnFloatingActionsMenuUpdateListener(new FloatingActionsMenu.OnFloatingActionsMenuUpdateListener() {
             @Override
             public void onMenuExpanded() {
-                findViewById(R.id.shadowView).setOnTouchListener(new View.OnTouchListener() {
+                fadeIn(shadowView);
+                shadowView.setOnTouchListener(new View.OnTouchListener() {
                     @Override
                     public boolean onTouch(View v, MotionEvent event) {
                         fabMenu.collapse();
                         return true;
                     }
                 });
-                AlphaAnimation fadeIn = new AlphaAnimation(0, 1);
-                fadeIn.setDuration(FAB_ANIMATION_DURATION);
-                fadeIn.setFillAfter(true);
-                View shadowView = findViewById(R.id.shadowView);
-                shadowView.startAnimation(fadeIn);
             }
 
             @Override
             public void onMenuCollapsed() {
-                AlphaAnimation fadeOut = new AlphaAnimation(1, 0);
-                fadeOut.setDuration(FAB_ANIMATION_DURATION);
-                fadeOut.setFillAfter(true);
-                View shadowView = findViewById(R.id.shadowView);
-                shadowView.startAnimation(fadeOut);
                 shadowView.setOnTouchListener(null);
+                fadeOut(shadowView);
+
+                if (fabHideThread.isAlive()) {
+                    fabHideThread.interrupt();
+                }
+                prepareFABHideThread();
+                fabHideThread.start();
             }
         });
         findViewById(R.id.fab_list).setOnClickListener(new View.OnClickListener() {
@@ -199,7 +220,50 @@ public class EntityViewActivity extends AppCompatActivity {
                 EntityViewActivity.this.startActivity(myIntent);
             }
         });
-        fabMenu.setVisibility(View.VISIBLE);
+    }
+
+    private void fadeOut(final View view, final int offset) {
+        AlphaAnimation fadeOut = new AlphaAnimation(view.getAlpha(), 0);
+        fadeOut.setStartOffset(offset);
+        carryOutAnimation(view, fadeOut);
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    Thread.sleep(ANIMATION_DURATION + offset);
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            view.setEnabled(false);
+                        }
+                    });
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        }).start();
+//        view.setEnabled(false);
+    }
+
+    private void carryOutAnimation(View view, AlphaAnimation animation) {
+        animation.setDuration(ANIMATION_DURATION);
+        animation.setFillAfter(true);
+        view.startAnimation(animation);
+    }
+
+    private void fadeIn(View view, int offset) {
+        AlphaAnimation fadeOut = new AlphaAnimation(view.getAlpha(), 1);
+        fadeOut.setStartOffset(offset);
+        carryOutAnimation(view, fadeOut);
+        view.setEnabled(true);
+    }
+
+    private void fadeIn(View view) {
+        fadeIn(view, 0);
+    }
+
+    private void fadeOut(View view) {
+        fadeOut(view, 0);
     }
 
     @Override
@@ -232,7 +296,7 @@ public class EntityViewActivity extends AppCompatActivity {
                 myIntent = new Intent(EntityViewActivity.this, SettingsActivity.class);
                 EntityViewActivity.this.startActivity(myIntent);
                 return true;
-            case android.R.id.home: // Intercept the click on the home button
+            case android.R.id.home:
                 finish();
                 return true;
             case R.id.action_help:
@@ -244,10 +308,6 @@ public class EntityViewActivity extends AppCompatActivity {
         }
 
     }
-
-
-
-
 
 
 }
