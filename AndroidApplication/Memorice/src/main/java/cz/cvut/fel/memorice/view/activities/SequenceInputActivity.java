@@ -53,7 +53,6 @@ public class SequenceInputActivity extends InputActivity {
         mLayoutManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(mLayoutManager);
         mAdapter = new SequenceInputListAdapter(mRecyclerView);
-        mAdapter.show();
         ImageView iconAdd = (ImageView) findViewById(R.id.icon_add);
         iconAdd.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -61,6 +60,9 @@ public class SequenceInputActivity extends InputActivity {
                 mAdapter.addRow();
             }
         });
+        mAdapter.setPlusIcon(iconAdd);
+        mAdapter.show();
+
     }
 
     @Override
@@ -89,11 +91,10 @@ public class SequenceInputActivity extends InputActivity {
         EditText labelInput = (EditText) findViewById(R.id.entity_type);
         String label = labelInput.getText().toString();
         SQLiteHelper helper = new SQLiteHelper(getApplicationContext());
-        if (helper.getEntity(label) != null || label.length() == 0) {
-            throw new NameAlreadyUsedException();
-        }
         if (label.length() == 0) {
             throw new EmptyNameException();
+        } else if (helper.getEntity(label) != null) {
+            throw new NameAlreadyUsedException();
         }
         SequenceBuilder builder = SequenceBuilder.getInstance();
         builder.init(label);

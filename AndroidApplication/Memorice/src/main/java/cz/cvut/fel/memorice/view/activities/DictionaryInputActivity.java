@@ -76,11 +76,10 @@ public class DictionaryInputActivity extends InputActivity {
         labelInput = (EditText) findViewById(R.id.entity_type);
         String label = labelInput.getText().toString().trim();
         SQLiteHelper helper = new SQLiteHelper(getApplicationContext());
-        if (helper.getEntity(label) != null) {
-            throw new NameAlreadyUsedException();
-        }
         if (label.length() == 0) {
             throw new EmptyNameException();
+        } else if (helper.getEntity(label) != null) {
+            throw new NameAlreadyUsedException();
         }
         DictionaryBuilder builder = DictionaryBuilder.getInstance();
         builder.init(label);
@@ -104,7 +103,6 @@ public class DictionaryInputActivity extends InputActivity {
         mLayoutManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(mLayoutManager);
         mAdapter = new DictionaryInputListAdapter(mRecyclerView);
-        mAdapter.show();
         ImageView iconAdd = (ImageView) findViewById(R.id.icon_add);
         iconAdd.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -112,5 +110,7 @@ public class DictionaryInputActivity extends InputActivity {
                 mAdapter.addRow();
             }
         });
+        mAdapter.setPlusIcon(iconAdd);
+        mAdapter.show();
     }
 }

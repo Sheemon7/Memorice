@@ -82,7 +82,10 @@ public class DictionaryInputListAdapter extends EntryInputListAdapter<Dictionary
         holder.icon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                remove(holder.getAdapterPosition());
+                if (holder.getAdapterPosition() >= 0) {
+                    items.get(holder.getAdapterPosition()).setCorrect(true);
+                    remove(holder.getAdapterPosition());
+                }
             }
         });
     }

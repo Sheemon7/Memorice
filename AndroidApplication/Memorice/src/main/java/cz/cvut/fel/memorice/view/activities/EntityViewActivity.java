@@ -43,7 +43,7 @@ public class EntityViewActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_entry);
+        setContentView(R.layout.activity_entity_list);
 
         Toolbar toolbar =
                 (Toolbar) findViewById(R.id.entry_toolbar);
@@ -242,7 +242,6 @@ public class EntityViewActivity extends AppCompatActivity {
                 }
             }
         }).start();
-//        view.setEnabled(false);
     }
 
     private void carryOutAnimation(View view, AlphaAnimation animation) {
@@ -269,9 +268,21 @@ public class EntityViewActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_sets, menu);
-
         MenuItem searchItem = menu.findItem(R.id.action_search);
         SearchView searchView = (SearchView) MenuItemCompat.getActionView(searchItem);
+        searchView.setOnSearchClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                shadowView.setAlpha(0);
+            }
+        });
+        searchView.setOnCloseListener(new SearchView.OnCloseListener() {
+            @Override
+            public boolean onClose() {
+                shadowView.setAlpha(0);
+                return false;
+            }
+        });
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {

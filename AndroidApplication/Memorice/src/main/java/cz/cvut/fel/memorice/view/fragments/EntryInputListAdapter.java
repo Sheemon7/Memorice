@@ -2,6 +2,7 @@ package cz.cvut.fel.memorice.view.fragments;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,6 +18,7 @@ public abstract class EntryInputListAdapter<T extends RecyclerView.ViewHolder> e
     protected static final int INITIAL_CAPACITY = 3;
     protected List<ItemList> items;
     protected RecyclerView view;
+    protected ImageView plusIcon;
 
     public EntryInputListAdapter(RecyclerView view) {
         this.view = view;
@@ -35,14 +37,21 @@ public abstract class EntryInputListAdapter<T extends RecyclerView.ViewHolder> e
         }
     }
 
+    public void setPlusIcon(ImageView plusIcon) {
+        this.plusIcon = plusIcon;
+    }
+
     @Override
     public int getItemCount() {
         return items.size();
     }
 
     public void addRow() {
+        plusIcon.setEnabled(false);
         items.add(new ItemList());
         notifyItemInserted(items.size() - 1);
+        view.scrollToPosition(items.size() - 1);
+        plusIcon.setEnabled(true);
     }
 
     public abstract T onCreateViewHolder(ViewGroup parent, int viewType);

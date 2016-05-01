@@ -67,8 +67,10 @@ public class SetInputListAdapter extends EntryInputListAdapter<SetInputListAdapt
         holder.icon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                items.get(holder.getAdapterPosition()).setCorrect(true);
-                remove(holder.getAdapterPosition());
+                if (holder.getAdapterPosition() >= 0) {
+                    items.get(holder.getAdapterPosition()).setCorrect(true);
+                    remove(holder.getAdapterPosition());
+                }
             }
         });
     }
