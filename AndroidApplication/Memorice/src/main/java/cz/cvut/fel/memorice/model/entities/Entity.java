@@ -18,7 +18,6 @@ public abstract class Entity implements Serializable, Iterable {
         return favourite;
     }
 
-
     public void setFavourite(boolean favourite) {
         this.favourite = favourite;
     }
@@ -43,4 +42,5 @@ public abstract class Entity implements Serializable, Iterable {
 
     public abstract List<? extends Entry> getListOfEntries();
 
+    public abstract boolean equals(Object o);
 }

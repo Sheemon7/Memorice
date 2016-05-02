@@ -54,6 +54,17 @@ public class Group extends Entity implements Serializable {
     }
 
     @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Group group = (Group) o;
+
+        return !(entries != null ? !entries.equals(group.entries) : group.entries != null);
+
+    }
+
+    @Override
     public String toString() {
         StringBuilder builder = new StringBuilder("Group: " + getName() +
                 "\nentries= ");

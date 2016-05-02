@@ -56,6 +56,17 @@ public class Dictionary extends Entity implements Serializable {
     }
 
     @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Dictionary that = (Dictionary) o;
+
+        return !(entries != null ? !entries.equals(that.entries) : that.entries != null);
+
+    }
+
+    @Override
     public String toString() {
         StringBuilder builder = new StringBuilder("Dictionary: " + getName() +
                 "\nentries= ");

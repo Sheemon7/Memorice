@@ -51,6 +51,17 @@ public class Sequence extends Entity implements Serializable {
     }
 
     @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Sequence sequence = (Sequence) o;
+
+        return !(entries != null ? !entries.equals(sequence.entries) : sequence.entries != null);
+
+    }
+
+    @Override
     public String toString() {
         StringBuilder builder = new StringBuilder("Sequence: " + getName() +
                 "\nentries= ");
