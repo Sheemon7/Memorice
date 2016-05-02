@@ -3,7 +3,7 @@ package cz.cvut.fel.memorice.gui;
 import cz.cvut.fel.memorice.gui.IStdOut;
 
 /**
- * Created by sheemon on 19.3.16.
+ * {@inheritDoc}
  */
 public class StandardOutputWriter implements IStdOut {
 
@@ -13,14 +13,24 @@ public class StandardOutputWriter implements IStdOut {
 
     }
 
+    /**
+     * Returns an instance of {@link StandardOutputWriter}
+     * @return an instance of {@link StandardOutputWriter}
+     */
     public static StandardOutputWriter getInstance() {
         return singleton;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public void write(String string) {
         System.out.print(string);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public void writeLn(String string) {
         System.out.println(string);
     }

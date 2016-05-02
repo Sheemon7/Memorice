@@ -20,6 +20,7 @@ import cz.cvut.fel.memorice.model.entities.builders.DictionaryBuilder;
 import cz.cvut.fel.memorice.model.entities.entries.DictionaryEntry;
 import cz.cvut.fel.memorice.model.entities.entries.Entry;
 import cz.cvut.fel.memorice.model.util.EmptyNameException;
+import cz.cvut.fel.memorice.model.util.EmptyTermException;
 import cz.cvut.fel.memorice.model.util.NameAlreadyUsedException;
 import cz.cvut.fel.memorice.model.util.TermAlreadyUsedException;
 import cz.cvut.fel.memorice.view.fragments.DictionaryInputListAdapter;
@@ -67,12 +68,14 @@ public class DictionaryInputActivity extends InputActivity {
                     showLabelEmptyDialog(new AlertDialog.Builder(DictionaryInputActivity.this));
                 } catch (TermAlreadyUsedException e) {
                     showDefinitionDuplicateDialog(new AlertDialog.Builder(DictionaryInputActivity.this));
+                } catch (EmptyTermException e) {
+                    showValueEmptyDialog(new AlertDialog.Builder(DictionaryInputActivity.this));
                 }
         }
         return super.onOptionsItemSelected(item);
     }
 
-    private void buildNewDictionary() throws NameAlreadyUsedException, EmptyNameException, TermAlreadyUsedException {
+    private void buildNewDictionary() throws NameAlreadyUsedException, EmptyNameException, TermAlreadyUsedException, EmptyTermException {
         labelInput = (EditText) findViewById(R.id.entity_type);
         String label = labelInput.getText().toString().trim();
         SQLiteHelper helper = new SQLiteHelper(getApplicationContext());
@@ -88,7 +91,7 @@ public class DictionaryInputActivity extends InputActivity {
             for (DictionaryEntry e: (ArrayList<DictionaryEntry>) mAdapter.getInput()) {
                 builder.add(e);
             }
-        } catch (TermAlreadyUsedException e) {
+        } catch (TermAlreadyUsedException | EmptyTermException e) {
             mAdapter.emphasizeErrors();
             builder.wrap();
             throw e;

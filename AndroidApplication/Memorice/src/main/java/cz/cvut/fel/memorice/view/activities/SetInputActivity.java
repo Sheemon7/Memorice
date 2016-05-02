@@ -18,6 +18,7 @@ import cz.cvut.fel.memorice.model.database.SQLiteHelper;
 import cz.cvut.fel.memorice.model.entities.builders.SetBuilder;
 import cz.cvut.fel.memorice.model.entities.entries.Entry;
 import cz.cvut.fel.memorice.model.util.EmptyNameException;
+import cz.cvut.fel.memorice.model.util.EmptyTermException;
 import cz.cvut.fel.memorice.model.util.NameAlreadyUsedException;
 import cz.cvut.fel.memorice.model.util.TermAlreadyUsedException;
 import cz.cvut.fel.memorice.view.fragments.DictionaryInputListAdapter;
@@ -65,12 +66,14 @@ public class SetInputActivity extends InputActivity {
                     showLabelEmptyDialog(new AlertDialog.Builder(SetInputActivity.this));
                 } catch (TermAlreadyUsedException e) {
                     showValueDuplicateDialog(new AlertDialog.Builder(SetInputActivity.this));
+                } catch (EmptyTermException e) {
+                    showValueEmptyDialog(new AlertDialog.Builder(SetInputActivity.this));
                 }
         }
         return super.onOptionsItemSelected(item);
     }
 
-    private void buildNewSet() throws NameAlreadyUsedException, EmptyNameException, TermAlreadyUsedException {
+    private void buildNewSet() throws NameAlreadyUsedException, EmptyNameException, TermAlreadyUsedException, EmptyTermException {
         EditText labelInput = (EditText) findViewById(R.id.entity_type);
         String label = labelInput.getText().toString();
         SQLiteHelper helper = new SQLiteHelper(getApplicationContext());
@@ -86,7 +89,7 @@ public class SetInputActivity extends InputActivity {
             for (Entry e: (ArrayList<Entry>) mAdapter.getInput()) {
                 builder.add(e);
             }
-        } catch (TermAlreadyUsedException e) {
+        } catch (TermAlreadyUsedException | EmptyTermException e) {
             mAdapter.emphasizeErrors();
             builder.wrap();
             throw e;

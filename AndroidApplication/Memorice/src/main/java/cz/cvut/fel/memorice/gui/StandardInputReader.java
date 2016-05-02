@@ -5,7 +5,7 @@ import java.util.Scanner;
 import cz.cvut.fel.memorice.gui.IStdIn;
 
 /**
- * Created by sheemon on 19.3.16.
+ * {@inheritDoc}
  */
 public class StandardInputReader implements IStdIn {
 
@@ -17,16 +17,25 @@ public class StandardInputReader implements IStdIn {
 
     }
 
+    /**
+     * Returns an instance of {@link StandardInputReader}
+     * @return instance of {@link StandardInputReader}
+     */
     public static StandardInputReader getInstance() {
         return singleton;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public int probe() {
         return scanner.nextInt();
     }
 
 
-
+    /**
+     * {@inheritDoc}
+     */
     public String readLine() {
         return scanner.next();
     }

@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import cz.cvut.fel.memorice.model.entities.entries.Entry;
+import cz.cvut.fel.memorice.model.util.EmptyTermException;
 import cz.cvut.fel.memorice.model.util.TermAlreadyUsedException;
 
 /**
@@ -56,7 +57,7 @@ public abstract class EntryInputListAdapter<T extends RecyclerView.ViewHolder> e
 
     public abstract T onCreateViewHolder(ViewGroup parent, int viewType);
     public abstract void onBindViewHolder(final T holder, final int position);
-    public abstract ArrayList<? extends Entry> getInput() throws TermAlreadyUsedException;
+    public abstract ArrayList<? extends Entry> getInput() throws TermAlreadyUsedException, EmptyTermException;
     public abstract void emphasizeErrors();
 
     protected static class ItemList {

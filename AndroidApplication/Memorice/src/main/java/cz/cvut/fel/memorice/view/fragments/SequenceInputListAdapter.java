@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import cz.cvut.fel.memorice.R;
 import cz.cvut.fel.memorice.model.entities.entries.Entry;
 import cz.cvut.fel.memorice.model.entities.entries.SequenceEntry;
+import cz.cvut.fel.memorice.model.util.EmptyTermException;
 
 /**
  * Created by sheemon on 28.4.16.
@@ -37,6 +38,11 @@ public class SequenceInputListAdapter extends EntryInputListAdapter<SequenceInpu
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, final int position) {
+        if (!items.get(position).isCorrect()) {
+            holder.txtValue.setError("empty");
+        } else {
+            holder.txtValue.setError(null);
+        }
         holder.txtValue.setText(items.get(position).getValue());
         holder.txtValue.requestFocus();
         holder.txtValue.addTextChangedListener(new TextWatcher() {
@@ -71,16 +77,28 @@ public class SequenceInputListAdapter extends EntryInputListAdapter<SequenceInpu
     }
 
     @Override
-    public ArrayList<SequenceEntry> getInput() {
+    public ArrayList<SequenceEntry> getInput() throws EmptyTermException {
         ArrayList<SequenceEntry> ret = new ArrayList<>(items.size());
         for (int i = 0; i < items.size(); i++) {
-            ret.add(new SequenceEntry(items.get(i).getValue(), i + 1));
+            String value = items.get(i).getValue();
+            if (value.equals("")) {
+                throw new EmptyTermException();
+            }
+            ret.add(new SequenceEntry(value, i + 1));
         }
         return ret;
     }
 
     @Override
     public void emphasizeErrors() {
+        for (ItemList list :
+                items) {
+            String value = list.getValue();
+            if (value.equals("")) {
+                list.setCorrect(false);
+            }
+        }
+        notifyDataSetChanged();
     }
 
     protected static class ViewHolder extends RecyclerView.ViewHolder {

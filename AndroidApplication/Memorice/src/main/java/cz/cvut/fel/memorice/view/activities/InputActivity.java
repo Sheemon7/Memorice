@@ -54,6 +54,11 @@ public abstract class InputActivity extends AppCompatActivity {
         showDialog(alertDialogBuilder);
     }
 
+    protected void showValueEmptyDialog(AlertDialog.Builder alertDialogBuilder) {
+        alertDialogBuilder.setTitle(getString(R.string.empty_value));
+        showDialog(alertDialogBuilder);
+    }
+
     protected void showDefinitionDuplicateDialog(AlertDialog.Builder alertDialogBuilder) {
         alertDialogBuilder.setTitle(getString(R.string.duplicate_def_quote));
         showDialog(alertDialogBuilder);

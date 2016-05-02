@@ -16,6 +16,7 @@ import java.util.HashSet;
 import cz.cvut.fel.memorice.R;
 import cz.cvut.fel.memorice.model.entities.Entity;
 import cz.cvut.fel.memorice.model.entities.entries.Entry;
+import cz.cvut.fel.memorice.model.util.EmptyTermException;
 import cz.cvut.fel.memorice.model.util.TermAlreadyUsedException;
 
 /**
@@ -39,7 +40,11 @@ public class SetInputListAdapter extends EntryInputListAdapter<SetInputListAdapt
     @Override
     public void onBindViewHolder(final ViewHolder holder, final int position) {
         if (!items.get(position).isCorrect()) {
-            holder.txtValue.setError("duplicate value");
+            if (items.get(position).getValue().equals("")) {
+                holder.txtValue.setError("empty");
+            } else {
+                holder.txtValue.setError("duplicate");
+            }
         } else {
             holder.txtValue.setError(null);
         }
@@ -76,7 +81,7 @@ public class SetInputListAdapter extends EntryInputListAdapter<SetInputListAdapt
     }
 
     @Override
-    public ArrayList<Entry> getInput() throws TermAlreadyUsedException {
+    public ArrayList<Entry> getInput() throws TermAlreadyUsedException, EmptyTermException {
         HashSet<String> valueCheck = new HashSet<>(items.size());
         ArrayList<Entry> ret = new ArrayList<>(items.size());
         for (ItemList item :
@@ -84,6 +89,8 @@ public class SetInputListAdapter extends EntryInputListAdapter<SetInputListAdapt
             String value = item.getValue();
             if (valueCheck.contains(value)) {
                 throw new TermAlreadyUsedException();
+            } else if (value.equals("")) {
+                throw new EmptyTermException();
             } else {
                 valueCheck.add(value);
                 ret.add(new Entry(value));
@@ -96,12 +103,17 @@ public class SetInputListAdapter extends EntryInputListAdapter<SetInputListAdapt
     public void emphasizeErrors() {
         ArrayList<String> valueCheck = new ArrayList<>(items.size());
         for (ItemList list :
-               items) {
-            if (valueCheck.contains(list.getValue())) {
+                items) {
+            String value = list.getValue();
+            if (value.equals("")) {
                 list.setCorrect(false);
-                items.get(valueCheck.indexOf(list.getValue())).setCorrect(false);
+            } else {
+                if (valueCheck.contains(value)) {
+                    list.setCorrect(false);
+                    items.get(valueCheck.indexOf(value)).setCorrect(false);
+                }
+                valueCheck.add(value);
             }
-            valueCheck.add(list.getValue());
         }
         notifyDataSetChanged();
     }

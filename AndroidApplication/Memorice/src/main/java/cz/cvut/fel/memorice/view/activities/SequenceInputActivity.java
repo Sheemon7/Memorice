@@ -15,9 +15,12 @@ import java.util.ArrayList;
 
 import cz.cvut.fel.memorice.R;
 import cz.cvut.fel.memorice.model.database.SQLiteHelper;
+import cz.cvut.fel.memorice.model.entities.Sequence;
 import cz.cvut.fel.memorice.model.entities.builders.SequenceBuilder;
+import cz.cvut.fel.memorice.model.entities.entries.Entry;
 import cz.cvut.fel.memorice.model.entities.entries.SequenceEntry;
 import cz.cvut.fel.memorice.model.util.EmptyNameException;
+import cz.cvut.fel.memorice.model.util.EmptyTermException;
 import cz.cvut.fel.memorice.model.util.NameAlreadyUsedException;
 import cz.cvut.fel.memorice.model.util.TermAlreadyUsedException;
 import cz.cvut.fel.memorice.view.fragments.SequenceInputListAdapter;
@@ -82,12 +85,14 @@ public class SequenceInputActivity extends InputActivity {
                     showLabelEmptyDialog(new AlertDialog.Builder(SequenceInputActivity.this));
                 } catch (TermAlreadyUsedException e) {
                     showValueDuplicateDialog(new AlertDialog.Builder(SequenceInputActivity.this));
+                } catch (EmptyTermException e) {
+                    showValueEmptyDialog(new AlertDialog.Builder(SequenceInputActivity.this));
                 }
         }
         return super.onOptionsItemSelected(item);
     }
 
-    private void buildNewSequence() throws NameAlreadyUsedException, EmptyNameException, TermAlreadyUsedException {
+    private void buildNewSequence() throws NameAlreadyUsedException, EmptyNameException, TermAlreadyUsedException, EmptyTermException {
         EditText labelInput = (EditText) findViewById(R.id.entity_type);
         String label = labelInput.getText().toString();
         SQLiteHelper helper = new SQLiteHelper(getApplicationContext());
@@ -98,8 +103,14 @@ public class SequenceInputActivity extends InputActivity {
         }
         SequenceBuilder builder = SequenceBuilder.getInstance();
         builder.init(label);
-        for (SequenceEntry entry : (ArrayList<SequenceEntry>) mAdapter.getInput()) {
-            builder.add(entry);
+        try {
+            for (SequenceEntry e: (ArrayList< SequenceEntry>) mAdapter.getInput()) {
+                builder.add(e);
+            }
+        } catch (EmptyTermException e) {
+            mAdapter.emphasizeErrors();
+            builder.wrap();
+            throw e;
         }
         helper.addEntity(builder.wrap());
     }

@@ -1,10 +1,19 @@
 package cz.cvut.fel.memorice.gui;
 
 /**
- * Created by sheemon on 19.3.16.
+ * Interface defining basic stdin functionality
  */
 public interface IStdIn {
 
+    /**
+     * Asks for an integer and returns its value. Should be used after a query
+     * @return integer inserted by user
+     */
     int probe();
+
+    /**
+     * Reads one whole line from stdin
+     * @return
+     */
     String readLine();
 }

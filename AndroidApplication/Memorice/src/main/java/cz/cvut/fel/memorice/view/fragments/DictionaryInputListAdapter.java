@@ -16,6 +16,7 @@ import cz.cvut.fel.memorice.R;
 import cz.cvut.fel.memorice.model.entities.Dictionary;
 import cz.cvut.fel.memorice.model.entities.entries.DictionaryEntry;
 import cz.cvut.fel.memorice.model.entities.entries.Entry;
+import cz.cvut.fel.memorice.model.util.EmptyTermException;
 import cz.cvut.fel.memorice.model.util.TermAlreadyUsedException;
 
 /**
@@ -37,9 +38,14 @@ public class DictionaryInputListAdapter extends EntryInputListAdapter<Dictionary
     @Override
     public void onBindViewHolder(final ViewHolder holder, final int position) {
         if (!items.get(position).isCorrect()) {
-            holder.txtDefinition.setError("duplicate definition");
+            if (items.get(position).getValue().equals("")) {
+                holder.txtValue.setError("empty");
+            } else {
+                holder.txtDefinition.setError("duplicate definition");
+            }
         } else {
             holder.txtDefinition.setError(null);
+            holder.txtValue.setError(null);
         }
         holder.txtValue.setText(items.get(position).getValue());
         holder.txtDefinition.setText(items.get(position).getDefinition());
@@ -91,17 +97,21 @@ public class DictionaryInputListAdapter extends EntryInputListAdapter<Dictionary
     }
 
     @Override
-    public ArrayList<DictionaryEntry> getInput() throws TermAlreadyUsedException {
+    public ArrayList<DictionaryEntry> getInput() throws TermAlreadyUsedException, EmptyTermException {
         HashSet<String> valueCheck = new HashSet<>(items.size());
         ArrayList<DictionaryEntry> ret = new ArrayList<>(items.size());
         for (ItemList item :
                 items) {
             String value = item.getDefinition();
-            if (valueCheck.contains(value)) {
-                throw new TermAlreadyUsedException();
+            if (value.equals("")) {
+                throw new EmptyTermException();
             } else {
-                valueCheck.add(value);
-                ret.add(new DictionaryEntry(value, item.getValue()));
+                if (valueCheck.contains(value)) {
+                    throw new TermAlreadyUsedException();
+                } else {
+                    valueCheck.add(value);
+                    ret.add(new DictionaryEntry(value, item.getValue()));
+                }
             }
         }
         return ret;
@@ -113,11 +123,16 @@ public class DictionaryInputListAdapter extends EntryInputListAdapter<Dictionary
         for (ItemList list :
                 items) {
             String definition = list.getDefinition();
-            if (definitionCheck.contains(definition)) {
+            String value = list.getValue();
+            if (value.equals("")) {
                 list.setCorrect(false);
-                items.get(definitionCheck.indexOf(definition)).setCorrect(false);
+            } else {
+                if (definitionCheck.contains(definition)) {
+                    list.setCorrect(false);
+                    items.get(definitionCheck.indexOf(definition)).setCorrect(false);
+                }
+                definitionCheck.add(definition);
             }
-            definitionCheck.add(definition);
         }
         notifyDataSetChanged();
     }
