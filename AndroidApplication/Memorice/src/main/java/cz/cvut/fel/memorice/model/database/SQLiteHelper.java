@@ -243,7 +243,7 @@ public class SQLiteHelper extends SQLiteOpenHelper {
         Cursor cursor = db.rawQuery(query, null);
         if (cursor != null && cursor.moveToFirst()) {
             do {
-                ret.add(new DictionaryEntry(cursor.getString(1), cursor.getString(0)));
+                ret.add(new DictionaryEntry(cursor.getString(0), cursor.getString(1)));
             } while (cursor.moveToNext());
         }
         return ret;
@@ -368,11 +368,9 @@ public class SQLiteHelper extends SQLiteOpenHelper {
         ArrayList<String> ret = new ArrayList<>();
 
         if (cursor != null && cursor.moveToFirst()) {
-            cursor.moveToFirst();
-            while (!cursor.isLast()) {
+            do {
                 ret.add(cursor.getString(0));
-                cursor.moveToNext();
-            }
+            } while (cursor.moveToNext());
         }
         return ret;
     }
