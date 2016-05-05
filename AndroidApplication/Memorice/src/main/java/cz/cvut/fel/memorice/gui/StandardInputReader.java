@@ -7,6 +7,7 @@ import cz.cvut.fel.memorice.gui.IStdIn;
 /**
  * {@inheritDoc}
  */
+@Deprecated
 public class StandardInputReader implements IStdIn {
 
     private static StandardInputReader singleton = new StandardInputReader();

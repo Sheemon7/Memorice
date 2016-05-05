@@ -14,17 +14,14 @@ import android.widget.ImageView;
 import java.util.ArrayList;
 
 import cz.cvut.fel.memorice.R;
-import cz.cvut.fel.memorice.model.database.SQLiteHelper;
-import cz.cvut.fel.memorice.model.entities.Sequence;
+import cz.cvut.fel.memorice.model.database.helpers.SQLiteHelper;
 import cz.cvut.fel.memorice.model.entities.builders.SequenceBuilder;
-import cz.cvut.fel.memorice.model.entities.entries.Entry;
 import cz.cvut.fel.memorice.model.entities.entries.SequenceEntry;
 import cz.cvut.fel.memorice.model.util.EmptyNameException;
 import cz.cvut.fel.memorice.model.util.EmptyTermException;
 import cz.cvut.fel.memorice.model.util.NameAlreadyUsedException;
 import cz.cvut.fel.memorice.model.util.TermAlreadyUsedException;
 import cz.cvut.fel.memorice.view.fragments.SequenceInputListAdapter;
-import cz.cvut.fel.memorice.view.fragments.SetInputListAdapter;
 
 /**
  * Created by sheemon on 18.4.16.
@@ -112,7 +109,7 @@ public class SequenceInputActivity extends InputActivity {
             builder.wrap();
             throw e;
         }
-        helper.addEntity(builder.wrap());
+        addEntityToDatabase(builder.wrap());
     }
 
 

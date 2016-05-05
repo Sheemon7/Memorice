@@ -3,6 +3,7 @@ package cz.cvut.fel.memorice.gui;
 /**
  * Interface defining basic stdout functionality
  */
+@Deprecated
 public interface IStdOut {
 
     /**

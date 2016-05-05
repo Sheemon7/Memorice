@@ -1,21 +1,24 @@
 package cz.cvut.fel.memorice.view.activities;
 
 import android.content.Intent;
-import android.content.res.Resources;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.Html;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 
 import cz.cvut.fel.memorice.R;
+import cz.cvut.fel.memorice.model.database.helpers.SQLiteHelper;
 
 public class MainActivity extends AppCompatActivity {
+
+    private final static String statsStub = "So far, there are <b>%s</b> entries in <b>%s</b> datasets.<br/>Let's add some more!";
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,53 +37,15 @@ public class MainActivity extends AppCompatActivity {
 
         ImageView rice = (ImageView) findViewById(R.id.rice_pic);
         rice.setImageBitmap(
-                decodeSampledBitmapFromResource(getResources(), R.drawable.rice_chopsticks_bowl, 300, 300));
+                BitmapUtils.decodeSampledBitmapFromResource(getResources(), R.drawable.rice_chopsticks_bowl, 300, 300));
 
-        ImageView welcome = (ImageView) findViewById(R.id.welcome);
-        welcome.setImageBitmap(
-                decodeSampledBitmapFromResource(getResources(), R.drawable.welcome, 300, 300));
-
+        setStatsText();
     }
 
-    public static Bitmap decodeSampledBitmapFromResource(Resources res, int resId,
-                                                         int reqWidth, int reqHeight) {
-
-        // First decode with inJustDecodeBounds=true to check dimensions
-        final BitmapFactory.Options options = new BitmapFactory.Options();
-        options.inJustDecodeBounds = true;
-        BitmapFactory.decodeResource(res, resId, options);
-
-        // Calculate inSampleSize
-        options.inSampleSize = calculateInSampleSize(options, reqWidth, reqHeight);
-
-        // Decode bitmap with inSampleSize set
-        options.inJustDecodeBounds = false;
-        return BitmapFactory.decodeResource(res, resId, options);
-
-
-    }
-
-    public static int calculateInSampleSize(
-            BitmapFactory.Options options, int reqWidth, int reqHeight) {
-        // Raw height and width of image
-        final int height = options.outHeight;
-        final int width = options.outWidth;
-        int inSampleSize = 1;
-
-        if (height > reqHeight || width > reqWidth) {
-
-            final int halfHeight = height / 2;
-            final int halfWidth = width / 2;
-
-            // Calculate the largest inSampleSize value that is a power of 2 and keeps both
-            // height and width larger than the requested height and width.
-            while ((halfHeight / inSampleSize) > reqHeight
-                    && (halfWidth / inSampleSize) > reqWidth) {
-                inSampleSize *= 2;
-            }
-        }
-
-        return inSampleSize;
+    private void setStatsText() {
+        SQLiteHelper helper = new SQLiteHelper(getApplicationContext());
+        TextView stats = (TextView) findViewById(R.id.welcome_stats);
+        stats.setText(Html.fromHtml(String.format(statsStub, helper.countEntities(), helper.countEntries())));
     }
 
     @Override
@@ -90,6 +55,11 @@ public class MainActivity extends AppCompatActivity {
         return true;
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        setStatsText();
+    }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {

@@ -3,6 +3,7 @@ package cz.cvut.fel.memorice.gui;
 /**
  * Interface defining basic stdin functionality
  */
+@Deprecated
 public interface IStdIn {
 
     /**

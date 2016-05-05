@@ -75,7 +75,10 @@ Další informace jsou dostupné na blogu k aplikaci.</string>
     <string name="definition">definition</string>
     <string name="value">value</string>
     <string name="remove">remove</string>
-    <string name="only_fav">Only Favourites</string>
+    <string name="only_fav">Favourites</string>
     <string name="empty_value">Your set contains empty values!</string>
+    <string name="my_sets">My sets</string>
+    <string name="detail_transition">detail_transition</string>
+    <string name="all">All</string>
 
 </resources>

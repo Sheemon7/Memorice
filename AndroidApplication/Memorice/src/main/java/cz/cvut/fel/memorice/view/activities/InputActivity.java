@@ -16,7 +16,9 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import cz.cvut.fel.memorice.R;
-import cz.cvut.fel.memorice.model.database.SQLiteHelper;
+import cz.cvut.fel.memorice.model.database.dataaccess.ASyncSimpleReadDatabase;
+import cz.cvut.fel.memorice.model.database.helpers.SQLiteHelper;
+import cz.cvut.fel.memorice.model.entities.Entity;
 import cz.cvut.fel.memorice.view.fragments.EntryInputListAdapter;
 
 /**
@@ -116,5 +118,11 @@ public abstract class InputActivity extends AppCompatActivity {
             window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
             window.setStatusBarColor(ContextCompat.getColor(getApplicationContext(), R.color.colorInvertDarker));
         }
+    }
+
+    protected void addEntityToDatabase(Entity entity) {
+        ASyncSimpleReadDatabase access = new ASyncSimpleReadDatabase(this.getApplicationContext());
+        access.setEntity(entity);
+        access.execute(ASyncSimpleReadDatabase.ADD_ENTITY);
     }
 }

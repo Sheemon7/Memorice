@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.design.widget.CoordinatorLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -27,47 +26,57 @@
                 app:popupTheme="@style/AppTheme.PopupOverlay" />
         </android.support.design.widget.AppBarLayout>
 
-        <!--<TextView-->
-            <!--android:id="@+id/welcome"-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:layout_alignParentEnd="true"-->
-            <!--android:layout_alignParentLeft="true"-->
-            <!--android:layout_alignParentRight="true"-->
-            <!--android:layout_alignParentStart="true"-->
-            <!--android:layout_gravity="center_horizontal"-->
-            <!--android:text="@string/welcome_entry"-->
-            <!--android:textAlignment="center"-->
-            <!--android:textColor="@color/colorInvertDarker"-->
-            <!--android:textSize="64dp"-->
-            <!--android:layout_weight="0.54" />-->
-
-        <ImageView
-            android:id="@+id/welcome"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="216dp"
-            android:layout_centerHorizontal="true"
-            android:layout_gravity="center_horizontal"/>
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:paddingLeft="50dp"
+            android:paddingRight="50dp"
+            android:paddingTop="100dp"
+            android:weightSum="1">
 
-        <Button
-            android:id="@+id/btn_my_sets"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/welcome"
-            android:layout_gravity="center_horizontal"
-            android:layout_margin="24dp"
-            android:text="My sets"
-            android:textColor="@color/white"
-            android:layout_weight="0.31" />
+            <ImageView
+                android:id="@+id/rice_pic"
+                android:layout_width="match_parent"
+                android:layout_height="100dp"
+                android:layout_gravity="center"
+                android:layout_marginBottom="30dp"
+                android:paddingLeft="30dp"/>
 
-        <ImageView
-            android:id="@+id/rice_pic"
-            android:layout_width="match_parent"
-            android:layout_height="216dp"
-            android:layout_below="@+id/btn_my_sets"
-            android:layout_centerHorizontal="true"
-            android:layout_gravity="center_horizontal"
-            android:paddingLeft="64dp" />
+            <TextView
+                android:id="@+id/welcome"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginBottom="30dp"
+                android:textColor="@color/colorPrimaryDark"
+                android:gravity="center"
+                android:fontFamily="sans-serif-condensed"
+                android:textSize="30sp"
+                android:text="Welcome"/>
+
+            <TextView
+                android:id="@+id/welcome_stats"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginBottom="30dp"
+                android:textColor="@color/half_black"
+                android:gravity="center"
+                android:fontFamily="sans-serif"
+                android:textSize="17sp"/>
+
+            <Button
+                android:layout_width="250dp"
+                android:layout_height="wrap_content"
+                android:text="@string/my_sets"
+                android:id="@+id/btn_my_sets"
+                android:textColor="@color/white"
+                android:layout_gravity="center_horizontal"
+                android:drawableRight="@drawable/ic_arrow_forward_white_24dp"
+                android:layout_weight="0.05" />
+
+        </LinearLayout>
 
     </LinearLayout>
 

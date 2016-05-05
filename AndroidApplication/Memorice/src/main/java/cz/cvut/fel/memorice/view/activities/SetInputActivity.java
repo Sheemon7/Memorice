@@ -14,14 +14,13 @@ import android.widget.ImageView;
 import java.util.ArrayList;
 
 import cz.cvut.fel.memorice.R;
-import cz.cvut.fel.memorice.model.database.SQLiteHelper;
+import cz.cvut.fel.memorice.model.database.helpers.SQLiteHelper;
 import cz.cvut.fel.memorice.model.entities.builders.SetBuilder;
 import cz.cvut.fel.memorice.model.entities.entries.Entry;
 import cz.cvut.fel.memorice.model.util.EmptyNameException;
 import cz.cvut.fel.memorice.model.util.EmptyTermException;
 import cz.cvut.fel.memorice.model.util.NameAlreadyUsedException;
 import cz.cvut.fel.memorice.model.util.TermAlreadyUsedException;
-import cz.cvut.fel.memorice.view.fragments.DictionaryInputListAdapter;
 import cz.cvut.fel.memorice.view.fragments.SetInputListAdapter;
 
 /**
@@ -94,8 +93,7 @@ public class SetInputActivity extends InputActivity {
             builder.wrap();
             throw e;
         }
-
-        helper.addEntity(builder.wrap());
+        addEntityToDatabase(builder.wrap());
     }
 
     protected void prepareRecyclerView() {

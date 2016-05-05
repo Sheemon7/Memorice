@@ -1,6 +1,8 @@
 package cz.cvut.fel.memorice.view.activities;
 
+import android.app.ActivityOptions;
 import android.content.Intent;
+import android.media.Image;
 import android.os.Bundle;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.ActionBar;
@@ -15,6 +17,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.animation.AlphaAnimation;
 import android.widget.CompoundButton;
+import android.widget.ImageView;
 import android.widget.Switch;
 
 import com.getbase.floatingactionbutton.FloatingActionsMenu;
@@ -65,14 +68,17 @@ public class EntityViewActivity extends AppCompatActivity {
 
     private void prepareSwitch() {
         final Switch switchFav = (Switch) findViewById(R.id.switch_fav);
+        final ImageView indicator = (ImageView) findViewById(R.id.fav_indicator);
         if (switchFav != null) {
             switchFav.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                 @Override
                 public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                     if (isChecked) {
                         mAdapter.showFavorites(getApplicationContext());
+                        indicator.setImageResource(R.drawable.ic_fav_white_fill_24dp);
                     } else {
                         mAdapter.showAll(getApplicationContext());
+                        indicator.setImageResource(R.drawable.ic_fav_outline_24dp);
                     }
                 }
             });
@@ -295,7 +301,6 @@ public class EntityViewActivity extends AppCompatActivity {
                 return true;
             }
         });
-
         return true;
     }
 
@@ -319,6 +324,14 @@ public class EntityViewActivity extends AppCompatActivity {
         }
 
     }
+
+//    public void showDetail(Intent myIntent, View shareElement) {
+//        Intent myIntent = new Intent(view.getContext(), SetDetailActivity.class);
+//        myIntent.putExtra("entity", e);
+//        String transitionName = "detail_transition";
+//        ActivityOptions transitionActivityOptions = ActivityOptions.makeSceneTransitionAnimation(, (View)holder.imageType, transitionName);
+//        view.getContext().startActivity(myIntent, transitionActivityOptions.toBundle());
+//    }
 
 
 }

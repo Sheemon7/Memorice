@@ -1,13 +1,10 @@
 package cz.cvut.fel.memorice.view.activities;
 
-import android.content.DialogInterface;
-import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.res.ResourcesCompat;
 import android.support.v7.app.ActionBar;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -15,18 +12,11 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.Window;
 import android.view.WindowManager;
-import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.TextView;
-
-import java.util.logging.Logger;
 
 import cz.cvut.fel.memorice.R;
-import cz.cvut.fel.memorice.model.database.SQLiteHelper;
+import cz.cvut.fel.memorice.model.database.dataaccess.ASyncSimpleReadDatabase;
 import cz.cvut.fel.memorice.model.entities.Entity;
-import cz.cvut.fel.memorice.model.util.WrongNameException;
 import cz.cvut.fel.memorice.view.fragments.EntityDetailListAdapter;
-import cz.cvut.fel.memorice.view.fragments.EntryInputListAdapter;
 
 /**
  * Created by sheemon on 24.4.16.
@@ -68,9 +58,9 @@ public class DetailActivity extends AppCompatActivity {
         this.menu = menu;
         getMenuInflater().inflate(R.menu.menu_detail, menu);
         if (getEntity().isFavourite()) {
-            menu.getItem(0).setIcon(ResourcesCompat.getDrawable(getResources(), R.drawable.ic_favorite_true_pink_24dp, null));
+            menu.getItem(0).setIcon(ResourcesCompat.getDrawable(getResources(), R.drawable.ic_fav_white_fill_24dp, null));
         } else {
-            menu.getItem(0).setIcon(ResourcesCompat.getDrawable(getResources(), R.drawable.ic_favorite_false_24dp, null));
+            menu.getItem(0).setIcon(ResourcesCompat.getDrawable(getResources(), R.drawable.ic_fav_outline_24dp, null));
         }
         return true;
     }
@@ -78,44 +68,20 @@ public class DetailActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        final SQLiteHelper helper = new SQLiteHelper(getApplicationContext());
+        ASyncSimpleReadDatabase access = new ASyncSimpleReadDatabase(getApplicationContext());
+        access.setEntity(entity);
         switch (item.getItemId()) {
             case R.id.action_delete:
-//                AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(getApplicationContext());
-//                alertDialogBuilder.setTitle("Delete " + getEntity().getName());
-//                alertDialogBuilder.setMessage("Are you sure?");
-//                alertDialogBuilder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-//                    @Override
-//                    public void onClick(DialogInterface dialog, int which) {
-//                        helper.deleteEntity(getEntity());
-//                        dialog.cancel();
-//                        finish();
-//                    }
-//                });
-//                alertDialogBuilder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-//                    @Override
-//                    public void onClick(DialogInterface dialog, int which) {
-//                        dialog.cancel();
-//                    }
-//                });
-//                AlertDialog alert = alertDialogBuilder.create();
-//                alert.show();
-                helper.deleteEntity(getEntity());
+                access.execute(ASyncSimpleReadDatabase.DELETE_ENTITY);
                 finish();
                 return true;
             case R.id.action_favourite:
-                try {
-                    helper.toggleFavorite(getEntity());
-                    Logger.getLogger(DetailActivity.class.getName()).info(entity.isFavourite() ? "true" : "false");
-                    Logger.getLogger(DetailActivity.class.getName()).info(helper.isEntityFavourite(entity) ? "true" : "false");
-                    if (getEntity().isFavourite()) {
-                        menu.getItem(0).setIcon(ResourcesCompat.getDrawable(getResources(), R.drawable.ic_favorite_true_pink_24dp, null));
-                    } else {
-                        menu.getItem(0).setIcon(ResourcesCompat.getDrawable(getResources(), R.drawable.ic_favorite_false_24dp, null));
-                    }
-                } catch (WrongNameException e) {
-                    e.printStackTrace();
+                if (!entity.isFavourite()) {
+                    menu.getItem(0).setIcon(ResourcesCompat.getDrawable(getResources(), R.drawable.ic_fav_white_fill_24dp, null));
+                } else {
+                    menu.getItem(0).setIcon(ResourcesCompat.getDrawable(getResources(), R.drawable.ic_fav_outline_24dp, null));
                 }
+                access.execute(ASyncSimpleReadDatabase.TOGGLE_FAVOURITE);
                 return true;
             default:
                 return super.onOptionsItemSelected(item);

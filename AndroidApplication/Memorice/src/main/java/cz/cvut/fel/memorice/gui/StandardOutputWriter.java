@@ -5,6 +5,7 @@ import cz.cvut.fel.memorice.gui.IStdOut;
 /**
  * {@inheritDoc}
  */
+@Deprecated
 public class StandardOutputWriter implements IStdOut {
 
     private static StandardOutputWriter singleton = new StandardOutputWriter();

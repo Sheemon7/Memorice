@@ -12,9 +12,9 @@
         android:id="@+id/shadowView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_alignParentTop="true"
         android:background="@color/white_overlay"
-        android:visibility="gone"
-        android:layout_alignParentTop="true"/>
+        android:visibility="gone" />
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -46,70 +46,92 @@
                 android:id="@+id/recycler_view"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_above="@+id/switch_fav"
+                android:layout_above="@+id/fav_layout"
                 android:layout_below="@+id/bar_layout"
                 android:background="@color/white"
                 android:scrollbars="vertical" />
 
-            <Switch
-                android:id="@+id/switch_fav"
+            <RelativeLayout
+                android:id="@+id/fav_layout"
                 android:layout_width="wrap_content"
                 android:layout_height="60dp"
                 android:layout_alignParentBottom="true"
                 android:layout_centerHorizontal="true"
-                android:layout_gravity="center"
-                android:text="@string/only_fav"
-                android:textColor="@color/white" />
+                android:layout_gravity="center">
+
+                <Switch
+
+                    android:id="@+id/switch_fav"
+                    android:layout_width="wrap_content"
+                    android:layout_height="60dp"
+                    android:layout_alignParentBottom="true"
+                    android:layout_gravity="center"
+                    android:textColor="@color/white"
+                    android:textOff="@string/all"
+                    android:textOn="@string/only_fav"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentStart="true" />
+
+                <ImageView
+                    android:id="@+id/fav_indicator"
+                    android:layout_width="wrap_content"
+                    android:layout_height="60dp"
+                    android:layout_alignParentBottom="true"
+                    android:layout_gravity="center"
+                    android:layout_toRightOf="@id/switch_fav"
+                    android:paddingLeft="10dp"
+                    android:src="@drawable/ic_fav_outline_24dp" />
+            </RelativeLayout>
+
         </RelativeLayout>
 
     </RelativeLayout>
-        <com.getbase.floatingactionbutton.FloatingActionsMenu
-            android:id="@+id/fab_menu"
+
+    <com.getbase.floatingactionbutton.FloatingActionsMenu
+        android:id="@+id/fab_menu"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_gravity="right|bottom"
+        fab:fab_addButtonColorNormal="@color/colorInvert"
+        fab:fab_addButtonColorPressed="@color/colorInvert"
+        fab:fab_addButtonPlusIconColor="@color/white"
+        fab:fab_addButtonStrokeVisible="false"
+        fab:fab_labelStyle="@style/menu_labels_style"
+        fab:fab_labelsPosition="left">
+
+        <com.getbase.floatingactionbutton.FloatingActionButton
+            android:id="@+id/fab_dictionary"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentRight="true"
-            android:layout_gravity="right|bottom"
-            fab:fab_addButtonColorNormal="@color/colorInvert"
-            fab:fab_addButtonColorPressed="@color/colorInvert"
-            fab:fab_addButtonPlusIconColor="@color/white"
-            fab:fab_addButtonStrokeVisible="false"
-            fab:fab_labelStyle="@style/menu_labels_style"
-            fab:fab_labelsPosition="left">
+            fab:fab_colorNormal="@color/colorInvert"
+            fab:fab_colorPressed="@color/colorPrimary"
+            fab:fab_icon="@drawable/ic_dictionary_white_24dp"
+            fab:fab_size="normal"
+            fab:fab_title="@string/dictionary" />
 
-            <com.getbase.floatingactionbutton.FloatingActionButton
-                android:id="@+id/fab_dictionary"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                fab:fab_colorNormal="@color/colorInvert"
-                fab:fab_colorPressed="@color/colorPrimary"
-                fab:fab_icon="@drawable/ic_dictionary_white_24dp"
-                fab:fab_size="normal"
-                fab:fab_title="@string/dictionary" />
+        <com.getbase.floatingactionbutton.FloatingActionButton
+            android:id="@+id/fab_list"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            fab:fab_colorNormal="@color/colorInvert"
+            fab:fab_colorPressed="@color/colorPrimary"
+            fab:fab_icon="@drawable/ic_list_white_24dp"
+            fab:fab_size="normal"
+            fab:fab_title="@string/list" />
 
-            <com.getbase.floatingactionbutton.FloatingActionButton
-                android:id="@+id/fab_list"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                fab:fab_colorNormal="@color/colorInvert"
-                fab:fab_colorPressed="@color/colorPrimary"
-                fab:fab_icon="@drawable/ic_list_white_24dp"
-                fab:fab_size="normal"
-                fab:fab_title="@string/list" />
-
-            <com.getbase.floatingactionbutton.FloatingActionButton
-                android:id="@+id/fab_set"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                fab:fab_colorNormal="@color/colorInvert"
-                fab:fab_colorPressed="@color/colorPrimary"
-                fab:fab_icon="@drawable/ic_set_white_24dp"
-                fab:fab_size="normal"
-                fab:fab_title="@string/set" />
-        </com.getbase.floatingactionbutton.FloatingActionsMenu>
-
-
+        <com.getbase.floatingactionbutton.FloatingActionButton
+            android:id="@+id/fab_set"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            fab:fab_colorNormal="@color/colorInvert"
+            fab:fab_colorPressed="@color/colorPrimary"
+            fab:fab_icon="@drawable/ic_set_white_24dp"
+            fab:fab_size="normal"
+            fab:fab_title="@string/set" />
+    </com.getbase.floatingactionbutton.FloatingActionsMenu>
 
 
 </android.support.design.widget.CoordinatorLayout>

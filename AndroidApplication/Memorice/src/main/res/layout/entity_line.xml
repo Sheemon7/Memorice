@@ -1,4 +1,5 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="fill_parent"
     android:layout_height="?android:attr/listPreferredItemHeight"
     android:paddingLeft="20dp"
@@ -11,7 +12,9 @@
         android:layout_height="fill_parent"
         android:layout_alignParentBottom="true"
         android:layout_alignParentTop="true"
-        android:paddingRight="12dp"/>
+        android:paddingRight="12dp"
+        android:transitionName="@string/detail_transition"
+        tools:ignore="UnusedAttribute" />
 
     <TextView
         android:id="@+id/label_line"

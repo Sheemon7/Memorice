@@ -37,8 +37,9 @@ public class DictionaryInputListAdapter extends EntryInputListAdapter<Dictionary
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, final int position) {
-        if (!items.get(position).isCorrect()) {
-            if (items.get(position).getValue().equals("")) {
+        ItemList itemList = items.get(position);
+        if (!itemList.isCorrect()) {
+            if (itemList.getValue().equals("")) {
                 holder.txtValue.setError("empty");
             } else {
                 holder.txtDefinition.setError("duplicate definition");
@@ -47,8 +48,9 @@ public class DictionaryInputListAdapter extends EntryInputListAdapter<Dictionary
             holder.txtDefinition.setError(null);
             holder.txtValue.setError(null);
         }
-        holder.txtValue.setText(items.get(position).getValue());
-        holder.txtDefinition.setText(items.get(position).getDefinition());
+        itemList.setCorrect(true);
+        holder.txtValue.setText(itemList.getValue());
+        holder.txtDefinition.setText(itemList.getDefinition());
         holder.txtValue.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -102,15 +104,16 @@ public class DictionaryInputListAdapter extends EntryInputListAdapter<Dictionary
         ArrayList<DictionaryEntry> ret = new ArrayList<>(items.size());
         for (ItemList item :
                 items) {
-            String value = item.getDefinition();
+            String definition = item.getDefinition();
+            String value = item.getValue();
             if (value.equals("")) {
                 throw new EmptyTermException();
             } else {
-                if (valueCheck.contains(value)) {
+                if (valueCheck.contains(definition)) {
                     throw new TermAlreadyUsedException();
                 } else {
-                    valueCheck.add(value);
-                    ret.add(new DictionaryEntry(value, item.getValue()));
+                    valueCheck.add(definition);
+                    ret.add(new DictionaryEntry(definition, item.getValue()));
                 }
             }
         }
@@ -136,7 +139,6 @@ public class DictionaryInputListAdapter extends EntryInputListAdapter<Dictionary
         }
         notifyDataSetChanged();
     }
-
 
     protected static class ViewHolder extends RecyclerView.ViewHolder {
         private EditText txtDefinition;

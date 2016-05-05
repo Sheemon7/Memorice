@@ -39,8 +39,9 @@ public class SetInputListAdapter extends EntryInputListAdapter<SetInputListAdapt
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, final int position) {
-        if (!items.get(position).isCorrect()) {
-            if (items.get(position).getValue().equals("")) {
+        ItemList itemList = items.get(position);
+        if (!itemList.isCorrect()) {
+            if (itemList.getValue().equals("")) {
                 holder.txtValue.setError("empty");
             } else {
                 holder.txtValue.setError("duplicate");
@@ -48,7 +49,8 @@ public class SetInputListAdapter extends EntryInputListAdapter<SetInputListAdapt
         } else {
             holder.txtValue.setError(null);
         }
-        holder.txtValue.setText(items.get(position).getValue());
+        itemList.setCorrect(true);
+        holder.txtValue.setText(itemList.getValue());
         holder.txtValue.setHint("value");
         holder.txtValue.requestFocus();
         holder.txtValue.addTextChangedListener(new TextWatcher() {

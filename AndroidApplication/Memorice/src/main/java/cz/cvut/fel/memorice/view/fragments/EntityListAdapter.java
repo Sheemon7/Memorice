@@ -15,12 +15,12 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
-import java.util.Collections;
+import java.util.List;
 
 import cz.cvut.fel.memorice.R;
-import cz.cvut.fel.memorice.model.database.SQLiteHelper;
+import cz.cvut.fel.memorice.model.database.dataaccess.ASyncListReadDatabase;
+import cz.cvut.fel.memorice.model.database.dataaccess.ASyncSimpleReadDatabase;
 import cz.cvut.fel.memorice.model.entities.Entity;
-import cz.cvut.fel.memorice.model.util.WrongNameException;
 import cz.cvut.fel.memorice.view.activities.DictionaryDetailActivity;
 import cz.cvut.fel.memorice.view.activities.SequenceDetailActivity;
 import cz.cvut.fel.memorice.view.activities.SetDetailActivity;
@@ -30,48 +30,60 @@ import cz.cvut.fel.memorice.view.activities.SetDetailActivity;
  */
 public class EntityListAdapter extends RecyclerView.Adapter<EntityListAdapter.ViewHolder> {
 
-    private ArrayList<Entity> mDataset;
+    private List<Entity> mDataset;
     private RecyclerView view;
     private String filter = "";
 
     public EntityListAdapter(RecyclerView view) {
         this.view = view;
+        mDataset = new ArrayList<>();
     }
 
     public void showAll(Context context) {
-        mDataset = new SQLiteHelper(context).getAllEntities();
+        ASyncListReadDatabase access = new ASyncListReadDatabase(context);
+        access.setAdapter(this);
+        access.execute(ASyncListReadDatabase.ALL_ENTITIES);
         view.setAdapter(this);
     }
 
+    public void setData(List<Entity> data) {
+        mDataset = data;
+        notifyDataSetChanged();
+    }
+
     public void showFavorites(Context context) {
+        ASyncListReadDatabase access = new ASyncListReadDatabase(context);
+        access.setAdapter(this);
         if (filter.equals("")) {
-            mDataset = new SQLiteHelper(context).getAllFavouriteEntities();
+            access.execute(ASyncListReadDatabase.FAVOURITE_ENTITIES);
         } else {
-            mDataset = new SQLiteHelper(context).getAllFavouriteFilteredEntities(filter);
+            access.setFilter(filter);
+            access.execute(ASyncListReadDatabase.FAVOURITE_FILTER_ENTITIES);
         }
-        view.setAdapter(this);
     }
 
     public void remove(Entity item, Context context) {
         int position = mDataset.indexOf(item);
         mDataset.remove(position);
-        new SQLiteHelper(context).deleteEntity(item);
+        ASyncSimpleReadDatabase access = new ASyncSimpleReadDatabase(context);
+        access.setEntity(item);
+        access.execute(ASyncSimpleReadDatabase.DELETE_ENTITY);
         notifyItemRemoved(position);
     }
 
     public void toggleFavorite(Entity item, Context context) {
-        try {
-            new SQLiteHelper(context).toggleFavorite(item);
-            notifyItemChanged(mDataset.indexOf(item));
-        } catch (WrongNameException e) {
-            e.printStackTrace();
-        }
+        ASyncSimpleReadDatabase access = new ASyncSimpleReadDatabase(context);
+        access.setEntity(item);
+        access.execute(ASyncSimpleReadDatabase.TOGGLE_FAVOURITE);
+        notifyItemChanged(mDataset.indexOf(item));
     }
 
     public void filter(String filter, Context context) {
-        mDataset = new SQLiteHelper(context).getAllEntitiesFiltered(filter);
         this.filter = filter;
-        notifyDataSetChanged();
+        ASyncListReadDatabase access = new ASyncListReadDatabase(context);
+        access.setAdapter(this);
+        access.setFilter(filter);
+        access.execute(ASyncListReadDatabase.FILTERED_ENTITIES);
     }
 
     @Override
