@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Set;
 
 import cz.cvut.fel.memorice.model.entities.entries.Entry;
 import cz.cvut.fel.memorice.model.util.TermAlreadyUsedException;
@@ -13,11 +12,11 @@ import cz.cvut.fel.memorice.model.util.TermAlreadyUsedException;
 /**
  * Created by sheemon on 18.3.16.
  */
-public class Group extends Entity implements Serializable {
+public class Set extends Entity implements Serializable {
 
-    private Set<Entry> entries = new HashSet<>();
+    private java.util.Set entries = new HashSet<>();
 
-    public Group(String name) {
+    public Set(String name) {
         super(name);
     }
 
@@ -58,15 +57,15 @@ public class Group extends Entity implements Serializable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        Group group = (Group) o;
+        Set set = (Set) o;
 
-        return !(entries != null ? !entries.equals(group.entries) : group.entries != null);
+        return !(entries != null ? !entries.equals(set.entries) : set.entries != null);
 
     }
 
     @Override
     public String toString() {
-        StringBuilder builder = new StringBuilder("Group: " + getName() +
+        StringBuilder builder = new StringBuilder("Set: " + getName() +
                 "\nentries= ");
         for (Entry entry:
                 entries) {

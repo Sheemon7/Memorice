@@ -46,7 +46,7 @@ public class Dictionary extends Entity implements Serializable {
     }
 
     @Override
-    public Iterator iterator() {
+    public Iterator<DictionaryEntry> iterator() {
         return entries.iterator();
     }
 

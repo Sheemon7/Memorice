@@ -7,12 +7,16 @@ import cz.cvut.fel.memorice.model.entities.Entity;
 import cz.cvut.fel.memorice.model.entities.EntityEnum;
 
 /**
- * Created by sheemon on 18.3.16.
+ * {@inheritDoc}
  */
+@Deprecated
 public class FileDataWriter implements DataWriter {
 
     private final static Logger LOGGER = Logger.getLogger(FileDataWriter.class.getName());
 
+    /**
+     * {@inheritDoc}
+     */
     public void writeEntity(Entity entity, EntityEnum type) {
         String path = directory + File.separator + type.getName() + File.separator + entity.getName();
         File file = getFile(path);
@@ -30,6 +34,11 @@ public class FileDataWriter implements DataWriter {
         }
     }
 
+    /**
+     * Deletes entity from the database
+     * @param entity entity to be deleted
+     * @param type type of the entity
+     */
     public void deleteEntity(Entity entity, EntityEnum type) {
         String path = directory + File.separator + type.getName() + File.separator + entity.getName();
         File file = getFile(path);

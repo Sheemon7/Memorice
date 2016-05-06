@@ -8,12 +8,15 @@ import java.io.*;
 import java.util.logging.Logger;
 
 /**
- * Created by sheemon on 18.3.16.
+ * {@inheritDoc}
  */
+@Deprecated
 public class FileDataReader implements DataReader {
-
     private final static Logger LOGGER = Logger.getLogger(FileDataReader.class.getName());
 
+    /**
+     * {@inheritDoc}
+     */
     public Entity readEntity(String name, EntityEnum type) {
         String path = directory + File.separator + type.getName() + File.separator + name;
         Object object = null;

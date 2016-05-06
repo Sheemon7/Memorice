@@ -13,8 +13,10 @@ import cz.cvut.fel.memorice.model.util.NameAlreadyUsedException;
 
 
 /**
- * Created by sheemon on 18.3.16.
+ * Class that stores all names that have been used and provides methods for checking
+ * name validity.
  */
+@Deprecated
 public class NameDatabase implements Serializable {
 
     private final static Logger LOGGER = Logger.getLogger(NameDatabase.class.getName());
@@ -23,14 +25,22 @@ public class NameDatabase implements Serializable {
     private Map<String, EntityEnum> types = new HashMap<>();
     private Set<String> names = new HashSet<>();
 
-    private NameDatabase() {
+    private NameDatabase() { }
 
-    }
-
+    /**
+     * Returns singleton of the class
+     * @return singleton
+     */
     public static NameDatabase getInstance() {
         return singleton;
     }
 
+    /**
+     * Adds name of the passed entity to name database
+     * @param entity entity, which name is going to be written
+     * @throws NameAlreadyUsedException
+     * @throws InvalidNameException
+     */
     public void addName(Entity entity) throws NameAlreadyUsedException, InvalidNameException {
         String name = entity.getName();
         if (names.contains(name)) {
@@ -43,24 +53,44 @@ public class NameDatabase implements Serializable {
         types.put(name, entity.getType());
     }
 
+    /**
+     * Deletes name from the database
+     * @param name name
+     */
     public void deleteName(String name) {
         new File(DataHandler.directory + File.separator + types.get(name).getName() + File.separator + name).delete();
         names.remove(name);
         types.remove(name);
     }
 
+    /**
+     * Returns corresponding type of entity
+     * @param entity entity name
+     * @return
+     */
     public EntityEnum getType(String entity) {
         return types.get(entity);
     }
 
+    /**
+     * Returns map of names and types of added entities
+     * @return map of names and types
+     */
     public Map<String, EntityEnum> getTypes() {
         return types;
     }
 
+    /**
+     * Returns set of all used names so far
+     * @return set of names
+     */
     public Set<String> getNames() {
         return names;
     }
 
+    /**
+     * Updates data from files
+     */
     public void updateNames() {
         for (EntityEnum type : EntityEnum.values()) {
             updateFolder(type);

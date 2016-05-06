@@ -7,8 +7,10 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Logger;
 
+import cz.cvut.fel.memorice.model.entities.Dictionary;
 import cz.cvut.fel.memorice.model.entities.Entity;
 import cz.cvut.fel.memorice.model.entities.EntityEnum;
 import cz.cvut.fel.memorice.model.entities.builders.Builder;
@@ -18,7 +20,10 @@ import cz.cvut.fel.memorice.model.entities.entries.SequenceEntry;
 import cz.cvut.fel.memorice.model.util.WrongNameException;
 
 /**
- * Created by sheemon on 16.4.16.
+ * This class provides database access, and conducts database access operations
+ * According to this article, I use only one instance of database helper to avoid collisions
+ * <a href="//http://blog.foxxtrot.net/2009/01/a-sqliteopenhelper-is-not-a-sqlitetablehelper.html">
+ * SQLiteHelper is not a SQLiteTableHelper</a>
  */
 public class SQLiteHelper extends SQLiteOpenHelper {
     private static final Logger LOG = Logger.getLogger(SQLiteHelper.class.getName());
@@ -32,16 +37,22 @@ public class SQLiteHelper extends SQLiteOpenHelper {
     private static final String KEY_FAVORITE = "favorite";
     private static final String[] ENTITIES_COLUMNS = {KEY_LABEL, KEY_TYPE, KEY_FAVORITE};
 
-
     private SQLiteEntryTableHelper sqLiteEntryTableHelper = new SQLiteEntryTableHelper();
 
-
-    //http://blog.foxxtrot.net/2009/01/a-sqliteopenhelper-is-not-a-sqlitetablehelper.html
-
+    /**
+     * {@inheritDoc}
+     *
+     * @param context
+     */
     public SQLiteHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
 
+    /**
+     * Creates a new entity tables and three entries tables
+     *
+     * @param db writable database
+     */
     @Override
     public void onCreate(SQLiteDatabase db) {
         LOG.info("Creating database " + DATABASE_NAME + " , version: " + DATABASE_VERSION);
@@ -55,6 +66,13 @@ public class SQLiteHelper extends SQLiteOpenHelper {
         sqLiteEntryTableHelper.onCreate(db);
     }
 
+    /**
+     * Updates existing database
+     *
+     * @param db         database
+     * @param oldVersion oldVersion number
+     * @param newVersion newVersion number
+     */
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         LOG.info("Updating database");
@@ -63,9 +81,13 @@ public class SQLiteHelper extends SQLiteOpenHelper {
         this.onCreate(db);
     }
 
+    /**
+     * Adds entity and its entries to the database
+     *
+     * @param entity entity to be added
+     */
     public void addEntity(Entity entity) {
         LOG.info("Adding entity: " + entity);
-
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put(KEY_LABEL, entity.getName());
@@ -75,45 +97,45 @@ public class SQLiteHelper extends SQLiteOpenHelper {
         db.insert(TABLE_ENTITIES, null, values);
         db.close();
 
-        if (entity.getType() == EntityEnum.SEQUENCE) {
-            for (SequenceEntry entry : (Iterable<SequenceEntry>) entity) {
-                sqLiteEntryTableHelper.addSequenceEntry(entry, entity, getWritableDatabase());
-            }
-        } else if (entity.getType() == EntityEnum.DICTIONARY) {
-            for (DictionaryEntry entry : (Iterable<DictionaryEntry>) entity) {
-                sqLiteEntryTableHelper.addDictEntry(entry, entity, getWritableDatabase());
-            }
-        } else {
-            for (Entry entry : (Iterable<Entry>) entity) {
-                sqLiteEntryTableHelper.addSetEntry(entry, entity, getWritableDatabase());
-            }
+        SQLiteDatabase writableDatabase = getWritableDatabase();
+        switch (entity.getType()) {
+            case SEQUENCE:
+                for (Entry entry : entity.getListOfEntries()) {
+                    sqLiteEntryTableHelper.addSequenceEntry((SequenceEntry) entry, entity, writableDatabase);
+                }
+                break;
+            case GROUP:
+                for (Entry entry : entity.getListOfEntries()) {
+                    sqLiteEntryTableHelper.addSetEntry(entry, entity, writableDatabase);
+                }
+                break;
+            case DICTIONARY:
+                for (Entry entry : entity.getListOfEntries()) {
+                    sqLiteEntryTableHelper.addDictEntry((DictionaryEntry) entry, entity, writableDatabase);
+                }
+                break;
         }
-
     }
 
+    /**
+     * Returns all entity's entries in the database
+     *
+     * @param label name of the entity
+     * @return list of all entity's entries
+     */
     public Entity getEntity(String label) {
         LOG.info("Getting entity: " + label);
 
         SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.query(TABLE_ENTITIES, ENTITIES_COLUMNS,
+                " label = ? ", new String[]{label}, null, null, null, null);
 
-        Cursor cursor = db.query(TABLE_ENTITIES,
-                ENTITIES_COLUMNS,
-                " label = ? ",
-                new String[]{label},
-                null, null, null, null);
-
-        ArrayList<? extends Entry> entries;
+        List<? extends Entry> entries;
         if (cursor != null && cursor.moveToFirst()) {
             EntityEnum type = EntityEnum.getType(cursor.getString(1));
             Builder b = Builder.getCorrectBuilder(type);
             b.init(label);
-            if (type == EntityEnum.SEQUENCE) {
-                entries = sqLiteEntryTableHelper.getAllSequenceEntries(label, getReadableDatabase());
-            } else if (type == EntityEnum.DICTIONARY) {
-                entries = sqLiteEntryTableHelper.getAllDictEntries(label, getReadableDatabase());
-            } else {
-                entries = sqLiteEntryTableHelper.getAllSetEntries(label, getReadableDatabase());
-            }
+            entries = getEntityEntries(label, type);
             for (Entry e : entries) {
                 b.add(e);
             }
@@ -196,7 +218,8 @@ public class SQLiteHelper extends SQLiteOpenHelper {
         ArrayList<Entity> ret = new ArrayList<>();
 
         String query = "SELECT " + KEY_LABEL + " FROM " + TABLE_ENTITIES + " WHERE " + KEY_FAVORITE + "=1 AND "
-                + KEY_LABEL + " LIKE " + "\"%" + filter + "%\"";;
+                + KEY_LABEL + " LIKE " + "\"%" + filter + "%\"";
+        ;
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery(query, null);
 
@@ -261,5 +284,17 @@ public class SQLiteHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = getWritableDatabase();
         db.execSQL(query);
         db.close();
+    }
+
+    private List<? extends Entry> getEntityEntries(String label, EntityEnum type) {
+        List<? extends Entry> entries;
+        if (type == EntityEnum.SEQUENCE) {
+            entries = sqLiteEntryTableHelper.getAllSequenceEntries(label, getReadableDatabase());
+        } else if (type == EntityEnum.DICTIONARY) {
+            entries = sqLiteEntryTableHelper.getAllDictEntries(label, getReadableDatabase());
+        } else {
+            entries = sqLiteEntryTableHelper.getAllSetEntries(label, getReadableDatabase());
+        }
+        return entries;
     }
 }

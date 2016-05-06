@@ -1,8 +1,9 @@
 package cz.cvut.fel.memorice.model.database;
 
 /**
- * Created by sheemon on 18.3.16.
+ * Interface specifying objects that are capable of handling data and converting them to files
  */
+@Deprecated
 public interface DataHandler {
 
     String directory = "DATA";

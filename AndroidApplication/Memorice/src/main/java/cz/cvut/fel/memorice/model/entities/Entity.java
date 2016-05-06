@@ -32,13 +32,11 @@ public abstract class Entity implements Serializable, Iterable {
         return name;
     }
 
-//    public abstract <T extends Entry> boolean addEntry(Class<T> entry);
-
     public abstract EntityEnum getType();
 
     public abstract int size();
 
-    public abstract Iterator iterator();
+    public abstract Iterator<? extends Entry> iterator();
 
     public abstract List<? extends Entry> getListOfEntries();
 

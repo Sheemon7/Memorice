@@ -45,7 +45,7 @@ public class MainActivity extends AppCompatActivity {
     private void setStatsText() {
         SQLiteHelper helper = new SQLiteHelper(getApplicationContext());
         TextView stats = (TextView) findViewById(R.id.welcome_stats);
-        stats.setText(Html.fromHtml(String.format(statsStub, helper.countEntities(), helper.countEntries())));
+        stats.setText(Html.fromHtml(String.format(statsStub, helper.countEntries(), helper.countEntities())));
     }
 
     @Override

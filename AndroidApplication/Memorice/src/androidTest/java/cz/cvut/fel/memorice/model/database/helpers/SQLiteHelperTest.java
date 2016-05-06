@@ -3,8 +3,6 @@ package cz.cvut.fel.memorice.model.database.helpers;
 import android.test.AndroidTestCase;
 import android.test.RenamingDelegatingContext;
 
-import junit.framework.TestCase;
-
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -15,7 +13,7 @@ import java.util.UUID;
 
 import cz.cvut.fel.memorice.model.entities.Dictionary;
 import cz.cvut.fel.memorice.model.entities.Entity;
-import cz.cvut.fel.memorice.model.entities.Group;
+import cz.cvut.fel.memorice.model.entities.Set;
 import cz.cvut.fel.memorice.model.entities.Sequence;
 import cz.cvut.fel.memorice.model.entities.builders.Builder;
 import cz.cvut.fel.memorice.model.entities.builders.DictionaryBuilder;
@@ -26,17 +24,23 @@ import cz.cvut.fel.memorice.model.entities.entries.Entry;
 import cz.cvut.fel.memorice.model.entities.entries.SequenceEntry;
 import cz.cvut.fel.memorice.model.util.WrongNameException;
 
-
+/**
+ * Testing {@link SQLiteHelper} class
+ */
 public class SQLiteHelperTest extends AndroidTestCase {
 
     private static final int NUMBER_OF_ENTRIES_WITHIN_ENTITIES = 10;
     private SQLiteHelper helper;
     private List<Entity> entities = new ArrayList<>();
     private List<Entity> entitiesFavourite = new ArrayList<>();
-    private Group g1, g2;
+    private Set g1, g2;
     private Sequence s1, s2;
     private Dictionary d1, d2;
 
+    /**
+     * Set Up method - adds test data to database
+     * @throws Exception
+     */
     @BeforeClass
     @Override
     public void setUp() throws Exception {
@@ -49,6 +53,10 @@ public class SQLiteHelperTest extends AndroidTestCase {
         }
     }
 
+    /**
+     * Tear Down method - deletes test data from database
+     * @throws Exception
+     */
     @AfterClass
     @Override
     protected void tearDown() throws Exception {
@@ -184,13 +192,13 @@ public class SQLiteHelperTest extends AndroidTestCase {
         entities.add(s2);
     }
 
-    private Group prepareTestingSet(String label) {
+    private Set prepareTestingSet(String label) {
         Builder b = SetBuilder.getInstance();
         b.init(label);
         for (int i = 0; i < NUMBER_OF_ENTRIES_WITHIN_ENTITIES; i++) {
             b.add(new Entry(UUID.randomUUID().toString()));
         }
-        return (Group) b.wrap();
+        return (Set) b.wrap();
     }
 
     private Sequence prepareTestingList(String label) {
