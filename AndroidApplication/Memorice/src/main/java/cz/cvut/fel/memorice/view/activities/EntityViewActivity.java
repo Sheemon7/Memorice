@@ -116,6 +116,7 @@ public class EntityViewActivity extends AppCompatActivity {
             }
         });
         shadowView.setAlpha(0.6f);
+        shadowView.setVisibility(View.GONE);
         fabMenu.bringToFront();
     }
 
@@ -280,12 +281,14 @@ public class EntityViewActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 shadowView.setAlpha(0);
+                fabMenu.setEnabled(false);
             }
         });
         searchView.setOnCloseListener(new SearchView.OnCloseListener() {
             @Override
             public boolean onClose() {
-                shadowView.setAlpha(0);
+                fabMenu.setEnabled(true);
+                prepareShadowView();
                 return false;
             }
         });

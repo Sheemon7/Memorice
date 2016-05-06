@@ -20,75 +20,29 @@ import cz.cvut.fel.memorice.model.entities.entries.SequenceEntry;
 public class SQLiteEntryTableHelper {
     private static final Logger LOG = Logger.getLogger(SQLiteEntryTableHelper.class.getName());
 
-    private static final String TABLE_ENTRIES_SEQUENCES = "seqs";
-    private static final String KEY_NUMBER = "num";
-    private static final String KEY_VALUE = "entry";
-    private static final String KEY_ENTITY = "entity";
+    private static final String TABLE_ENTRIES_SEQUENCES = SQLiteHelper.TABLE_ENTRIES_SEQUENCES;
+    private static final String KEY_NUMBER = SQLiteHelper.KEY_NUMBER;
+    private static final String KEY_VALUE = SQLiteHelper.KEY_VALUE;
+    private static final String KEY_ENTITY = SQLiteHelper.KEY_ENTITY;
 
-    private static final String TABLE_ENTRIES_DICTS = "dicts";
-    private static final String KEY_PASS = "pass";
+    private static final String TABLE_ENTRIES_DICTS = SQLiteHelper.TABLE_ENTRIES_DICTS;
+    private static final String KEY_PASS = SQLiteHelper.KEY_PASS;
 
-    private static final String TABLE_ENTRIES_SETS = "grps";
+    private static final String TABLE_ENTRIES_SETS = SQLiteHelper.TABLE_ENTRIES_SETS;
 
-    /**
-     * This method is called upon the creation of new database - creates three new tables.
-     *
-     * @param db database to be changed
-     */
-    public void onCreate(SQLiteDatabase db) {
-        createTableSets(db);
-        createTableSequences(db);
-        createTableDictionaries(db);
-    }
+    private SQLiteHelper helper;
 
-    private void createTableDictionaries(SQLiteDatabase db) {
-        String createTableEntriesDicts =
-                "CREATE TABLE " + TABLE_ENTRIES_DICTS + " (" +
-                        KEY_PASS + " TEXT, " +
-                        KEY_VALUE + " TEXT, " +
-                        KEY_ENTITY + " TEXT " +
-                        ");";
-        db.execSQL(createTableEntriesDicts);
-    }
-
-    private void createTableSets(SQLiteDatabase db) {
-        String createTableEntriesGroups =
-                "CREATE TABLE " + TABLE_ENTRIES_SETS + " (" +
-                        KEY_VALUE + " TEXT, " +
-                        KEY_ENTITY + " TEXT " +
-                        ");";
-        db.execSQL(createTableEntriesGroups);
-    }
-
-    private void createTableSequences(SQLiteDatabase db) {
-        String createTableEntriesSequences =
-                "CREATE TABLE " + TABLE_ENTRIES_SEQUENCES + " (" +
-                        KEY_NUMBER + " INTEGER, " +
-                        KEY_VALUE + " TEXT, " +
-                        KEY_ENTITY + " TEXT " +
-                        ");";
-        db.execSQL(createTableEntriesSequences);
-    }
-
-    /**
-     * This method is called if the update of the database is going to be executed.
-     * Drops all entries tables
-     *
-     * @param db database reference
-     */
-    public void onUpgrade(SQLiteDatabase db) {
-        db.execSQL("DROP TABLE IF EXISTS " + TABLE_ENTRIES_SEQUENCES);
-        db.execSQL("DROP TABLE IF EXISTS " + TABLE_ENTRIES_SETS);
-        db.execSQL("DROP TABLE IF EXISTS " + TABLE_ENTRIES_DICTS);
+    public SQLiteEntryTableHelper(SQLiteHelper helper) {
+        this.helper = helper;
     }
 
     /**
      * Deletes all entries from the passed entity
      *
      * @param entity entity, which entries is going to be deleted
-     * @param db     writable database
      */
-    public void deleteAllEntityEntries(Entity entity, SQLiteDatabase db) {
+    public void deleteAllEntityEntries(Entity entity) {
+        SQLiteDatabase db = helper.getWritableDatabase();
         switch (entity.getType()) {
             case GROUP:
                 db.delete(TABLE_ENTRIES_SETS, KEY_ENTITY + " =?", new String[]{entity.getName()});
@@ -100,21 +54,22 @@ public class SQLiteEntryTableHelper {
                 db.delete(TABLE_ENTRIES_DICTS, KEY_ENTITY + " =?", new String[]{entity.getName()});
                 break;
         }
+        db.close();
     }
 
     /**
      * Returns all set entries in the database from passed entity
      *
      * @param label label of the entity
-     * @param db    readable database
      * @return list all entries
      */
-    public ArrayList<Entry> getAllSetEntries(String label, SQLiteDatabase db) {
+    public ArrayList<Entry> getAllSetEntries(String label) {
         LOG.info("Getting all set entries from " + label);
         ArrayList<Entry> ret = new ArrayList<>();
 
         String query = "SELECT " + KEY_VALUE + " FROM " + TABLE_ENTRIES_SETS +
                 " WHERE " + KEY_ENTITY + "=" + "\"" + label + "\"";
+        SQLiteDatabase db = helper.getReadableDatabase();
         Cursor cursor = db.rawQuery(query, null);
         if (cursor != null && cursor.moveToFirst()) {
             do {
@@ -122,6 +77,7 @@ public class SQLiteEntryTableHelper {
             } while (cursor.moveToNext());
             cursor.close();
         }
+        db.close();
         return ret;
     }
 
@@ -129,14 +85,14 @@ public class SQLiteEntryTableHelper {
      * Returns all sequence entries in the database from passed entity
      *
      * @param label label of the entity
-     * @param db    readable database
      * @return list all entries
      */
-    public List<SequenceEntry> getAllSequenceEntries(String label, SQLiteDatabase db) {
+    public List<SequenceEntry> getAllSequenceEntries(String label) {
         LOG.info("Getting all sequence entries from " + label);
         List<SequenceEntry> ret = new ArrayList<>();
         String query = "SELECT " + KEY_NUMBER + ", " + KEY_VALUE + " FROM " +
                 TABLE_ENTRIES_SEQUENCES + " WHERE " + KEY_ENTITY + "=" + "\"" + label + "\"";
+        SQLiteDatabase db = helper.getReadableDatabase();
         Cursor cursor = db.rawQuery(query, null);
         if (cursor != null && cursor.moveToFirst()) {
             do {
@@ -144,6 +100,7 @@ public class SQLiteEntryTableHelper {
             } while (cursor.moveToNext());
             cursor.close();
         }
+        db.close();
         return ret;
     }
 
@@ -151,15 +108,16 @@ public class SQLiteEntryTableHelper {
      * Returns all dictionary entries in the database from passed entity
      *
      * @param label label of the entity
-     * @param db    readable database
      * @return list all entries
      */
-    public List<DictionaryEntry> getAllDictEntries(String label, SQLiteDatabase db) {
+    public List<DictionaryEntry> getAllDictEntries(String label) {
         LOG.info("Getting all dictionary entries from " + label);
         List<DictionaryEntry> ret = new ArrayList<>();
 
         String query = "SELECT " + KEY_PASS + ", " + KEY_VALUE + " FROM " + TABLE_ENTRIES_DICTS +
                 " WHERE " + KEY_ENTITY + "=" + "\"" + label + "\"";
+
+        SQLiteDatabase db = helper.getReadableDatabase();
         Cursor cursor = db.rawQuery(query, null);
         if (cursor != null && cursor.moveToFirst()) {
             do {
@@ -167,6 +125,7 @@ public class SQLiteEntryTableHelper {
             } while (cursor.moveToNext());
             cursor.close();
         }
+        db.close();
         return ret;
     }
 
@@ -175,15 +134,14 @@ public class SQLiteEntryTableHelper {
      *
      * @param entry  entry to be added
      * @param entity owner of the entry
-     * @param db     writable database
      */
-    public void addSetEntry(Entry entry, Entity entity, SQLiteDatabase db) {
+    public void addSetEntry(Entry entry, Entity entity) {
         LOG.info("Adding entry: " + entry);
 
         ContentValues values = new ContentValues();
         values.put(KEY_VALUE, entry.getValue());
         values.put(KEY_ENTITY, entity.getName());
-
+        SQLiteDatabase db = helper.getWritableDatabase();
         db.insert(TABLE_ENTRIES_SETS, null, values);
         db.close();
     }
@@ -193,16 +151,15 @@ public class SQLiteEntryTableHelper {
      *
      * @param entry  entry to be added
      * @param entity owner of the entry
-     * @param db     writable database
      */
-    public void addSequenceEntry(SequenceEntry entry, Entity entity, SQLiteDatabase db) {
-        LOG.info("Adding entry: " + entry);
+    public void addSequenceEntry(SequenceEntry entry, Entity entity) {
+        LOG.info("Adding sequence entry: " + entry);
 
         ContentValues values = new ContentValues();
         values.put(KEY_NUMBER, entry.getNumber());
         values.put(KEY_VALUE, entry.getValue());
         values.put(KEY_ENTITY, entity.getName());
-
+        SQLiteDatabase db = helper.getWritableDatabase();
         db.insert(TABLE_ENTRIES_SEQUENCES, null, values);
         db.close();
     }
@@ -212,16 +169,15 @@ public class SQLiteEntryTableHelper {
      *
      * @param entry  entry to be added
      * @param entity owner of the entry
-     * @param db     writable database
      */
-    public void addDictEntry(DictionaryEntry entry, Entity entity, SQLiteDatabase db) {
-        LOG.info("Adding entry: " + entry);
+    public void addDictEntry(DictionaryEntry entry, Entity entity) {
+        LOG.info("Adding dictionary entry: " + entry);
 
         ContentValues values = new ContentValues();
         values.put(KEY_PASS, entry.getDefinition());
         values.put(KEY_VALUE, entry.getValue());
         values.put(KEY_ENTITY, entity.getName());
-
+        SQLiteDatabase db = helper.getWritableDatabase();
         db.insert(TABLE_ENTRIES_DICTS, null, values);
         db.close();
     }
@@ -230,12 +186,12 @@ public class SQLiteEntryTableHelper {
      * Deletes passed set entry from the database
      *
      * @param entry entry to be deleted
-     * @param db    writable database
      */
-    public void deleteSetEntry(Entry entry, SQLiteDatabase db) {
+    public void deleteSetEntry(Entry entry) {
         LOG.info("Deleting set entry " + entry);
         String query = "DELETE FROM " + TABLE_ENTRIES_SETS + "WHERE " + KEY_VALUE + " = " + "\""
                 + entry.getValue() + "\"";
+        SQLiteDatabase db = helper.getWritableDatabase();
         db.execSQL(query);
         db.close();
     }
@@ -244,12 +200,12 @@ public class SQLiteEntryTableHelper {
      * Deletes passed set entry from the database
      *
      * @param entry entry to be deleted
-     * @param db    writable database
      */
-    public void deleteSequenceEntry(SequenceEntry entry, SQLiteDatabase db) {
+    public void deleteSequenceEntry(SequenceEntry entry) {
         LOG.info("Deleting sequence entry " + entry);
         String query = "DELETE FROM " + TABLE_ENTRIES_SEQUENCES + "WHERE " + KEY_VALUE + " = " + "\""
                 + entry.getValue() + "\"";
+        SQLiteDatabase db = helper.getWritableDatabase();
         db.execSQL(query);
         db.close();
     }
@@ -258,12 +214,12 @@ public class SQLiteEntryTableHelper {
      * Deletes passed set entry from the database
      *
      * @param entry entry to be deleted
-     * @param db    writable database
      */
-    public void deleteDictionaryEntry(DictionaryEntry entry, SQLiteDatabase db) {
+    public void deleteDictionaryEntry(DictionaryEntry entry) {
         LOG.info("Deleting dictionary entry " + entry);
         String query = "DELETE FROM " + TABLE_ENTRIES_DICTS + "WHERE " + KEY_VALUE + " = " + "\""
                 + entry.getValue() + "\"";
+        SQLiteDatabase db = helper.getWritableDatabase();
         db.execSQL(query);
         db.close();
     }
@@ -271,21 +227,21 @@ public class SQLiteEntryTableHelper {
     /**
      * Returns the total number of entries in all tables.
      *
-     * @param db readable database
      * @return the sum of all entries
      */
-    public int getEntriesCount(SQLiteDatabase db) {
+    public int getEntriesCount() {
         int ret = 0;
         for (String table :
                 new String[]{TABLE_ENTRIES_DICTS, TABLE_ENTRIES_SETS, TABLE_ENTRIES_SEQUENCES}) {
             String query = "SELECT COUNT(*) FROM " + table;
+            SQLiteDatabase db = helper.getReadableDatabase();
             Cursor cursor = db.rawQuery(query, null);
             if (cursor != null && cursor.moveToFirst()) {
                 ret += Integer.parseInt(cursor.getString(0));
                 cursor.close();
             }
+            db.close();
         }
         return ret;
     }
-
 }

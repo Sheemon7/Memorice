@@ -14,7 +14,7 @@ import cz.cvut.fel.memorice.model.util.TermAlreadyUsedException;
  */
 public class Set extends Entity implements Serializable {
 
-    private java.util.Set entries = new HashSet<>();
+    private java.util.Set<Entry> entries = new HashSet<>();
 
     public Set(String name) {
         super(name);
@@ -49,7 +49,7 @@ public class Set extends Entity implements Serializable {
 
     @Override
     public List<Entry> getListOfEntries() {
-        return new ArrayList<Entry>(entries);
+        return new ArrayList<>(entries);
     }
 
     @Override
@@ -57,9 +57,8 @@ public class Set extends Entity implements Serializable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        Set set = (Set) o;
-
-        return !(entries != null ? !entries.equals(set.entries) : set.entries != null);
+        Set that = (Set) o;
+        return this.getName().equals(that.getName()) && !(entries != null ? !entries.equals(that.entries) : that.entries != null);
 
     }
 

@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -17,7 +18,7 @@ import cz.cvut.fel.memorice.model.util.TermAlreadyUsedException;
  */
 public class Dictionary extends Entity implements Serializable {
 
-    private Set<DictionaryEntry> entries = new HashSet<>();
+    private Set<DictionaryEntry> entries = new LinkedHashSet<>();
 
     public Dictionary(String name) {
         super(name);
@@ -52,17 +53,15 @@ public class Dictionary extends Entity implements Serializable {
 
     @Override
     public List<DictionaryEntry> getListOfEntries() {
-        return new ArrayList<DictionaryEntry>(entries);
+        return new ArrayList<>(entries);
     }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-
         Dictionary that = (Dictionary) o;
-
-        return !(entries != null ? !entries.equals(that.entries) : that.entries != null);
+        return this.getName().equals(that.getName()) && !(entries != null ? !entries.equals(that.entries) : that.entries != null);
 
     }
 

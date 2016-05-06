@@ -30,11 +30,6 @@ public class Sequence extends Entity implements Serializable {
         return entries.add(entry);
     }
 
-    public boolean removeEntry(SequenceEntry entry) {
-        return entries.remove(entry);
-        //soupnout cisla? v builderu nebo tady? dulezite, asi podle toho, jak budou fungovat databaze v Androidu
-    }
-
     @Override
     public int size() {
         return entries.size();
@@ -55,9 +50,8 @@ public class Sequence extends Entity implements Serializable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        Sequence sequence = (Sequence) o;
-
-        return !(entries != null ? !entries.equals(sequence.entries) : sequence.entries != null);
+        Sequence that = (Sequence) o;
+        return this.getName().equals(that.getName()) && !(entries != null ? !entries.equals(that.entries) : that.entries != null);
 
     }
 
