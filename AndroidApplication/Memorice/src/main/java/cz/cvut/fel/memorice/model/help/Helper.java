@@ -1,8 +1,9 @@
 package cz.cvut.fel.memorice.model.help;
 
 /**
- * Created by sheemon on 19.3.16.
+ * This class was used in previous version of the application and is now obsolete
  */
+@Deprecated
 public class Helper {
 
 

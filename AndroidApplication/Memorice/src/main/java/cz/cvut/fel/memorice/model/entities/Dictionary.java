@@ -29,9 +29,10 @@ public class Dictionary extends Entity implements Serializable {
         return EntityEnum.DICTIONARY;
     }
 
-    public boolean addEntry(DictionaryEntry entry) throws TermAlreadyUsedException {
+    @Override
+    public void addEntry(Entry entry) throws TermAlreadyUsedException {
         if (!entries.contains(entry)) {
-            return entries.add(entry);
+            entries.add((DictionaryEntry)entry);
         } else {
             throw new TermAlreadyUsedException();
         }

@@ -25,9 +25,10 @@ public class Set extends Entity implements Serializable {
         return EntityEnum.GROUP;
     }
 
-    public boolean addEntry(Entry entry) throws TermAlreadyUsedException {
+    @Override
+    public void addEntry(Entry entry) throws TermAlreadyUsedException {
         if (!entries.contains(entry)) {
-            return entries.add(entry);
+            entries.add(entry);
         } else {
             throw new TermAlreadyUsedException();
         }

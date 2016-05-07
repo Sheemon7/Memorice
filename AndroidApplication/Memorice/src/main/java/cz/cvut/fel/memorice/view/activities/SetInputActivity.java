@@ -15,7 +15,8 @@ import java.util.ArrayList;
 
 import cz.cvut.fel.memorice.R;
 import cz.cvut.fel.memorice.model.database.helpers.SQLiteHelper;
-import cz.cvut.fel.memorice.model.entities.builders.SetBuilder;
+import cz.cvut.fel.memorice.model.entities.EntityEnum;
+import cz.cvut.fel.memorice.model.entities.builders.Builder;
 import cz.cvut.fel.memorice.model.entities.entries.Entry;
 import cz.cvut.fel.memorice.model.util.EmptyNameException;
 import cz.cvut.fel.memorice.model.util.EmptyTermException;
@@ -81,7 +82,7 @@ public class SetInputActivity extends InputActivity {
         } else if (helper.getEntity(label) != null) {
             throw new NameAlreadyUsedException();
         }
-        SetBuilder builder = SetBuilder.getInstance();
+        Builder builder = Builder.getCorrectBuilder(EntityEnum.GROUP);
         builder.init(label);
 
         try {

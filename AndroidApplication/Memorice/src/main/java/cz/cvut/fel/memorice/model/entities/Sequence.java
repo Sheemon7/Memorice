@@ -7,14 +7,13 @@ import java.util.List;
 
 import cz.cvut.fel.memorice.model.entities.entries.Entry;
 import cz.cvut.fel.memorice.model.entities.entries.SequenceEntry;
-import cz.cvut.fel.memorice.model.util.TermAlreadyUsedException;
 
 /**
  * Created by sheemon on 18.3.16.
  */
 public class Sequence extends Entity implements Serializable {
 
-    private List<SequenceEntry> entries= new ArrayList<SequenceEntry>();
+    private List<SequenceEntry> entries = new ArrayList<>();
 
     public Sequence(String name) {
         super(name);
@@ -25,9 +24,9 @@ public class Sequence extends Entity implements Serializable {
         return EntityEnum.SEQUENCE;
     }
 
-//    @Override
-    public boolean addEntry(SequenceEntry entry) {
-        return entries.add(entry);
+    @Override
+    public void addEntry(Entry entry) {
+        entries.add((SequenceEntry)entry);
     }
 
     @Override

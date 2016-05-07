@@ -15,7 +15,8 @@ import java.util.ArrayList;
 
 import cz.cvut.fel.memorice.R;
 import cz.cvut.fel.memorice.model.database.helpers.SQLiteHelper;
-import cz.cvut.fel.memorice.model.entities.builders.SequenceBuilder;
+import cz.cvut.fel.memorice.model.entities.EntityEnum;
+import cz.cvut.fel.memorice.model.entities.builders.Builder;
 import cz.cvut.fel.memorice.model.entities.entries.SequenceEntry;
 import cz.cvut.fel.memorice.model.util.EmptyNameException;
 import cz.cvut.fel.memorice.model.util.EmptyTermException;
@@ -98,7 +99,7 @@ public class SequenceInputActivity extends InputActivity {
         } else if (helper.getEntity(label) != null) {
             throw new NameAlreadyUsedException();
         }
-        SequenceBuilder builder = SequenceBuilder.getInstance();
+        Builder builder = Builder.getCorrectBuilder(EntityEnum.SEQUENCE);
         builder.init(label);
         try {
             for (SequenceEntry e: (ArrayList< SequenceEntry>) mAdapter.getInput()) {

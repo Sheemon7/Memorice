@@ -36,6 +36,8 @@ public abstract class Entity implements Serializable, Iterable {
 
     public abstract int size();
 
+    public abstract void addEntry(Entry entry) throws TermAlreadyUsedException;
+
     public abstract Iterator<? extends Entry> iterator();
 
     public abstract List<? extends Entry> getListOfEntries();
