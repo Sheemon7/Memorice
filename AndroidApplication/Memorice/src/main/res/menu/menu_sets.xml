@@ -1,23 +1,24 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context=".view.activities.EntityViewActivity" >
+    tools:context=".view.activities.EntityViewActivity">
 
     <item
         android:id="@+id/action_search"
         android:icon="@drawable/ic_search_24dp"
         android:title="@string/search_action_label"
-        app:showAsAction="ifRoom"
-        app:actionViewClass="android.support.v7.widget.SearchView" />
-    />
+        app:actionViewClass="android.support.v7.widget.SearchView"
+        app:showAsAction="ifRoom" />
 
-    <item android:id="@+id/action_settings"
-        android:title="@string/settings_action_label"
+    <item
+        android:id="@+id/action_settings"
         android:orderInCategory="100"
+        android:title="@string/settings_action_label"
         app:showAsAction="never" />
 
-    <item android:id="@+id/action_help"
-        android:title="@string/help_action_label"
+    <item
+        android:id="@+id/action_help"
         android:orderInCategory="100"
+        android:title="@string/help_action_label"
         app:showAsAction="never" />
 </menu>

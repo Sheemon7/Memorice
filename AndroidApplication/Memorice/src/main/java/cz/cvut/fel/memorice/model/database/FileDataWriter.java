@@ -18,13 +18,13 @@ public class FileDataWriter implements DataWriter {
      * {@inheritDoc}
      */
     public void writeEntity(Entity entity, EntityEnum type) {
-        String path = directory + File.separator + type.getName() + File.separator + entity.getName();
+        String path = directory + File.separator + type.getName() + File.separator + entity.getLabel();
         File file = getFile(path);
         try {
             FileOutputStream out = new FileOutputStream(file);
             ObjectOutputStream objectOut = new ObjectOutputStream(out);
             objectOut.writeObject(entity);
-            LOGGER.info(type + " " + entity.getName() + " succesfully saved to database.");
+            LOGGER.info(type + " " + entity.getLabel() + " succesfully saved to database.");
             objectOut.close();
             out.close();
         } catch (FileNotFoundException e) {
@@ -40,7 +40,7 @@ public class FileDataWriter implements DataWriter {
      * @param type type of the entity
      */
     public void deleteEntity(Entity entity, EntityEnum type) {
-        String path = directory + File.separator + type.getName() + File.separator + entity.getName();
+        String path = directory + File.separator + type.getName() + File.separator + entity.getLabel();
         File file = getFile(path);
         file.delete();
     }

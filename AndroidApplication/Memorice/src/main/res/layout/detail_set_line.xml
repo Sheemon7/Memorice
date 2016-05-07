@@ -1,16 +1,30 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="?android:attr/listPreferredItemHeight"
     android:paddingLeft="20dp"
     android:paddingRight="20dp">
 
-    <TextView
+    <EditText
         android:id="@+id/entry_value"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_toLeftOf="@+id/delete_icon"
+        android:background="@android:color/transparent"
         android:gravity="center"
         android:textColor="@color/pink"
-        android:textSize="16sp" />
+        android:textCursorDrawable="@null"
+        android:textSize="16sp"
+        android:inputType="text" />
 
-</LinearLayout>
+    <ImageView
+        android:id="@+id/delete_icon"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_alignParentRight="true"
+        android:paddingRight="6dp"
+        android:src="@drawable/ic_delete_inverted_24dp"
+        android:visibility="gone"
+        android:contentDescription="@string/delete_action_label" />
+
+</RelativeLayout>
 

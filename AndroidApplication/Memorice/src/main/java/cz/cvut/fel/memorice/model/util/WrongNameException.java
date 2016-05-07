@@ -1,7 +1,7 @@
 package cz.cvut.fel.memorice.model.util;
 
 /**
- * Created by sheemon on 18.3.16.
+ * The instances of this exception indicate that entity has been somehow given the wrong name
  */
 public class WrongNameException extends Exception {
 

@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    tools:context=".view.activities.DetailActivity">
+    tools:context=".view.activities.detail.DetailActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -25,11 +25,12 @@
                 android:paddingRight="12dp"
                 app:popupTheme="@style/AppTheme.PopupOverlay" />
 
-            <LinearLayout android:layout_width="match_parent"
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="56dp"
+                android:background="@color/colorInvert"
                 android:orientation="horizontal"
-                android:weightSum="1"
-                android:background="@color/colorInvert">
+                android:weightSum="1">
 
                 <ImageView
                     android:id="@+id/entity_icon"
@@ -37,16 +38,28 @@
                     android:layout_height="match_parent"
                     android:paddingLeft="16dp"
                     android:paddingRight="20dp"
-                    android:transitionName="@string/detail_transition"/>
+                    android:transitionName="@string/detail_transition"
+                    android:contentDescription="@string/type" />
 
-                <TextView
+                <EditText
                     android:id="@+id/entity_type"
-                    android:layout_width="match_parent"
+                    android:layout_width="243dp"
                     android:layout_height="match_parent"
-                    android:gravity="center_vertical"
+                    android:layout_weight="0.80"
                     android:background="@color/colorInvert"
+                    android:enabled="false"
+                    android:gravity="center_vertical"
                     android:textColor="@color/white"
-                    android:layout_gravity="top|bottom" />
+                    android:textSize="16sp"
+                    android:inputType="text" />
+
+                <ImageView
+                    android:id="@+id/editable_icon"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:paddingRight="8dp"
+                    android:src="@drawable/ic_edit_white_24dp"
+                    android:contentDescription="@string/edit" />
             </LinearLayout>
 
         </android.support.design.widget.AppBarLayout>

@@ -1,8 +1,6 @@
 package cz.cvut.fel.memorice.view.activities;
 
-import android.app.ActivityOptions;
 import android.content.Intent;
-import android.media.Image;
 import android.os.Bundle;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.ActionBar;
@@ -23,6 +21,9 @@ import android.widget.Switch;
 import com.getbase.floatingactionbutton.FloatingActionsMenu;
 
 import cz.cvut.fel.memorice.R;
+import cz.cvut.fel.memorice.view.activities.input.DictionaryInputActivity;
+import cz.cvut.fel.memorice.view.activities.input.SequenceInputActivity;
+import cz.cvut.fel.memorice.view.activities.input.SetInputActivity;
 import cz.cvut.fel.memorice.view.fragments.DividerItemDecoration;
 import cz.cvut.fel.memorice.view.fragments.EntityListAdapter;
 

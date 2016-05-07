@@ -21,12 +21,12 @@
         <activity
             android:name=".view.activities.MainActivity"
             android:label="@string/app_name"
-            android:theme="@style/AppTheme.NoActionBar"
-            android:screenOrientation="portrait">
-        </activity>
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar"/>
+
         <activity
             android:name=".view.activities.EntityViewActivity"
-            android:label="@string/entry_activity_title"
+            android:label="@string/title_acitivity_entities"
             android:parentActivityName=".view.activities.MainActivity"
             android:theme="@style/AppTheme.NoActionBar">
 
@@ -35,52 +35,45 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".view.activities.MainActivity" />
         </activity>
+
         <activity
             android:name=".view.activities.SettingsActivity"
-            android:label="@string/title_activity_settings">
-
-        </activity>
-        <activity
-            android:name=".view.activities.DictionaryInputActivity"
-            android:parentActivityName=".view.activities.EntityViewActivity"
-            android:label="@string/title_activity_input">
-        </activity>
+            android:label="@string/title_activity_settings"/>
 
         <activity
-            android:name=".view.activities.SequenceInputActivity"
-            android:parentActivityName=".view.activities.EntityViewActivity"
-            android:label="@string/title_activity_input">
-        </activity>
+            android:name=".view.activities.input.DictionaryInputActivity"
+            android:label="@string/title_activity_input"
+            android:parentActivityName=".view.activities.EntityViewActivity" />
 
         <activity
-            android:name=".view.activities.SetInputActivity"
-            android:parentActivityName=".view.activities.EntityViewActivity"
-            android:label="@string/title_activity_input">
-        </activity>
+            android:name=".view.activities.input.SequenceInputActivity"
+            android:label="@string/title_activity_input"
+            android:parentActivityName=".view.activities.EntityViewActivity" />
+
+        <activity
+            android:name=".view.activities.input.SetInputActivity"
+            android:label="@string/title_activity_input"
+            android:parentActivityName=".view.activities.EntityViewActivity" />
 
         <activity
             android:name=".view.activities.HelpActivity"
-            android:parentActivityName=".view.activities.HelpActivity"
-            android:label="@string/title_activity_help">
-        </activity>
+            android:label="@string/title_activity_help"
+            android:parentActivityName=".view.activities.HelpActivity" />
 
         <activity
-            android:name=".view.activities.DictionaryDetailActivity"
-            android:parentActivityName=".view.activities.EntityViewActivity"
-            android:label="@string/title_activity_detail">
-        </activity>
+            android:name=".view.activities.detail.DictionaryDetailActivity"
+            android:label="@string/title_activity_detail"
+            android:parentActivityName=".view.activities.EntityViewActivity" />
 
         <activity
-            android:name=".view.activities.SequenceDetailActivity"
-            android:parentActivityName=".view.activities.EntityViewActivity"
-            android:label="@string/title_activity_detail">
-        </activity>
+            android:name=".view.activities.detail.SequenceDetailActivity"
+            android:label="@string/title_activity_detail"
+            android:parentActivityName=".view.activities.EntityViewActivity" />
 
         <activity
-            android:name=".view.activities.SetDetailActivity"
-            android:parentActivityName=".view.activities.EntityViewActivity"
-            android:label="@string/title_activity_detail">
-        </activity>
+            android:name=".view.activities.detail.SetDetailActivity"
+            android:label="@string/title_activity_detail"
+            android:parentActivityName=".view.activities.EntityViewActivity" />
 
     </application>
 

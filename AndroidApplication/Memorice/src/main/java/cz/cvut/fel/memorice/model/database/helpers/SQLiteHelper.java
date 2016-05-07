@@ -10,7 +10,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
 
-import cz.cvut.fel.memorice.model.entities.Dictionary;
 import cz.cvut.fel.memorice.model.entities.Entity;
 import cz.cvut.fel.memorice.model.entities.EntityEnum;
 import cz.cvut.fel.memorice.model.entities.builders.Builder;
@@ -31,21 +30,21 @@ public class SQLiteHelper extends SQLiteOpenHelper {
     public static final int DATABASE_VERSION = 5;
     public static final String DATABASE_NAME = "MemoriceDB_5";
 
-    public static final String TABLE_ENTITIES = "entities";
-    public static final String KEY_LABEL = "label";
-    public static final String KEY_TYPE = "type";
-    public static final String KEY_FAVORITE = "favorite";
-    public static final String[] ENTITIES_COLUMNS = {KEY_LABEL, KEY_TYPE, KEY_FAVORITE};
+    public static final String TABLE_ENTITIES = DatabaseConstants.TABLE_ENTITIES;
+    public static final String KEY_LABEL = DatabaseConstants.KEY_LABEL;
+    public static final String KEY_TYPE = DatabaseConstants.KEY_TYPE;
+    public static final String KEY_FAVORITE = DatabaseConstants.KEY_FAVORITE;
+    public static final String[] ENTITIES_COLUMNS = DatabaseConstants.ENTITIES_COLUMNS;
 
-    public static final String TABLE_ENTRIES_SEQUENCES = "seqs";
-    public static final String KEY_NUMBER = "num";
-    public static final String KEY_VALUE = "entry";
-    public static final String KEY_ENTITY = "entity";
+    public static final String TABLE_ENTRIES_SEQUENCES = DatabaseConstants.TABLE_ENTRIES_SEQUENCES;
+    public static final String KEY_NUMBER = DatabaseConstants.KEY_NUMBER;
+    public static final String KEY_VALUE = DatabaseConstants.KEY_VALUE;
+    public static final String KEY_ENTITY = DatabaseConstants.KEY_ENTITY;
 
-    public static final String TABLE_ENTRIES_DICTS = "dicts";
-    public static final String KEY_PASS = "pass";
+    public static final String TABLE_ENTRIES_DICTS = DatabaseConstants.TABLE_ENTRIES_DICTS;
+    public static final String KEY_PASS = DatabaseConstants.KEY_PASS;
 
-    public static final String TABLE_ENTRIES_SETS = "grps";
+    public static final String TABLE_ENTRIES_SETS = DatabaseConstants.TABLE_ENTRIES_DICTS;
 
     private SQLiteEntryTableHelper sqLiteEntryTableHelper = new SQLiteEntryTableHelper(this);
 
@@ -98,7 +97,7 @@ public class SQLiteHelper extends SQLiteOpenHelper {
         LOG.info("Adding entity: " + entity);
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
-        values.put(KEY_LABEL, entity.getName());
+        values.put(KEY_LABEL, entity.getLabel());
         values.put(KEY_TYPE, entity.getType().toString());
         values.put(KEY_FAVORITE, entity.isFavourite() ? 1 : 0);
         db.insert(TABLE_ENTITIES, null, values);
@@ -109,8 +108,8 @@ public class SQLiteHelper extends SQLiteOpenHelper {
                 sqLiteEntryTableHelper.addSequenceEntry(entry, entity);
             }
         } else if (entity.getType() == EntityEnum.DICTIONARY) {
-            for(Entry entry : entity.getListOfEntries()){
-                sqLiteEntryTableHelper.addDictEntry((DictionaryEntry)entry, entity);
+            for (Entry entry : entity.getListOfEntries()) {
+                sqLiteEntryTableHelper.addDictEntry((DictionaryEntry) entry, entity);
             }
         } else {
             for (Entry entry : entity.getListOfEntries()) {
@@ -118,6 +117,28 @@ public class SQLiteHelper extends SQLiteOpenHelper {
             }
 
         }
+    }
+
+    /**
+     * Renames the entity in the database
+     *
+     * @param oldLabel old label of the entity
+     * @param newLabel new label of the entity
+     */
+    public void renameEntity(String oldLabel, String newLabel) {
+        LOG.info("Renaming entity " + oldLabel);
+        SQLiteDatabase db = getWritableDatabase();
+        String query = "UPDATE " + TABLE_ENTITIES + " SET " + KEY_LABEL + "=\"" + newLabel +
+                "\" WHERE " + KEY_LABEL + " = " + "\""
+                + oldLabel + "\"";
+        db.execSQL(query);
+        for (String table : new String[]{TABLE_ENTRIES_SETS, TABLE_ENTRIES_DICTS, TABLE_ENTRIES_SEQUENCES}) {
+            query = "UPDATE " + table + " SET " + KEY_ENTITY + "=\"" + newLabel +
+                    "\" WHERE " + KEY_ENTITY + " = " + "\""
+                    + oldLabel + "\"";
+            db.execSQL(query);
+        }
+        db.close();
     }
 
     /**
@@ -144,7 +165,7 @@ public class SQLiteHelper extends SQLiteOpenHelper {
             }
             Entity entity = b.wrap();
             try {
-                entity.setFavourite(isEntityFavourite(entity.getName()));
+                entity.setFavourite(isEntityFavourite(entity.getLabel()));
             } catch (WrongNameException e) {
                 e.printStackTrace();
             }
@@ -161,11 +182,11 @@ public class SQLiteHelper extends SQLiteOpenHelper {
      * @param entity entity to be toggled
      */
     public void toggleFavourite(Entity entity) {
-        LOG.info("Toggling favourite at " + entity.getName());
+        LOG.info("Toggling favourite at " + entity.getLabel());
         entity.setFavourite(!entity.isFavourite());
         String query = "UPDATE " + TABLE_ENTITIES + " SET " + KEY_FAVORITE + "=" +
                 (entity.isFavourite() ? 1 : 0) +
-                " WHERE " + KEY_LABEL + "=" + "\'" + entity.getName() + "\'";
+                " WHERE " + KEY_LABEL + "=" + "\'" + entity.getLabel() + "\'";
         executeQuery(query);
     }
 
@@ -175,9 +196,9 @@ public class SQLiteHelper extends SQLiteOpenHelper {
      * @param entity entity to be deleted
      */
     public void deleteEntity(Entity entity) {
-        LOG.info("Deleting entity: " + entity.getName());
+        LOG.info("Deleting entity: " + entity.getLabel());
         SQLiteDatabase db = this.getWritableDatabase();
-        db.delete(TABLE_ENTITIES, KEY_LABEL + " =?", new String[]{entity.getName()});
+        db.delete(TABLE_ENTITIES, KEY_LABEL + " =?", new String[]{entity.getLabel()});
         sqLiteEntryTableHelper.deleteAllEntityEntries(entity);
         db.close();
     }

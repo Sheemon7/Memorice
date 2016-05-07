@@ -1,4 +1,4 @@
-package cz.cvut.fel.memorice.view.activities;
+package cz.cvut.fel.memorice.view.activities.input;
 
 import android.content.DialogInterface;
 import android.os.Build;
@@ -16,10 +16,10 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import cz.cvut.fel.memorice.R;
-import cz.cvut.fel.memorice.model.database.dataaccess.ASyncSimpleReadDatabase;
+import cz.cvut.fel.memorice.model.database.dataaccess.ASyncSimpleAccessDatabase;
 import cz.cvut.fel.memorice.model.database.helpers.SQLiteHelper;
 import cz.cvut.fel.memorice.model.entities.Entity;
-import cz.cvut.fel.memorice.view.fragments.EntryInputListAdapter;
+import cz.cvut.fel.memorice.view.fragments.input.EntryInputListAdapter;
 
 /**
  * Created by sheemon on 19.4.16.
@@ -40,8 +40,8 @@ public abstract class InputActivity extends AppCompatActivity {
     }
 
     protected void showLabelUsedDialog(AlertDialog.Builder alertDialogBuilder) {
-        alertDialogBuilder.setMessage("Please insert another one");
         alertDialogBuilder.setTitle(getString(R.string.used_name_quote));
+        alertDialogBuilder.setMessage("Please insert another one");
         showDialog(alertDialogBuilder);
     }
 
@@ -57,7 +57,7 @@ public abstract class InputActivity extends AppCompatActivity {
     }
 
     protected void showValueEmptyDialog(AlertDialog.Builder alertDialogBuilder) {
-        alertDialogBuilder.setTitle(getString(R.string.empty_value));
+        alertDialogBuilder.setTitle(getString(R.string.empty_value_quote));
         showDialog(alertDialogBuilder);
     }
 
@@ -116,13 +116,13 @@ public abstract class InputActivity extends AppCompatActivity {
             Window window = getWindow();
             window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
             window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-            window.setStatusBarColor(ContextCompat.getColor(getApplicationContext(), R.color.colorInvertDarker));
+            window.setStatusBarColor(ContextCompat.getColor(getApplicationContext(), R.color.colorInvertDark));
         }
     }
 
     protected void addEntityToDatabase(Entity entity) {
-        ASyncSimpleReadDatabase access = new ASyncSimpleReadDatabase(this.getApplicationContext());
+        ASyncSimpleAccessDatabase access = new ASyncSimpleAccessDatabase(this.getApplicationContext());
         access.setEntity(entity);
-        access.execute(ASyncSimpleReadDatabase.ADD_ENTITY);
+        access.execute(ASyncSimpleAccessDatabase.ADD_ENTITY);
     }
 }

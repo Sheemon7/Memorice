@@ -8,7 +8,7 @@ import android.support.v7.widget.Toolbar;
 import cz.cvut.fel.memorice.R;
 
 /**
- * Created by sheemon on 21.4.16.
+ * This acitivity serves as a simple tutorial for the application
  */
 public class HelpActivity extends AppCompatActivity {
 

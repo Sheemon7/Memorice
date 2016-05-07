@@ -1,9 +1,10 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context=".view.activities.DictionaryInputActivity" >
+    tools:context=".view.activities.input.DictionaryInputActivity">
 
-    <item android:id="@+id/action_save"
+    <item
+        android:id="@+id/action_save"
         android:title="@string/save_entity"
         app:showAsAction="withText|always" />
 </menu>

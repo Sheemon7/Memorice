@@ -1,27 +1,23 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
 
-    <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
         <item name="android:windowContentTransitions" tools:targetApi="lollipop">true</item>
-        <item name="android:windowEnterTransition" tools:targetApi="lollipop">@transition/explode</item>
-        <item name="android:windowExitTransition" tools:targetApi="lollipop">@transition/explode</item>
-        <item name="android:windowSharedElementEnterTransition" tools:targetApi="lollipop">@transition/changebounds</item>
-        <item name="android:windowSharedElementExitTransition" tools:targetApi="lollipop">@transition/changebounds</item>
-
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorAccent">@color/colorAccent</item>
+        <item name="colorAccent">@color/white</item>
         <item name="colorButtonNormal">@color/colorPrimary</item>
+        <item name="android:alertDialogTheme">@style/AlertDialogTheme</item>
+    </style>
+
+    <style name="AlertDialogTheme" parent="Theme.AppCompat.Light.Dialog.Alert">
+        <item name="android:colorAccent" tools:ignore="NewApi">@color/colorPrimary</item>
+        <item name="android:textColor">@color/colorInvert</item>
+        <item name="android:textColorPrimary">@color/colorInvert</item>
     </style>
 
     <style name="menu_labels_style">
         <item name="android:background">@drawable/fab_background</item>
         <item name="android:textColor">@color/white</item>
-    </style>
-
-    <style name="AppTheme.NoActionBar">
-        <item name="windowActionBar">false</item>
-        <item name="windowNoTitle">true</item>
     </style>
 
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />

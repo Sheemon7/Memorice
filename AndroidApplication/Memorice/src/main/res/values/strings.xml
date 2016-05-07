@@ -1,7 +1,5 @@
 <resources>
     <string name="app_name">Memorice</string>
-    <string name="entry_activity_title">Sets</string>
-    <string name="settings_activity_title">Settings</string>
 
     <string name="settings_action_label">Settings</string>
     <string name="search_action_label">Search</string>
@@ -13,55 +11,14 @@
     <string name="set">Set</string>
     <string name="dictionary">Dictionary</string>
 
+    <string name="title_acitivity_entities">Sets</string>
     <string name="title_activity_settings">Settings</string>
     <string name="title_activity_input" />
     <string name="title_activity_help">Help</string>
     <string name="title_activity_detail" />
 
-    <string name="welcome_entry">WELCOME</string>
-    <string name="help_text">Téma mé semestrální práce zní:
-
-Memorice - androidí aplikace pro pomoc s učením/pamatováním si věcí.
-
-O mém záměru se podrobně rozepíši na tomto blogu, kde také budu přidávat další články o mém postupu:
-
-http://sheemon7.github.io/Memorice/
-
-Celý projekt bude nadále (i po absolvování předmětu dostupný na tomto odkazu):
-
-https://github.com/Sheemon7/Memorice
-
-(Github používám zejména pro jeho otevřenost okolnímu světu, narozdíl od Gitlabu, který je uzavřený. Sem budu tedy nahrávat pouze zdrojový kód)
-
-Návod k použití aplikace/komentář k odevzdání:
-
-Aplikace slouží k uchovávání informací. V blogu jsem se rozepsal o třech "entitách" (takhle datasety nazývám i v aplikaci) - set/set, sequence/list, dictionary, které jsem definoval jako tři nejdůležitější typy informací, které si běžný člověk potřebuje uložit/zapamatovat. Ty je možné v aplikaci nadefinovat a uložit, posléze i přečíst a používat. Entity je možné označit jako oblíbené, nebo je vymazat. Aplikace podporuje fulltextové vyhledávání (ignoruje velká/malá písmena), které lze podpořit i filtrem podle oblíbenosti.
-
-Při vkládání dat je třeba mít na paměti několik zásad:
-
-Set/Group nepovoluje duplikáty.
-Dictionary nepovoluje dvě a více různých definic stejného termínu.
-Žádná z entit nepovoluje prázdné hodnoty.
-O použitých knihovnách/frameworcích je článek na blogu.
-
-V Aplikaci je mnoho míst, kde je možné naimplementovat dodatečnou funkčnost. Zde vidím hlavní body, kde se dá aplikace ještě rozvíjet:
-
-Settings - zatím prázdná aktivita, bohužel nezbyl čas na zahrnutí nastavení, nicméně to nepovažuji za relevantní. (aplikace zas tolik prostorů pro uživatelskou "customizaci" nenabízí)
-
-Help - obsahuje tento test, zatím návod pro hodnotícího, při širším použití by bylo třeba sepsat podrobnější návod.
-
-Training - původním záměrem bylo v aplikaci poskytnout i nějaké drobnější aktivity na "trénovaní" vložených dat (kromě zapamatování si položek nákupu, které pro nás dlouhodobě nemají význam, by byla možnost vkládaat i například anglická slovíčka a posléze si je trénovat a ukládat do dlouhodobé paměti).
-
-Komentář k jednotlivým bodům zadání:
-
-Několik netriviálních tříd pokrytých unit testy - třída SQLiteHelper je pokryta důkladnými testy Použití loggerů - program musí správně využívat loggery a logovat potřebné informace - opět třída SQLiteHelper logguje vše důležité na standardní výstup
-
-Vlákna - v programu musí být rozumně a správně využita vlákna (threads) - vlákna jsou využita jako jednoduché anonymní třídy v aktivitě EntityView, složitější přístup pomocí vláken je využití v přístupu k databázi
-
-Maven - Projekt musí být v Mavenu - je použit Gradle jako základní buildovací tool pro Android.
-
-Další informace jsou dostupné na blogu k aplikaci.</string>
-
+    <string name="help_text">The whole help can be found there:</string>
+    <string name="help_url">http://sheemon7.github.io/Memorice/</string>
 
     <string name="add_entity">Label</string>
     <string name="save_entity">Save</string>
@@ -70,15 +27,18 @@ Další informace jsou dostupné na blogu k aplikaci.</string>
     <string name="used_name_quote">Name already used!</string>
     <string name="empty_name_quote">Name cannot be empty!</string>
     <string name="duplicate_quote">Your set contains duplicates!</string>
-    <string name="duplicate_def_quote">Your set contains duplicate definitions
-        !</string>
+    <string name="duplicate_def_quote">Your set contains duplicate definitions!</string>
     <string name="definition">definition</string>
     <string name="value">value</string>
     <string name="remove">remove</string>
     <string name="only_fav">Favourites</string>
-    <string name="empty_value">Your set contains empty values!</string>
-    <string name="my_sets">   My sets</string>
+    <string name="empty_value_quote">Your set contains empty values!</string>
+    <string name="my_sets">My sets</string>
     <string name="detail_transition">detail_transition</string>
     <string name="all">All</string>
+    <string name="type">Type</string>
+    <string name="welcome">Welcome</string>
+    <string name="rice_icon">Memorice icon</string>
+    <string name="edit">edit</string>
 
 </resources>

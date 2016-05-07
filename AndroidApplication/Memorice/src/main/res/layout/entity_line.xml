@@ -3,8 +3,7 @@
     android:layout_width="fill_parent"
     android:layout_height="?android:attr/listPreferredItemHeight"
     android:paddingLeft="20dp"
-    android:paddingRight="20dp"
-    >
+    android:paddingRight="20dp">
 
     <ImageView
         android:id="@+id/icon_type"
@@ -14,19 +13,20 @@
         android:layout_alignParentTop="true"
         android:paddingRight="12dp"
         android:transitionName="@string/detail_transition"
-        tools:ignore="UnusedAttribute" />
+        tools:ignore="UnusedAttribute"
+        android:contentDescription="@string/type" />
 
     <TextView
         android:id="@+id/label_line"
-        android:textColorHighlight="@color/pink"
         android:layout_width="fill_parent"
         android:layout_height="20dp"
+        android:layout_above="@+id/typeLine"
         android:layout_alignParentRight="true"
         android:layout_alignWithParentIfMissing="true"
         android:layout_toRightOf="@id/icon_type"
         android:gravity="center_vertical"
-        android:textSize="16sp"
-        android:layout_above="@+id/typeLine" />
+        android:textColorHighlight="@color/pink"
+        android:textSize="16sp" />
 
     <TextView
         android:id="@+id/typeLine"
@@ -37,23 +37,24 @@
         android:layout_toRightOf="@id/icon_type"
         android:ellipsize="marquee"
         android:singleLine="true"
-        android:textSize="12sp"
-        android:textColor="@color/black"/>
+        android:textColor="@color/black"
+        android:textSize="12sp" />
 
     <ImageView
         android:id="@+id/icon_delete"
         android:layout_width="wrap_content"
         android:layout_height="fill_parent"
-        android:paddingLeft="24dp"
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
-        />
+        android:paddingLeft="24dp"
+        android:contentDescription="@string/delete_action_label" />
 
     <ImageView
         android:id="@+id/icon_favorite"
         android:layout_width="wrap_content"
         android:layout_height="fill_parent"
         android:layout_alignParentBottom="true"
-        android:layout_toLeftOf="@id/icon_delete"/>
+        android:layout_toLeftOf="@id/icon_delete"
+        android:contentDescription="@string/favourite_action_label" />
 
 </RelativeLayout> 

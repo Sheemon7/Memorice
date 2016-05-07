@@ -1,4 +1,4 @@
-package cz.cvut.fel.memorice.view.fragments;
+package cz.cvut.fel.memorice.view.fragments.detail;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;

@@ -1,4 +1,4 @@
-package cz.cvut.fel.memorice.view.fragments;
+package cz.cvut.fel.memorice.view.fragments.input;
 
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
@@ -13,9 +13,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 
 import cz.cvut.fel.memorice.R;
-import cz.cvut.fel.memorice.model.entities.Dictionary;
 import cz.cvut.fel.memorice.model.entities.entries.DictionaryEntry;
-import cz.cvut.fel.memorice.model.entities.entries.Entry;
 import cz.cvut.fel.memorice.model.util.EmptyTermException;
 import cz.cvut.fel.memorice.model.util.TermAlreadyUsedException;
 

@@ -4,8 +4,19 @@ import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 
+/**
+ * This class serves for convenient big image compressing for use in application
+ */
 public class BitmapUtils {
 
+    /**
+     * Decodes bitmap from resource, preserving required height
+     * @param res bitmap resource
+     * @param resId resource id
+     * @param reqWidth required width
+     * @param reqHeight required height
+     * @return
+     */
     public static Bitmap decodeSampledBitmapFromResource(Resources res, int resId,
                                                          int reqWidth, int reqHeight) {
 
@@ -24,7 +35,7 @@ public class BitmapUtils {
 
     }
 
-    public static int calculateInSampleSize(
+    private static int calculateInSampleSize(
             BitmapFactory.Options options, int reqWidth, int reqHeight) {
         // Raw height and width of image
         final int height = options.outHeight;

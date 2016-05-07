@@ -1,11 +1,13 @@
 package cz.cvut.fel.memorice.model.util;
 
 /**
- * Created by sheemon on 18.3.16.
+ * The instances of this exception indicate the attempt to create a new entity with invalid name.
+ * The class was used in previous version of the application and is now deprecated
  */
+@Deprecated
 public class InvalidNameException extends WrongNameException {
 
     public InvalidNameException() {
-        super("The set contains invalid name");
+        super("The set has invalid name");
     }
 }

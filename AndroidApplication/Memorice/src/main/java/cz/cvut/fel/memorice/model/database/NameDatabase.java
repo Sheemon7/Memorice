@@ -2,7 +2,6 @@ package cz.cvut.fel.memorice.model.database;
 
 import java.io.*;
 import java.util.*;
-import java.util.List;
 import java.util.Set;
 import java.util.logging.Logger;
 
@@ -42,7 +41,7 @@ public class NameDatabase implements Serializable {
      * @throws InvalidNameException
      */
     public void addName(Entity entity) throws NameAlreadyUsedException, InvalidNameException {
-        String name = entity.getName();
+        String name = entity.getLabel();
         if (names.contains(name)) {
             throw new NameAlreadyUsedException();
         }

@@ -1,7 +1,7 @@
 package cz.cvut.fel.memorice.model.util;
 
 /**
- * Created by sheemon on 22.3.16.
+ * The instances of this exception indicate the attempt to insert duplicate values/terms into entity
  */
 public class TermAlreadyUsedException extends Exception {
 

@@ -71,7 +71,7 @@ public class SQLiteHelperTest extends AndroidTestCase {
     public void testGetEntity()  {
         for (Entity e :
                 entities) {
-            assertEquals(helper.getEntity(e.getName()), e);
+            assertEquals(helper.getEntity(e.getLabel()), e);
         }
     }
 
@@ -120,9 +120,9 @@ public class SQLiteHelperTest extends AndroidTestCase {
     public void testDeleteEntity()  {
         for (Entity e :
                 entities) {
-            assertEquals(e, helper.getEntity(e.getName()));
+            assertEquals(e, helper.getEntity(e.getLabel()));
             helper.deleteEntity(e);
-            assertEquals(null, helper.getEntity(e.getName()));
+            assertEquals(null, helper.getEntity(e.getLabel()));
         }
     }
 
@@ -130,9 +130,9 @@ public class SQLiteHelperTest extends AndroidTestCase {
     public void testToggleFavorite() throws WrongNameException {
         for (Entity e : entities) {
             helper.toggleFavourite(e);
-            assertEquals(e.isFavourite(), helper.isEntityFavourite(e.getName()));
+            assertEquals(e.isFavourite(), helper.isEntityFavourite(e.getLabel()));
             helper.toggleFavourite(e);
-            assertEquals(e.isFavourite(), helper.isEntityFavourite(e.getName()));
+            assertEquals(e.isFavourite(), helper.isEntityFavourite(e.getLabel()));
         }
     }
 
@@ -153,7 +153,7 @@ public class SQLiteHelperTest extends AndroidTestCase {
         for (Entity e :
                 entities) {
             try {
-                assertEquals(e.isFavourite(), helper.isEntityFavourite(e.getName()));
+                assertEquals(e.isFavourite(), helper.isEntityFavourite(e.getLabel()));
             } catch (WrongNameException e1) {
                 fail();
             }

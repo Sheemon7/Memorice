@@ -9,9 +9,8 @@ import android.view.MenuItem;
 import cz.cvut.fel.memorice.R;
 
 /**
- * Created by sheemon on 15.4.16.
+ * This activity is empty. Its purpose is just to demonstrate where the settings activity would be.
  */
-//public class SettingsActivity extends AppCompatPreferenceActivity {
 public class SettingsActivity extends AppCompatActivity {
 
     @Override

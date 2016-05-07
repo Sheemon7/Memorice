@@ -1,6 +1,5 @@
-package cz.cvut.fel.memorice.view.fragments;
+package cz.cvut.fel.memorice.view.fragments.input;
 
-import android.app.LauncherActivity;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -9,28 +8,28 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 
 import cz.cvut.fel.memorice.R;
 import cz.cvut.fel.memorice.model.entities.entries.Entry;
-import cz.cvut.fel.memorice.model.entities.entries.SequenceEntry;
 import cz.cvut.fel.memorice.model.util.EmptyTermException;
+import cz.cvut.fel.memorice.model.util.TermAlreadyUsedException;
 
 /**
  * Created by sheemon on 28.4.16.
  */
-public class SequenceInputListAdapter extends EntryInputListAdapter<SequenceInputListAdapter.ViewHolder> {
+public class SetInputListAdapter extends EntryInputListAdapter<SetInputListAdapter.ViewHolder> {
 
-    public SequenceInputListAdapter(RecyclerView view) {
+    public SetInputListAdapter(RecyclerView view) {
         super(view);
     }
 
     @Override
-    public SequenceInputListAdapter.ViewHolder onCreateViewHolder(ViewGroup parent,
+    public SetInputListAdapter.ViewHolder onCreateViewHolder(ViewGroup parent,
                                                              int viewType) {
-        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.entry_sequence_line, parent, false);
+        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.entry_set_line, parent, false);
         ViewHolder vh = new ViewHolder(v);
         return vh;
     }
@@ -40,12 +39,17 @@ public class SequenceInputListAdapter extends EntryInputListAdapter<SequenceInpu
     public void onBindViewHolder(final ViewHolder holder, final int position) {
         ItemList itemList = items.get(position);
         if (!itemList.isCorrect()) {
-            holder.txtValue.setError("empty");
+            if (itemList.getValue().equals("")) {
+                holder.txtValue.setError("empty");
+            } else {
+                holder.txtValue.setError("duplicate");
+            }
         } else {
             holder.txtValue.setError(null);
         }
         itemList.setCorrect(true);
         holder.txtValue.setText(itemList.getValue());
+        holder.txtValue.setHint("value");
         holder.txtValue.requestFocus();
         holder.txtValue.addTextChangedListener(new TextWatcher() {
             @Override
@@ -64,7 +68,6 @@ public class SequenceInputListAdapter extends EntryInputListAdapter<SequenceInpu
             public void afterTextChanged(Editable s) {
             }
         });
-        holder.number.setText(String.valueOf(position + 1) + ".");
         holder.icon.setImageResource(R.drawable.ic_minus_24dp);
         holder.icon.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -72,32 +75,44 @@ public class SequenceInputListAdapter extends EntryInputListAdapter<SequenceInpu
                 if (holder.getAdapterPosition() >= 0) {
                     items.get(holder.getAdapterPosition()).setCorrect(true);
                     remove(holder.getAdapterPosition());
-                    notifyItemRangeChanged(position, items.size());
                 }
             }
         });
     }
 
     @Override
-    public ArrayList<SequenceEntry> getInput() throws EmptyTermException {
-        ArrayList<SequenceEntry> ret = new ArrayList<>(items.size());
-        for (int i = 0; i < items.size(); i++) {
-            String value = items.get(i).getValue();
-            if (value.equals("")) {
+    public ArrayList<Entry> getInput() throws TermAlreadyUsedException, EmptyTermException {
+        HashSet<String> valueCheck = new HashSet<>(items.size());
+        ArrayList<Entry> ret = new ArrayList<>(items.size());
+        for (ItemList item :
+                items) {
+            String value = item.getValue();
+            if (valueCheck.contains(value)) {
+                throw new TermAlreadyUsedException();
+            } else if (value.equals("")) {
                 throw new EmptyTermException();
+            } else {
+                valueCheck.add(value);
+                ret.add(new Entry(value));
             }
-            ret.add(new SequenceEntry(value, i + 1));
         }
         return ret;
     }
 
     @Override
     public void emphasizeErrors() {
+        ArrayList<String> valueCheck = new ArrayList<>(items.size());
         for (ItemList list :
                 items) {
             String value = list.getValue();
             if (value.equals("")) {
                 list.setCorrect(false);
+            } else {
+                if (valueCheck.contains(value)) {
+                    list.setCorrect(false);
+                    items.get(valueCheck.indexOf(value)).setCorrect(false);
+                }
+                valueCheck.add(value);
             }
         }
         notifyDataSetChanged();
@@ -105,13 +120,11 @@ public class SequenceInputListAdapter extends EntryInputListAdapter<SequenceInpu
 
     protected static class ViewHolder extends RecyclerView.ViewHolder {
         private EditText txtValue;
-        private TextView number;
         private ImageView icon;
 
         public ViewHolder(View v) {
             super(v);
             txtValue = (EditText) v.findViewById(R.id.entry_value);
-            number = (TextView) v.findViewById(R.id.entry_num);
             icon = (ImageView) v.findViewById(R.id.icon_minus);
         }
     }

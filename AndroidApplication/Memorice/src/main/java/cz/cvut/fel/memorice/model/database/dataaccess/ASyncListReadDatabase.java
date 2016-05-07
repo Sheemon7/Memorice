@@ -69,7 +69,7 @@ public class ASyncListReadDatabase extends AsyncTask<String, Void, List<Entity>>
     /**
      * Specifies what happens after the task has been executed. In this case, it updates adapter
      * with new data
-     * @param entities
+     * @param entities list of entities
      */
     @Override
     protected void onPostExecute(List<Entity> entities) {

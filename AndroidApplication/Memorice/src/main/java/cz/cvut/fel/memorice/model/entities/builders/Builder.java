@@ -2,18 +2,13 @@ package cz.cvut.fel.memorice.model.entities.builders;
 
 import java.util.logging.Logger;
 
-import cz.cvut.fel.memorice.model.entities.Dictionary;
 import cz.cvut.fel.memorice.model.entities.Entity;
 import cz.cvut.fel.memorice.model.entities.EntityEnum;
-import cz.cvut.fel.memorice.model.entities.Sequence;
-import cz.cvut.fel.memorice.model.entities.Set;
 import cz.cvut.fel.memorice.model.entities.builders.factories.DictionaryFactory;
 import cz.cvut.fel.memorice.model.entities.builders.factories.EntityFactory;
 import cz.cvut.fel.memorice.model.entities.builders.factories.SequenceFactory;
 import cz.cvut.fel.memorice.model.entities.builders.factories.SetFactory;
-import cz.cvut.fel.memorice.model.entities.entries.DictionaryEntry;
 import cz.cvut.fel.memorice.model.entities.entries.Entry;
-import cz.cvut.fel.memorice.model.entities.entries.SequenceEntry;
 import cz.cvut.fel.memorice.model.util.ConcurrentBuildingException;
 import cz.cvut.fel.memorice.model.util.TermAlreadyUsedException;
 
@@ -40,12 +35,13 @@ public class Builder {
      * @return correct builder
      */
     public static Builder getCorrectBuilder(EntityEnum type) {
-        if (type == EntityEnum.DICTIONARY) {
-            return new Builder(DictionaryFactory.getInstance());
-        } else if (type == EntityEnum.GROUP) {
-            return new Builder(SetFactory.getInstance());
-        } else {
-            return new Builder(SequenceFactory.getInstance());
+        switch (type) {
+            case DICTIONARY:
+                return new Builder(DictionaryFactory.getInstance());
+            case SET:
+                return new Builder(SetFactory.getInstance());
+            default:
+                return new Builder(SequenceFactory.getInstance());
         }
     }
 

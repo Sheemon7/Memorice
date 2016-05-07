@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    tools:context=".view.activities.DictionaryInputActivity">
+    tools:context=".view.activities.input.DictionaryInputActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -25,45 +25,48 @@
                 android:paddingRight="12dp"
                 app:popupTheme="@style/AppTheme.PopupOverlay" />
 
-            <LinearLayout android:layout_width="match_parent"
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="56dp"
+                android:background="@color/colorInvert"
                 android:orientation="horizontal"
-                android:weightSum="1"
-                android:background="@color/colorInvert">
+                android:weightSum="1">
 
                 <ImageView
                     android:id="@+id/icon_type"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:src="@drawable/ic_dictionary_white_24dp"
                     android:paddingLeft="16dp"
-                    android:paddingRight="16dp"/>
+                    android:paddingRight="16dp"
+                    android:src="@drawable/ic_dictionary_white_24dp"
+                    android:contentDescription="@string/type" />
 
                 <EditText
                     android:id="@+id/entity_type"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
+                    android:layout_weight="1.02"
                     android:background="@color/colorInvert"
-                    android:hint="@string/add_entity"
-                    android:layout_weight="1.02" />
+                    android:hint="@string/add_entity" />
 
                 <TextView
-                    android:visibility="gone"
+                    android:id="@+id/text_used_label"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
+                    android:paddingRight="16dp"
                     android:textAppearance="?android:attr/textAppearanceSmall"
-                    android:id="@+id/text_used_label"
                     android:textColor="@color/pink"
-                    android:paddingRight="16dp"/>
+                    android:visibility="gone" />
 
                 <ImageView
                     android:id="@+id/icon_add"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/ic_add_white_24dp"
                     android:layout_gravity="right|center_vertical"
-                    android:paddingRight="20dp"/>
+                    android:paddingRight="20dp"
+                    android:src="@drawable/ic_add_white_24dp"
+                    android:contentDescription="@string/add_entity" />
 
             </LinearLayout>
 

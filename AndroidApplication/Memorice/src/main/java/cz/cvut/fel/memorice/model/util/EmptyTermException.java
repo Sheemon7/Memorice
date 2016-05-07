@@ -1,7 +1,7 @@
 package cz.cvut.fel.memorice.model.util;
 
 /**
- * Created by sheemon on 2.5.16.
+ * The instances of this exception indicate the attempt to create entry with empty term/value
  */
 public class EmptyTermException extends Exception {
 

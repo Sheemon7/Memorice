@@ -65,12 +65,12 @@
                     android:layout_width="wrap_content"
                     android:layout_height="60dp"
                     android:layout_alignParentBottom="true"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentStart="true"
                     android:layout_gravity="center"
                     android:textColor="@color/white"
                     android:textOff="@string/all"
-                    android:textOn="@string/only_fav"
-                    android:layout_alignParentLeft="true"
-                    android:layout_alignParentStart="true" />
+                    android:textOn="@string/only_fav" />
 
                 <ImageView
                     android:id="@+id/fav_indicator"
@@ -80,7 +80,8 @@
                     android:layout_gravity="center"
                     android:layout_toRightOf="@id/switch_fav"
                     android:paddingLeft="10dp"
-                    android:src="@drawable/ic_fav_outline_24dp" />
+                    android:src="@drawable/ic_fav_outline_24dp"
+                    android:contentDescription="@string/favourite_action_label" />
             </RelativeLayout>
 
         </RelativeLayout>

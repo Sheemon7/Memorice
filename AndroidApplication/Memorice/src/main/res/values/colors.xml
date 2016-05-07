@@ -2,13 +2,12 @@
 <resources>
     <color name="colorPrimary">#FF6F00</color>
     <color name="colorPrimaryDark">#FF5722</color>
-    <color name="colorAccent">#FFFFFF</color>
     <color name="colorInvert">#0277BD</color>
-    <color name="colorInvertDarker">#01579B</color>
-    <color name="black">#000000</color>
+    <color name="colorInvertDark">#01579B</color>
     <color name="background">#e5e5e5</color>
-    <color name="half_black">#808080</color>
-    <color name="white">#fafafa</color>
     <color name="pink">#e91e63</color>
+    <color name="white">#fafafa</color>
     <color name="white_overlay">#fafafa</color>
+    <color name="black">#000000</color>
+    <color name="half_black">#808080</color>
 </resources>

@@ -19,11 +19,11 @@ import java.util.List;
 
 import cz.cvut.fel.memorice.R;
 import cz.cvut.fel.memorice.model.database.dataaccess.ASyncListReadDatabase;
-import cz.cvut.fel.memorice.model.database.dataaccess.ASyncSimpleReadDatabase;
+import cz.cvut.fel.memorice.model.database.dataaccess.ASyncSimpleAccessDatabase;
 import cz.cvut.fel.memorice.model.entities.Entity;
-import cz.cvut.fel.memorice.view.activities.DictionaryDetailActivity;
-import cz.cvut.fel.memorice.view.activities.SequenceDetailActivity;
-import cz.cvut.fel.memorice.view.activities.SetDetailActivity;
+import cz.cvut.fel.memorice.view.activities.detail.DictionaryDetailActivity;
+import cz.cvut.fel.memorice.view.activities.detail.SequenceDetailActivity;
+import cz.cvut.fel.memorice.view.activities.detail.SetDetailActivity;
 
 /**
  * Created by sheemon on 21.4.16.
@@ -65,16 +65,16 @@ public class EntityListAdapter extends RecyclerView.Adapter<EntityListAdapter.Vi
     public void remove(Entity item, Context context) {
         int position = mDataset.indexOf(item);
         mDataset.remove(position);
-        ASyncSimpleReadDatabase access = new ASyncSimpleReadDatabase(context);
+        ASyncSimpleAccessDatabase access = new ASyncSimpleAccessDatabase(context);
         access.setEntity(item);
-        access.execute(ASyncSimpleReadDatabase.DELETE_ENTITY);
+        access.execute(ASyncSimpleAccessDatabase.DELETE_ENTITY);
         notifyItemRemoved(position);
     }
 
     public void toggleFavorite(Entity item, Context context) {
-        ASyncSimpleReadDatabase access = new ASyncSimpleReadDatabase(context);
+        ASyncSimpleAccessDatabase access = new ASyncSimpleAccessDatabase(context);
         access.setEntity(item);
-        access.execute(ASyncSimpleReadDatabase.TOGGLE_FAVOURITE);
+        access.execute(ASyncSimpleAccessDatabase.TOGGLE_FAVOURITE);
         notifyItemChanged(mDataset.indexOf(item));
     }
 
@@ -97,11 +97,11 @@ public class EntityListAdapter extends RecyclerView.Adapter<EntityListAdapter.Vi
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         final Entity e = mDataset.get(position);
-        holder.txtHeader.setText(e.getName(), TextView.BufferType.SPANNABLE);
+        holder.txtHeader.setText(e.getLabel(), TextView.BufferType.SPANNABLE);
         holder.txtType.setText(e.getType().getName(), TextView.BufferType.SPANNABLE);
 
         if (filter != null) {
-            int i = e.getName().toLowerCase().indexOf(filter.toLowerCase());
+            int i = e.getLabel().toLowerCase().indexOf(filter.toLowerCase());
             if (i != -1) {
                 Spannable str = (Spannable) holder.txtHeader.getText();
                 int color;
@@ -115,13 +115,13 @@ public class EntityListAdapter extends RecyclerView.Adapter<EntityListAdapter.Vi
         }
         View.OnClickListener listener = null;
         switch (e.getType()) {
-            case GROUP:
+            case SET:
                 holder.imageType.setImageResource(R.drawable.ic_set_inverted_24dp);
                 listener = new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         Intent myIntent = new Intent(view.getContext(), SetDetailActivity.class);
-                        myIntent.putExtra("entity", e);
+                        myIntent.putExtra("entity_label", e.getLabel());
                         view.getContext().startActivity(myIntent);
                     }
                 };
@@ -132,7 +132,7 @@ public class EntityListAdapter extends RecyclerView.Adapter<EntityListAdapter.Vi
                     @Override
                     public void onClick(View v) {
                         Intent myIntent = new Intent(view.getContext(), SequenceDetailActivity.class);
-                        myIntent.putExtra("entity", e);
+                        myIntent.putExtra("entity_label", e.getLabel());
                         view.getContext().startActivity(myIntent);
                     }
                 };
@@ -143,7 +143,7 @@ public class EntityListAdapter extends RecyclerView.Adapter<EntityListAdapter.Vi
                     @Override
                     public void onClick(View v) {
                         Intent myIntent = new Intent(view.getContext(), DictionaryDetailActivity.class);
-                        myIntent.putExtra("entity", e);
+                        myIntent.putExtra("entity_label", e.getLabel());
                         view.getContext().startActivity(myIntent);
                     }
                 };
@@ -169,8 +169,8 @@ public class EntityListAdapter extends RecyclerView.Adapter<EntityListAdapter.Vi
         holder.imageDel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(view.getContext());
-                alertDialogBuilder.setTitle("Delete " + e.getName());
+                AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(view.getContext(), R.style.AlertDialogTheme);
+                alertDialogBuilder.setTitle("Delete " + e.getLabel());
                 alertDialogBuilder.setMessage("Are you sure?");
                 alertDialogBuilder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                     @Override
