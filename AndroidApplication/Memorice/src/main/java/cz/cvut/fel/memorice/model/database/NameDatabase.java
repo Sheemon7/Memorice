@@ -1,9 +1,11 @@
 package cz.cvut.fel.memorice.model.database;
 
-import java.io.*;
-import java.util.*;
+import java.io.File;
+import java.io.Serializable;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
-import java.util.logging.Logger;
 
 import cz.cvut.fel.memorice.model.entities.Entity;
 import cz.cvut.fel.memorice.model.entities.EntityEnum;
@@ -14,21 +16,24 @@ import cz.cvut.fel.memorice.model.util.NameAlreadyUsedException;
 /**
  * Class that stores all names that have been used and provides methods for checking
  * name validity.
+ *
  * @deprecated
  */
 @Deprecated
 public class NameDatabase implements Serializable {
 
-    private final static Logger LOGGER = Logger.getLogger(NameDatabase.class.getName());
     private static NameDatabase singleton = new NameDatabase();
 
-    private Map<String, EntityEnum> types = new HashMap<>();
+    private transient Map<String, EntityEnum> types = new HashMap<>();
     private Set<String> names = new HashSet<>();
 
-    private NameDatabase() { }
+    private NameDatabase() {
+
+    }
 
     /**
      * Returns singleton of the class
+     *
      * @return singleton
      */
     public static NameDatabase getInstance() {
@@ -37,6 +42,7 @@ public class NameDatabase implements Serializable {
 
     /**
      * Adds name of the passed entity to name database
+     *
      * @param entity entity, which name is going to be written
      * @throws NameAlreadyUsedException
      * @throws InvalidNameException
@@ -46,7 +52,7 @@ public class NameDatabase implements Serializable {
         if (names.contains(name)) {
             throw new NameAlreadyUsedException();
         }
-        if (name.equals("")) {
+        if ("".equals(name)) {
             throw new InvalidNameException();
         }
         names.add(name);
@@ -55,16 +61,18 @@ public class NameDatabase implements Serializable {
 
     /**
      * Deletes name from the database
+     *
      * @param name name
      */
     public void deleteName(String name) {
-        new File(DataHandler.directory + File.separator + types.get(name).getName() + File.separator + name).delete();
+        new File(DataHandler.DIRECTORY + File.separator + types.get(name).getName() + File.separator + name).delete();
         names.remove(name);
         types.remove(name);
     }
 
     /**
      * Returns corresponding type of entity
+     *
      * @param entity entity name
      * @return
      */
@@ -74,6 +82,7 @@ public class NameDatabase implements Serializable {
 
     /**
      * Returns map of names and types of added entities
+     *
      * @return map of names and types
      */
     public Map<String, EntityEnum> getTypes() {
@@ -82,6 +91,7 @@ public class NameDatabase implements Serializable {
 
     /**
      * Returns set of all used names so far
+     *
      * @return set of names
      */
     public Set<String> getNames() {
@@ -98,7 +108,7 @@ public class NameDatabase implements Serializable {
     }
 
     private void updateFolder(EntityEnum type) {
-        File folder = new File(DataHandler.directory + File.separator + type.getName());
+        File folder = new File(DataHandler.DIRECTORY + File.separator + type.getName());
         if (folder.exists()) {
             for (File file : folder.listFiles()) {
                 String name = file.getName();

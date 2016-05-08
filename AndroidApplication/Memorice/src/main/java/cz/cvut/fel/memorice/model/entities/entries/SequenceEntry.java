@@ -11,7 +11,8 @@ public class SequenceEntry extends Entry implements Serializable {
 
     /**
      * Returns new entry with value and its number specified
-     * @param value value of the new entry
+     *
+     * @param value  value of the new entry
      * @param number order of the new entry
      */
     public SequenceEntry(String value, int number) {
@@ -29,6 +30,7 @@ public class SequenceEntry extends Entry implements Serializable {
 
     /**
      * Returns number of this entry
+     *
      * @return number of entry
      */
     public int getNumber() {
@@ -40,9 +42,15 @@ public class SequenceEntry extends Entry implements Serializable {
      */
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        if (!super.equals(o)) return false;
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        if (!super.equals(o)) {
+            return false;
+        }
 
         SequenceEntry that = (SequenceEntry) o;
 

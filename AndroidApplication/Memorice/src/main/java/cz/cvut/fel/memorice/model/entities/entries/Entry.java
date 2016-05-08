@@ -11,6 +11,7 @@ public class Entry implements Serializable {
 
     /**
      * Returns entry with value passed as parameter
+     *
      * @param value value
      */
     public Entry(String value) {
@@ -19,6 +20,7 @@ public class Entry implements Serializable {
 
     /**
      * Returns value of the entity
+     *
      * @return value
      */
     public String getValue() {
@@ -27,6 +29,7 @@ public class Entry implements Serializable {
 
     /**
      * Sets the string value of this entry
+     *
      * @param value value
      */
     public void setValue(String value) {
@@ -46,8 +49,12 @@ public class Entry implements Serializable {
      */
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
         Entry that = (Entry) o;
         return value != null ? value.equals(that.value) : that.value == null;
 

@@ -3,7 +3,6 @@ package cz.cvut.fel.memorice.view.activities;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.support.v7.app.AlertDialog;
 
 /**
  * This class serves for convenient big image compressing for use in application

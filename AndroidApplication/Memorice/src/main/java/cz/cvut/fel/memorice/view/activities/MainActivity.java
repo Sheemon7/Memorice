@@ -3,10 +3,8 @@ package cz.cvut.fel.memorice.view.activities;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.text.Html;
 import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -20,7 +18,7 @@ import cz.cvut.fel.memorice.model.database.helpers.SQLiteHelper;
  */
 public class MainActivity extends AppCompatActivity {
 
-    private final static String statsStub = "So far, there are <b>%s</b> entries in <b>%s</b> datasets.<br/>Let's add some more!";
+    private static final String statsStub = "So far, there are <b>%s</b> entries in <b>%s</b> datasets.<br/>Let's add some more!";
 
     /**
      * {@inheritDoc}

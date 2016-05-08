@@ -51,6 +51,7 @@ public abstract class Entity implements Serializable, Iterable {
      *
      * @return iterator
      */
+    @Override
     public abstract Iterator<? extends Entry> iterator();
 
     /**

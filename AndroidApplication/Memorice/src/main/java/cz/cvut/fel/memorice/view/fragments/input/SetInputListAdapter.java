@@ -11,11 +11,12 @@ import android.widget.ImageView;
 
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 
 import cz.cvut.fel.memorice.R;
 import cz.cvut.fel.memorice.model.entities.entries.Entry;
-import cz.cvut.fel.memorice.model.util.EmptyDefinitionException;
 import cz.cvut.fel.memorice.model.util.DefinitionAlreadyUsedException;
+import cz.cvut.fel.memorice.model.util.EmptyDefinitionException;
 
 /**
  * Adapter responsible for correct display of the set entries input items
@@ -48,7 +49,7 @@ public class SetInputListAdapter extends EntryInputListAdapter<SetInputListAdapt
     public void onBindViewHolder(final ViewHolder holder, final int position) {
         ItemList itemList = items.get(position);
         if (!itemList.isCorrect()) {
-            if (itemList.getValue().equals("")) {
+            if ("".equals(itemList.getValue())) {
                 holder.txtValue.setError("empty");
             } else {
                 holder.txtValue.setError("duplicate");
@@ -75,7 +76,7 @@ public class SetInputListAdapter extends EntryInputListAdapter<SetInputListAdapt
      * {@inheritDoc}
      */
     @Override
-    public ArrayList<Entry> getInput() throws DefinitionAlreadyUsedException, EmptyDefinitionException {
+    public List<Entry> getInput() throws DefinitionAlreadyUsedException, EmptyDefinitionException {
         HashSet<String> valueCheck = new HashSet<>(items.size());
         ArrayList<Entry> ret = new ArrayList<>(items.size());
         for (ItemList item :
@@ -83,7 +84,7 @@ public class SetInputListAdapter extends EntryInputListAdapter<SetInputListAdapt
             String value = item.getValue();
             if (valueCheck.contains(value)) {
                 throw new DefinitionAlreadyUsedException();
-            } else if (value.equals("")) {
+            } else if ("".equals(value)) {
                 throw new EmptyDefinitionException();
             } else {
                 valueCheck.add(value);
@@ -102,7 +103,7 @@ public class SetInputListAdapter extends EntryInputListAdapter<SetInputListAdapt
         for (ItemList list :
                 items) {
             String value = list.getValue();
-            if (value.equals("")) {
+            if ("".equals(value)) {
                 list.setCorrect(false);
             } else {
                 if (valueCheck.contains(value)) {

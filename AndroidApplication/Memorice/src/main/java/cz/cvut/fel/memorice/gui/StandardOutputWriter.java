@@ -1,12 +1,16 @@
 package cz.cvut.fel.memorice.gui;
 
-import cz.cvut.fel.memorice.gui.IStdOut;
+import java.util.logging.Logger;
 
 /**
  * {@inheritDoc}
+ *
+ * @deprecated
  */
 @Deprecated
 public class StandardOutputWriter implements IStdOut {
+
+    private static final Logger LOG = Logger.getLogger(StandardOutputWriter.class.getName());
 
     private static StandardOutputWriter singleton = new StandardOutputWriter();
 
@@ -16,6 +20,7 @@ public class StandardOutputWriter implements IStdOut {
 
     /**
      * Returns an instance of {@link StandardOutputWriter}
+     *
      * @return an instance of {@link StandardOutputWriter}
      */
     public static StandardOutputWriter getInstance() {
@@ -26,13 +31,13 @@ public class StandardOutputWriter implements IStdOut {
      * {@inheritDoc}
      */
     public void write(String string) {
-        System.out.print(string);
+        LOG.info(string);
     }
 
     /**
      * {@inheritDoc}
      */
     public void writeLn(String string) {
-        System.out.println(string);
+        LOG.info(string);
     }
 }

@@ -37,9 +37,9 @@ import cz.cvut.fel.memorice.view.fragments.EntityListAdapter;
 public class EntityViewActivity extends AppCompatActivity {
     private static final Logger LOG = Logger.getLogger(EntityViewActivity.class.getName());
 
-    private static final int ANIMATION_DURATION = 200;
-    private static final int FAB_HIDE_DURATION = 3000;
-    private static final int FAB_ANIMATION_OFFSET = 150;
+    private static final long ANIMATION_DURATION = 200;
+    private static final long FAB_HIDE_DURATION = 3000;
+    private static final long FAB_ANIMATION_OFFSET = 150;
 
     private RecyclerView mRecyclerView;
     private EntityListAdapter mAdapter;
@@ -246,7 +246,7 @@ public class EntityViewActivity extends AppCompatActivity {
      * @param view   view
      * @param offset animation offset
      */
-    private void fadeOut(final View view, final int offset) {
+    private void fadeOut(final View view, final long offset) {
         AlphaAnimation fadeOut = new AlphaAnimation(view.getAlpha(), 0);
         fadeOut.setStartOffset(offset);
         carryOutAnimation(view, fadeOut);
@@ -274,7 +274,7 @@ public class EntityViewActivity extends AppCompatActivity {
      * @param view   view
      * @param offset animation offset
      */
-    private void fadeIn(View view, int offset) {
+    private void fadeIn(View view, long offset) {
         AlphaAnimation fadeIn = new AlphaAnimation(view.getAlpha(), 1);
         fadeIn.setStartOffset(offset);
         carryOutAnimation(view, fadeIn);

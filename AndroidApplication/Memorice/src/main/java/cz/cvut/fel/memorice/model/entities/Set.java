@@ -89,8 +89,12 @@ public class Set extends Entity implements Serializable {
      */
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
 
         Set that = (Set) o;
         return this.getLabel().equals(that.getLabel()) && !(entries != null ? !entries.equals(that.entries) : that.entries != null);

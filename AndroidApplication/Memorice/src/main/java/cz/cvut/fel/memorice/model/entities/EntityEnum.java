@@ -11,6 +11,14 @@ public enum EntityEnum {
     private final String name;
 
     /**
+     * COnstructs new enum
+     * @param name name of the enum
+     */
+    EntityEnum(String name) {
+        this.name = name;
+    }
+
+    /**
      * Returns correct type according to its string representation
      * @param typeString string representation of type
      * @return correct type
@@ -24,14 +32,6 @@ public enum EntityEnum {
             default:
                 return SET;
         }
-    }
-
-    /**
-     * COnstructs new enum
-     * @param name name of the enum
-     */
-    EntityEnum(String name) {
-        this.name = name;
     }
 
     /**

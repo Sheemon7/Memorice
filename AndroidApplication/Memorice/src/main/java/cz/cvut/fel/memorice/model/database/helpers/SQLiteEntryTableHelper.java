@@ -44,14 +44,14 @@ public class SQLiteEntryTableHelper {
     public void deleteAllEntityEntries(Entity entity) {
         SQLiteDatabase db = helper.getWritableDatabase();
         switch (entity.getType()) {
-            case SET:
-                db.delete(TABLE_ENTRIES_SETS, KEY_ENTITY + " =?", new String[]{entity.getLabel()});
-                break;
             case SEQUENCE:
                 db.delete(TABLE_ENTRIES_SEQUENCES, KEY_ENTITY + " =?", new String[]{entity.getLabel()});
                 break;
             case DICTIONARY:
                 db.delete(TABLE_ENTRIES_DICTS, KEY_ENTITY + " =?", new String[]{entity.getLabel()});
+                break;
+            default:
+                db.delete(TABLE_ENTRIES_SETS, KEY_ENTITY + " =?", new String[]{entity.getLabel()});
                 break;
         }
         db.close();
@@ -63,7 +63,7 @@ public class SQLiteEntryTableHelper {
      * @param label label of the entity
      * @return list all entries
      */
-    public ArrayList<Entry> getAllSetEntries(String label) {
+    public List<Entry> getAllSetEntries(String label) {
         LOG.info("Getting all set entries from " + label);
         ArrayList<Entry> ret = new ArrayList<>();
 
@@ -238,7 +238,6 @@ public class SQLiteEntryTableHelper {
                 "\" WHERE " + KEY_VALUE + " = " + "\""
                 + oldValue + "\"" + " AND " + KEY_ENTITY
                 + " = " + "\"" + entity.getLabel() + "\"";
-        System.out.println(query);
         SQLiteDatabase db = helper.getWritableDatabase();
         db.execSQL(query);
         db.close();

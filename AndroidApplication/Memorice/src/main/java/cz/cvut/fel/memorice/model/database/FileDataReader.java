@@ -17,13 +17,13 @@ import cz.cvut.fel.memorice.model.entities.EntityEnum;
  */
 @Deprecated
 public class FileDataReader implements DataReader {
-    private final static Logger LOGGER = Logger.getLogger(FileDataReader.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(FileDataReader.class.getName());
 
     /**
      * {@inheritDoc}
      */
     public Entity readEntity(String name, EntityEnum type) {
-        String path = directory + File.separator + type.getName() + File.separator + name;
+        String path = DIRECTORY + File.separator + type.getName() + File.separator + name;
         Object object = null;
         try {
             FileInputStream in = new FileInputStream(path);

@@ -7,5 +7,5 @@ package cz.cvut.fel.memorice.model.database;
 @Deprecated
 public interface DataHandler {
 
-    String directory = "DATA";
+    String DIRECTORY = "DATA";
 }

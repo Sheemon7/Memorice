@@ -40,5 +40,6 @@
     <string name="rice_icon">Memorice icon</string>
     <string name="edit">edit</string>
     <string name="entity_label_resource">entity_label</string>
+    <string name="settings_blank">Settings intentionally left blank</string>
 
 </resources>

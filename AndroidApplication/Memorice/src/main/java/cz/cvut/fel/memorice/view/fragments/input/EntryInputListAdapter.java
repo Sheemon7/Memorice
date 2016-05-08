@@ -13,10 +13,10 @@ import cz.cvut.fel.memorice.model.entities.Entity;
 import cz.cvut.fel.memorice.model.entities.EntityEnum;
 import cz.cvut.fel.memorice.model.entities.builders.Builder;
 import cz.cvut.fel.memorice.model.entities.entries.Entry;
-import cz.cvut.fel.memorice.model.util.EmptyLabelException;
-import cz.cvut.fel.memorice.model.util.EmptyDefinitionException;
-import cz.cvut.fel.memorice.model.util.NameAlreadyUsedException;
 import cz.cvut.fel.memorice.model.util.DefinitionAlreadyUsedException;
+import cz.cvut.fel.memorice.model.util.EmptyDefinitionException;
+import cz.cvut.fel.memorice.model.util.EmptyLabelException;
+import cz.cvut.fel.memorice.model.util.NameAlreadyUsedException;
 
 /**
  * Adapter responsible for correct display of the entries input items
@@ -107,7 +107,7 @@ public abstract class EntryInputListAdapter<T extends RecyclerView.ViewHolder> e
         builder.init(label);
 
         try {
-            for (Entry e : (getInput())) {
+            for (Entry e : getInput()) {
                 builder.add(e);
             }
         } catch (DefinitionAlreadyUsedException | EmptyDefinitionException e) {
@@ -142,7 +142,7 @@ public abstract class EntryInputListAdapter<T extends RecyclerView.ViewHolder> e
      * @throws DefinitionAlreadyUsedException if there exists two entries with the same values
      * @throws EmptyDefinitionException       if there exists two entries with the same values
      */
-    public abstract ArrayList<? extends Entry> getInput() throws DefinitionAlreadyUsedException, EmptyDefinitionException;
+    public abstract List<? extends Entry> getInput() throws DefinitionAlreadyUsedException, EmptyDefinitionException;
 
     /**
      * Emphasizes errors in the current recycle view
@@ -156,6 +156,7 @@ public abstract class EntryInputListAdapter<T extends RecyclerView.ViewHolder> e
     protected static class ItemList {
         private String value = "";
         private String definition = "";
+        private boolean correct = true;
 
         public boolean isCorrect() {
             return correct;
@@ -164,8 +165,6 @@ public abstract class EntryInputListAdapter<T extends RecyclerView.ViewHolder> e
         public void setCorrect(boolean correct) {
             this.correct = correct;
         }
-
-        private boolean correct = true;
 
         public String getValue() {
             return value;

@@ -6,6 +6,7 @@ import cz.cvut.fel.memorice.gui.IStdIn;
 
 /**
  * {@inheritDoc}
+ * @deprecated
  */
 @Deprecated
 public class StandardInputReader implements IStdIn {

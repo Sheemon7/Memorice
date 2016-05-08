@@ -18,11 +18,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import cz.cvut.fel.memorice.R;
-import cz.cvut.fel.memorice.model.database.dataaccess.ASyncSimpleAccessDatabase;
 import cz.cvut.fel.memorice.model.database.helpers.SQLiteHelper;
-import cz.cvut.fel.memorice.model.entities.Entity;
 import cz.cvut.fel.memorice.view.fragments.input.EntryInputListAdapter;
-import cz.cvut.fel.memorice.view.fragments.input.SequenceInputListAdapter;
 
 /**
  * This activity is responsible for taking users input. It contains recycler view responsible
@@ -63,7 +60,7 @@ public abstract class InputActivity extends AppCompatActivity {
      */
     protected void showLabelEmptyDialog(AlertDialog.Builder alertDialogBuilder) {
         alertDialogBuilder.setTitle(getString(R.string.empty_name_quote));
-        alertDialogBuilder.setMessage("Please insert another one");
+        alertDialogBuilder.setMessage("Please insert a new one");
         showDialog(alertDialogBuilder);
     }
 
@@ -120,33 +117,7 @@ public abstract class InputActivity extends AppCompatActivity {
         labelInput = (EditText) findViewById(R.id.entity_type);
         labelWarn = (TextView) findViewById(R.id.text_used_label);
         labelWarn.setVisibility(View.INVISIBLE);
-        labelInput.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-                String label = s.toString().trim();
-                SQLiteHelper h = new SQLiteHelper(getApplicationContext());
-                if (h.getEntity(label) != null) {
-                    labelWarn.setText(R.string.used_label);
-                    labelWarn.setVisibility(View.VISIBLE);
-                } else if (s.toString().length() == 0) {
-                    labelWarn.setText(R.string.empty_label);
-                    labelWarn.setVisibility(View.VISIBLE);
-                } else {
-                    labelWarn.setText("");
-                    labelWarn.setVisibility(View.GONE);
-                }
-            }
-        });
+        labelInput.addTextChangedListener(new CustomLabelTextChangeListener());
         labelInput.requestFocus();
     }
 
@@ -188,4 +159,36 @@ public abstract class InputActivity extends AppCompatActivity {
      * @return list adapter
      */
     protected abstract EntryInputListAdapter getCorrectAdapter(RecyclerView view);
+
+    /**
+     * Handles label text change
+     */
+    private class CustomLabelTextChangeListener implements TextWatcher {
+
+        @Override
+        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                /* event passed here */
+        }
+
+        @Override
+        public void onTextChanged(CharSequence s, int start, int before, int count) {
+                /* event passed here */
+        }
+
+        @Override
+        public void afterTextChanged(Editable s) {
+            String label = s.toString().trim();
+            SQLiteHelper h = new SQLiteHelper(getApplicationContext());
+            if (h.getEntity(label) != null) {
+                labelWarn.setText(R.string.used_label);
+                labelWarn.setVisibility(View.VISIBLE);
+            } else if (s.toString().length() == 0) {
+                labelWarn.setText(R.string.empty_label);
+                labelWarn.setVisibility(View.VISIBLE);
+            } else {
+                labelWarn.setText("");
+                labelWarn.setVisibility(View.GONE);
+            }
+        }
+    }
 }

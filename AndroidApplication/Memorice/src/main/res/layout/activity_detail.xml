@@ -38,7 +38,6 @@
                     android:layout_height="match_parent"
                     android:paddingLeft="16dp"
                     android:paddingRight="20dp"
-                    android:transitionName="@string/detail_transition"
                     android:contentDescription="@string/type" />
 
                 <EditText
@@ -58,6 +57,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:paddingRight="8dp"
+                    android:paddingLeft="8dp"
                     android:src="@drawable/ic_edit_white_24dp"
                     android:contentDescription="@string/edit" />
             </LinearLayout>

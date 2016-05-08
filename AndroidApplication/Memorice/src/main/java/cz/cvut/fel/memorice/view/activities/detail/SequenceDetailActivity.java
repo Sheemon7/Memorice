@@ -10,7 +10,7 @@ import cz.cvut.fel.memorice.view.fragments.detail.EntityDetailListAdapter;
 import cz.cvut.fel.memorice.view.fragments.detail.SequenceDetailListAdapter;
 
 /**
- * Created by sheemon on 24.4.16.
+ * Activity displays detail of sequence entity
  */
 public class SequenceDetailActivity extends DetailActivity {
 

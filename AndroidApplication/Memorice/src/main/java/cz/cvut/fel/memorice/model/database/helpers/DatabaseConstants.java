@@ -2,7 +2,9 @@ package cz.cvut.fel.memorice.model.database.helpers;
 
 public final class DatabaseConstants {
 
-    private DatabaseConstants() {}
+    private DatabaseConstants() {
+        
+    }
 
     public static final String TABLE_ENTITIES = "entities";
     public static final String KEY_LABEL = "label";

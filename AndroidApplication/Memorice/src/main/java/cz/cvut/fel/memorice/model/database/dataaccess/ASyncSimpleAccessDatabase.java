@@ -87,6 +87,7 @@ public class ASyncSimpleAccessDatabase extends AsyncTask<String, Void, Void> {
             case TOGGLE_FAVOURITE:
                 helper.toggleFavourite(entity);
                 break;
+            default:
         }
         return null;
     }

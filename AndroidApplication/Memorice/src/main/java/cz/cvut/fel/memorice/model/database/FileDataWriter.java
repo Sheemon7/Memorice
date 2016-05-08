@@ -14,13 +14,13 @@ import cz.cvut.fel.memorice.model.entities.EntityEnum;
 @Deprecated
 public class FileDataWriter implements DataWriter {
 
-    private final static Logger LOGGER = Logger.getLogger(FileDataWriter.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(FileDataWriter.class.getName());
 
     /**
      * {@inheritDoc}
      */
     public void writeEntity(Entity entity, EntityEnum type) {
-        String path = directory + File.separator + type.getName() + File.separator + entity.getLabel();
+        String path = DIRECTORY + File.separator + type.getName() + File.separator + entity.getLabel();
         File file = getFile(path);
         try {
             FileOutputStream out = new FileOutputStream(file);
@@ -42,7 +42,7 @@ public class FileDataWriter implements DataWriter {
      * @param type type of the entity
      */
     public void deleteEntity(Entity entity, EntityEnum type) {
-        String path = directory + File.separator + type.getName() + File.separator + entity.getLabel();
+        String path = DIRECTORY + File.separator + type.getName() + File.separator + entity.getLabel();
         File file = getFile(path);
         file.delete();
     }

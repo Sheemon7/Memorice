@@ -35,6 +35,16 @@ public class EntityListAdapter extends RecyclerView.Adapter<EntityListAdapter.Vi
     private String filter = "";
 
     /**
+     * Creates an instance of adapter
+     *
+     * @param view recycler view
+     */
+    public EntityListAdapter(RecyclerView view) {
+        this.view = view;
+        mDataset = new ArrayList<>();
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
@@ -81,16 +91,6 @@ public class EntityListAdapter extends RecyclerView.Adapter<EntityListAdapter.Vi
     }
 
     /**
-     * Creates an instance of adapter
-     *
-     * @param view recycler view
-     */
-    public EntityListAdapter(RecyclerView view) {
-        this.view = view;
-        mDataset = new ArrayList<>();
-    }
-
-    /**
      * Shows all entities from the database in the recycler view
      *
      * @param context application context
@@ -124,7 +124,7 @@ public class EntityListAdapter extends RecyclerView.Adapter<EntityListAdapter.Vi
     public void showFavorites(Context context) {
         ASyncListReadDatabase access = new ASyncListReadDatabase(context);
         access.setAdapter(this);
-        if (filter.equals("")) {
+        if ("".equals(filter)) {
             access.execute(ASyncListReadDatabase.FAVOURITE_ENTITIES);
         } else {
             access.setFilter(filter);

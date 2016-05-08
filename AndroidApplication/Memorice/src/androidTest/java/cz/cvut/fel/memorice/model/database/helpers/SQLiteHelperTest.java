@@ -80,7 +80,7 @@ public class SQLiteHelperTest extends AndroidTestCase {
     @Test
     public void testGetAllEntitiesFiltered()  {
         String filter = "1";
-        ArrayList<Entity> filtered = helper.getAllEntitiesFiltered(filter);
+        List<Entity> filtered = helper.getAllEntitiesFiltered(filter);
         ArrayList<Entity> target = new ArrayList<>();
         target.add(d1);
         target.add(g1);
@@ -108,7 +108,7 @@ public class SQLiteHelperTest extends AndroidTestCase {
     @Test
     public void testGetAllFavouriteFilteredEntities()  {
         String filter = "1";
-        ArrayList<Entity> filtered = helper.getAllFavouriteEntitiesFiltered(filter);
+        List<Entity> filtered = helper.getAllFavouriteEntitiesFiltered(filter);
         ArrayList<Entity> target = new ArrayList<>();
         assertEquals(filtered, target);
         filter = "s";

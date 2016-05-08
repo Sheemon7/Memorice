@@ -11,6 +11,7 @@ import android.widget.ImageView;
 
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 
 import cz.cvut.fel.memorice.R;
 import cz.cvut.fel.memorice.model.entities.entries.DictionaryEntry;
@@ -37,8 +38,7 @@ public class DictionaryInputListAdapter extends EntryInputListAdapter<Dictionary
     @Override
     public DictionaryInputListAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.entry_dictionary_line, parent, false);
-        ViewHolder vh = new ViewHolder(v);
-        return vh;
+        return new ViewHolder(v);
     }
 
     /**
@@ -48,7 +48,7 @@ public class DictionaryInputListAdapter extends EntryInputListAdapter<Dictionary
     public void onBindViewHolder(final ViewHolder holder, final int position) {
         ItemList itemList = items.get(position);
         if (!itemList.isCorrect()) {
-            if (itemList.getValue().equals("")) {
+            if ("".equals(itemList.getValue())) {
                 holder.txtValue.setError("empty");
             } else {
                 holder.txtDefinition.setError("duplicate definition");
@@ -78,14 +78,14 @@ public class DictionaryInputListAdapter extends EntryInputListAdapter<Dictionary
      * {@inheritDoc}
      */
     @Override
-    public ArrayList<DictionaryEntry> getInput() throws DefinitionAlreadyUsedException, EmptyDefinitionException {
+    public List<DictionaryEntry> getInput() throws DefinitionAlreadyUsedException, EmptyDefinitionException {
         HashSet<String> valueCheck = new HashSet<>(items.size());
         ArrayList<DictionaryEntry> ret = new ArrayList<>(items.size());
         for (ItemList item :
                 items) {
             String definition = item.getDefinition();
             String value = item.getValue();
-            if (value.equals("")) {
+            if ("".equals(value)) {
                 throw new EmptyDefinitionException();
             } else {
                 if (valueCheck.contains(definition)) {
@@ -109,7 +109,7 @@ public class DictionaryInputListAdapter extends EntryInputListAdapter<Dictionary
                 items) {
             String definition = list.getDefinition();
             String value = list.getValue();
-            if (value.equals("")) {
+            if ("".equals(value)) {
                 list.setCorrect(false);
             } else {
                 if (definitionCheck.contains(definition)) {

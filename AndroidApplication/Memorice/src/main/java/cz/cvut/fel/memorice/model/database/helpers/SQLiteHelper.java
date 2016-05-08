@@ -242,7 +242,7 @@ public class SQLiteHelper extends SQLiteOpenHelper {
      *
      * @return list of all entities in the database
      */
-    public ArrayList<Entity> getAllEntities() {
+    public List<Entity> getAllEntities() {
         LOG.info("Getting all entities:");
         ArrayList<Entity> ret = new ArrayList<>();
 
@@ -265,7 +265,7 @@ public class SQLiteHelper extends SQLiteOpenHelper {
      *
      * @return list of all favourite entities in the database
      */
-    public ArrayList<Entity> getAllFavouriteEntities() {
+    public List<Entity> getAllFavouriteEntities() {
         LOG.info("Getting all favourite entities:");
         ArrayList<Entity> ret = new ArrayList<>();
 
@@ -290,7 +290,7 @@ public class SQLiteHelper extends SQLiteOpenHelper {
      *
      * @return list of all entities in the database that comprises
      */
-    public ArrayList<Entity> getAllEntitiesFiltered(String filter) {
+    public List<Entity> getAllEntitiesFiltered(String filter) {
         LOG.info("Getting all entities with filter: " + filter);
         ArrayList<Entity> ret = new ArrayList<>();
         String query = "SELECT " + KEY_LABEL + " FROM " + TABLE_ENTITIES +
@@ -312,7 +312,7 @@ public class SQLiteHelper extends SQLiteOpenHelper {
      *
      * @return list of all favourite entities in the database that comprises
      */
-    public ArrayList<Entity> getAllFavouriteEntitiesFiltered(String filter) {
+    public List<Entity> getAllFavouriteEntitiesFiltered(String filter) {
         LOG.info("Getting all favourite and filtered entities:");
         ArrayList<Entity> ret = new ArrayList<>();
 
@@ -338,7 +338,7 @@ public class SQLiteHelper extends SQLiteOpenHelper {
      *
      * @return list of all entities' names in the database
      */
-    public ArrayList<String> getAllLabels() {
+    public List<String> getAllLabels() {
         LOG.info("Getting all possible labels");
         SQLiteDatabase db = this.getReadableDatabase();
         String querry = "SELECT " + KEY_LABEL + " FROM " + TABLE_ENTITIES;

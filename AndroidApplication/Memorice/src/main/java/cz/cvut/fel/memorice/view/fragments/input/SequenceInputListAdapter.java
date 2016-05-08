@@ -11,6 +11,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import cz.cvut.fel.memorice.R;
 import cz.cvut.fel.memorice.model.entities.entries.SequenceEntry;
@@ -74,11 +75,11 @@ public class SequenceInputListAdapter extends EntryInputListAdapter<SequenceInpu
      * {@inheritDoc}
      */
     @Override
-    public ArrayList<SequenceEntry> getInput() throws EmptyDefinitionException {
+    public List<SequenceEntry> getInput() throws EmptyDefinitionException {
         ArrayList<SequenceEntry> ret = new ArrayList<>(items.size());
         for (int i = 0; i < items.size(); i++) {
             String value = items.get(i).getValue();
-            if (value.equals("")) {
+            if ("".equals(value)) {
                 throw new EmptyDefinitionException();
             }
             ret.add(new SequenceEntry(value, i + 1));

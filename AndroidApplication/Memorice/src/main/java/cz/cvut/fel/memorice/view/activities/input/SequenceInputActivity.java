@@ -62,28 +62,36 @@ public class SequenceInputActivity extends InputActivity {
                 finish();
                 return true;
             case R.id.action_save:
-                try {
-                    EditText labelInput = (EditText) findViewById(R.id.entity_type);
-                    String label = labelInput.getText().toString().trim();
-                    mAdapter.buildNew(label, EntityEnum.SEQUENCE);
-                    finish();
-                } catch (NameAlreadyUsedException e) {
-                    LOG.log(Level.INFO, "NameAlreadyUsed!", e);
-                    showLabelUsedDialog(new AlertDialog.Builder(SequenceInputActivity.this, R.style.AlertDialogTheme));
-                } catch (EmptyLabelException e) {
-                    LOG.log(Level.INFO, "EmptyLabel!", e);
-                    showLabelEmptyDialog(new AlertDialog.Builder(SequenceInputActivity.this, R.style.AlertDialogTheme));
-                } catch (DefinitionAlreadyUsedException e) {
-                    LOG.log(Level.INFO, "DefinitionAlreadyUsed!", e);
-                    showValueDuplicateDialog(new AlertDialog.Builder(SequenceInputActivity.this, R.style.AlertDialogTheme));
-                } catch (EmptyDefinitionException e) {
-                    LOG.log(Level.INFO, "EmptyDefinition!", e);
-                    showValueEmptyDialog(new AlertDialog.Builder(SequenceInputActivity.this, R.style.AlertDialogTheme));
-                }
+                wrapInput();
                 break;
             default:
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    /**
+     * Tries to get input from the user, check its corectness and writes it to the database
+     * if input is allright
+     */
+    private void wrapInput() {
+        try {
+            EditText labelInput = (EditText) findViewById(R.id.entity_type);
+            String label = labelInput.getText().toString().trim();
+            mAdapter.buildNew(label, EntityEnum.SEQUENCE);
+            finish();
+        } catch (NameAlreadyUsedException e) {
+            LOG.log(Level.INFO, "NameAlreadyUsed!", e);
+            showLabelUsedDialog(new AlertDialog.Builder(SequenceInputActivity.this, R.style.AlertDialogTheme));
+        } catch (EmptyLabelException e) {
+            LOG.log(Level.INFO, "EmptyLabel!", e);
+            showLabelEmptyDialog(new AlertDialog.Builder(SequenceInputActivity.this, R.style.AlertDialogTheme));
+        } catch (DefinitionAlreadyUsedException e) {
+            LOG.log(Level.INFO, "DefinitionAlreadyUsed!", e);
+            showValueDuplicateDialog(new AlertDialog.Builder(SequenceInputActivity.this, R.style.AlertDialogTheme));
+        } catch (EmptyDefinitionException e) {
+            LOG.log(Level.INFO, "EmptyDefinition!", e);
+            showValueEmptyDialog(new AlertDialog.Builder(SequenceInputActivity.this, R.style.AlertDialogTheme));
+        }
     }
 
     /**

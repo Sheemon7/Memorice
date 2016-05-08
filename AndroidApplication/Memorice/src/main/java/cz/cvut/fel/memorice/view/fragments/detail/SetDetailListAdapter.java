@@ -119,7 +119,7 @@ public class SetDetailListAdapter extends EntityDetailListAdapter<SetDetailListA
         public void afterTextChanged(Editable s) {
             Entry entry = items.get(holder.getAdapterPosition());
             String previous = entry.getValue();
-            if (s.toString().equals("")) {
+            if ("".equals(s.toString())) {
                 holder.txtValue.setError("Cannot be empty!");
             } else if (items.contains(new Entry(s.toString())) && !s.toString().equals(previous)) {
                 holder.txtValue.setError("Cannot contain duplicates!");

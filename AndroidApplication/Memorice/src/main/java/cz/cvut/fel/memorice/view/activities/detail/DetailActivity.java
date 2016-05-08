@@ -10,9 +10,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.text.Editable;
 import android.text.SpannableStringBuilder;
-import android.text.TextWatcher;
 import android.text.style.ForegroundColorSpan;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -30,7 +28,6 @@ import cz.cvut.fel.memorice.model.database.helpers.SQLiteHelper;
 import cz.cvut.fel.memorice.model.entities.Entity;
 import cz.cvut.fel.memorice.view.fragments.DividerItemDecoration;
 import cz.cvut.fel.memorice.view.fragments.detail.EntityDetailListAdapter;
-import cz.cvut.fel.memorice.view.fragments.detail.SequenceDetailListAdapter;
 
 /**
  * This activity is responsible for viewing entity detail. It also setups recycler view, which is
@@ -94,11 +91,7 @@ public abstract class DetailActivity extends AppCompatActivity {
                 finish();
                 return true;
             case R.id.action_favourite:
-                if (!entity.isFavourite()) {
-                    menu.getItem(0).setIcon(ResourcesCompat.getDrawable(getResources(), R.drawable.ic_fav_white_fill_24dp, null));
-                } else {
-                    menu.getItem(0).setIcon(ResourcesCompat.getDrawable(getResources(), R.drawable.ic_fav_outline_24dp, null));
-                }
+                setMenuFavouriteIcon();
                 access.execute(ASyncSimpleAccessDatabase.TOGGLE_FAVOURITE);
                 return true;
             default:
@@ -209,6 +202,17 @@ public abstract class DetailActivity extends AppCompatActivity {
         editIcon = (ImageView) findViewById(R.id.editable_icon);
         editIcon.setImageResource(R.drawable.ic_edit_white_24dp);
         editIcon.setOnClickListener(new InitEditListener(new SQLiteHelper(getApplicationContext())));
+    }
+
+    /**
+     * Provides menu favourite icon with correct icon
+     */
+    private void setMenuFavouriteIcon() {
+        if (!entity.isFavourite()) {
+            menu.getItem(0).setIcon(ResourcesCompat.getDrawable(getResources(), R.drawable.ic_fav_white_fill_24dp, null));
+        } else {
+            menu.getItem(0).setIcon(ResourcesCompat.getDrawable(getResources(), R.drawable.ic_fav_outline_24dp, null));
+        }
     }
 
     /**
@@ -323,7 +327,7 @@ public abstract class DetailActivity extends AppCompatActivity {
          * @return true if the new label is possible else false
          */
         private boolean isLabelOkay(String newLabel, String oldLabel) {
-            return newLabel.equals(oldLabel) || helper.getEntity(newLabel) == null && !newLabel.equals("");
+            return newLabel.equals(oldLabel) || helper.getEntity(newLabel) == null && !"".equals(newLabel);
         }
 
         /**
