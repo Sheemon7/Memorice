@@ -15,20 +15,30 @@ import cz.cvut.fel.memorice.R;
 import cz.cvut.fel.memorice.model.entities.entries.Entry;
 
 /**
- * Created by sheemon on 30.4.16.
+ * This adapter is responsible for displaying entries of set entity
  */
 public class SetDetailListAdapter extends EntityDetailListAdapter<SetDetailListAdapter.ViewHolder, Entry> {
 
+    /**
+     * Constructs new instance
+     * @param view recycler view
+     */
     public SetDetailListAdapter(RecyclerView view) {
         super(view);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.detail_set_line, parent, false);
         return new ViewHolder(view);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
         holder.txtValue.setText(items.get(position).getValue());
@@ -39,12 +49,20 @@ public class SetDetailListAdapter extends EntityDetailListAdapter<SetDetailListA
         }
     }
 
+    /**
+     * Prepares one item to be displayed in a not editable state
+     * @param holder list item holder
+     */
     private void prepareItem(ViewHolder holder) {
         holder.txtValue.setError(null);
         holder.txtValue.setEnabled(false);
         holder.iconDelete.setVisibility(View.GONE);
     }
 
+    /**
+     * Prepare one item to be displayed in an editable state
+     * @param holder list item holder
+     */
     private void prepareItemToEdit(final ViewHolder holder) {
         holder.iconDelete.setVisibility(View.VISIBLE);
         holder.iconDelete.setOnClickListener(new View.OnClickListener() {
@@ -58,6 +76,9 @@ public class SetDetailListAdapter extends EntityDetailListAdapter<SetDetailListA
         holder.txtValue.addTextChangedListener(new CustomSetEntryTextChangeListener(holder, items));
     }
 
+    /**
+     * View Holder class encapsulates recycler view items' components
+     */
     protected static class ViewHolder extends RecyclerView.ViewHolder {
         private EditText txtValue;
         private ImageView iconDelete;
@@ -70,6 +91,9 @@ public class SetDetailListAdapter extends EntityDetailListAdapter<SetDetailListA
         }
     }
 
+    /**
+     * This custom listener handles the entry value change event
+     */
     private class CustomSetEntryTextChangeListener implements TextWatcher {
 
         private ViewHolder holder;

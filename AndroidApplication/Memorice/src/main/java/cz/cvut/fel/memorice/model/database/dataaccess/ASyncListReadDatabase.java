@@ -3,6 +3,7 @@ package cz.cvut.fel.memorice.model.database.dataaccess;
 import android.content.Context;
 import android.os.AsyncTask;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import cz.cvut.fel.memorice.model.database.helpers.SQLiteHelper;
@@ -62,7 +63,7 @@ public class ASyncListReadDatabase extends AsyncTask<String, Void, List<Entity>>
             case FAVOURITE_FILTER_ENTITIES:
                 return helper.getAllFavouriteEntitiesFiltered(filter);
             default:
-                return null;
+                return new ArrayList<>();
         }
     }
 
@@ -77,8 +78,8 @@ public class ASyncListReadDatabase extends AsyncTask<String, Void, List<Entity>>
     }
 
     /**
-     * Helper method for setting up filter for further filtering carried out in a task
-     * @param filter filter
+     * Helper method for setting up showFiltered for further filtering carried out in a task
+     * @param filter showFiltered
      */
     public void setFilter(String filter) {
         this.filter = filter;

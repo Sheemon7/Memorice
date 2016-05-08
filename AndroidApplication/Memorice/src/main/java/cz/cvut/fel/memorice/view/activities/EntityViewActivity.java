@@ -20,6 +20,7 @@ import android.widget.Switch;
 
 import com.getbase.floatingactionbutton.FloatingActionsMenu;
 
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import cz.cvut.fel.memorice.R;
@@ -165,7 +166,7 @@ public class EntityViewActivity extends AppCompatActivity {
                         }
                     });
                 } catch (InterruptedException e) {
-                    LOG.info("Interrupting fab hide thread");
+                    LOG.log(Level.INFO, "Interrupting fab hide thread", e);
                 }
             }
         });
@@ -261,7 +262,7 @@ public class EntityViewActivity extends AppCompatActivity {
                         }
                     });
                 } catch (InterruptedException e) {
-                    e.printStackTrace();
+                    LOG.log(Level.WARNING, "Interrupted fadeOut!", e);
                 }
             }
         }).start();
@@ -334,7 +335,7 @@ public class EntityViewActivity extends AppCompatActivity {
     }
 
     /**
-     * Custom listener defining what happens after the user tries to filter the entities
+     * Custom listener defining what happens after the user tries to showFiltered the entities
      */
     private class CustomOnClickListener implements View.OnClickListener {
 
@@ -363,7 +364,7 @@ public class EntityViewActivity extends AppCompatActivity {
     }
 
     /**
-     * Custom listener listening to changes of filter text and displaying results
+     * Custom listener listening to changes of showFiltered text and displaying results
      */
     private class CustomOnQueryTextChangeListener implements SearchView.OnQueryTextListener {
 
@@ -374,7 +375,7 @@ public class EntityViewActivity extends AppCompatActivity {
 
         @Override
         public boolean onQueryTextChange(String newText) {
-            mAdapter.filter(newText, getApplicationContext());
+            mAdapter.showFiltered(newText, getApplicationContext());
             return true;
         }
     }

@@ -25,7 +25,8 @@ import cz.cvut.fel.memorice.view.fragments.input.EntryInputListAdapter;
 import cz.cvut.fel.memorice.view.fragments.input.SequenceInputListAdapter;
 
 /**
- * Created by sheemon on 19.4.16.
+ * This activity is responsible for taking users input. It contains recycler view responsible
+ * for processing this input and writing entity to the database
  */
 public abstract class InputActivity extends AppCompatActivity {
 
@@ -35,39 +36,72 @@ public abstract class InputActivity extends AppCompatActivity {
     protected EntryInputListAdapter mAdapter;
     protected RecyclerView.LayoutManager mLayoutManager;
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_input, menu);
         return true;
     }
 
+    /**
+     * Shows alert dialog for label used message in the dataset
+     *
+     * @param alertDialogBuilder alert dialog
+     */
     protected void showLabelUsedDialog(AlertDialog.Builder alertDialogBuilder) {
         alertDialogBuilder.setTitle(getString(R.string.used_name_quote));
         alertDialogBuilder.setMessage("Please insert another one");
         showDialog(alertDialogBuilder);
     }
 
+    /**
+     * Shows alert dialog for label empty in the dataset
+     *
+     * @param alertDialogBuilder alert dialog
+     */
     protected void showLabelEmptyDialog(AlertDialog.Builder alertDialogBuilder) {
         alertDialogBuilder.setTitle(getString(R.string.empty_name_quote));
         alertDialogBuilder.setMessage("Please insert another one");
         showDialog(alertDialogBuilder);
     }
 
+    /**
+     * Shows alert dialog for duplicate value used in the dataset
+     *
+     * @param alertDialogBuilder alert dialog
+     */
     protected void showValueDuplicateDialog(AlertDialog.Builder alertDialogBuilder) {
         alertDialogBuilder.setTitle(getString(R.string.duplicate_quote));
         showDialog(alertDialogBuilder);
     }
 
+    /**
+     * Shows alert dialog for empty value in the datase
+     *
+     * @param alertDialogBuilder alert dialog
+     */
     protected void showValueEmptyDialog(AlertDialog.Builder alertDialogBuilder) {
         alertDialogBuilder.setTitle(getString(R.string.empty_value_quote));
         showDialog(alertDialogBuilder);
     }
 
-    protected void showDefinitionDuplicateDialog(AlertDialog.Builder alertDialogBuilder) {
+    /**
+     * Shows alert dialog for duplicate term
+     *
+     * @param alertDialogBuilder alert dialog
+     */
+    protected void showTermDuplicateDialog(AlertDialog.Builder alertDialogBuilder) {
         alertDialogBuilder.setTitle(getString(R.string.duplicate_def_quote));
         showDialog(alertDialogBuilder);
     }
 
+    /**
+     * Builds and shows alert dialog specified in {@link android.app.AlertDialog.Builder}
+     *
+     * @param alertDialogBuilder alert dialog builder
+     */
     private void showDialog(AlertDialog.Builder alertDialogBuilder) {
         alertDialogBuilder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
             @Override
@@ -79,6 +113,9 @@ public abstract class InputActivity extends AppCompatActivity {
         alert.show();
     }
 
+    /**
+     * Prepares important labels shown in activity
+     */
     protected void prepareInputLabels() {
         labelInput = (EditText) findViewById(R.id.entity_type);
         labelWarn = (TextView) findViewById(R.id.text_used_label);
@@ -113,6 +150,9 @@ public abstract class InputActivity extends AppCompatActivity {
         labelInput.requestFocus();
     }
 
+    /**
+     * Sets color to status bar if device sdk complies
+     */
     protected void setColourToStatusBar() {
         if (Build.VERSION.SDK_INT >= 21) {
             Window window = getWindow();
@@ -122,12 +162,9 @@ public abstract class InputActivity extends AppCompatActivity {
         }
     }
 
-    protected void addEntityToDatabase(Entity entity) {
-        ASyncSimpleAccessDatabase access = new ASyncSimpleAccessDatabase(this.getApplicationContext());
-        access.setEntity(entity);
-        access.execute(ASyncSimpleAccessDatabase.ADD_ENTITY);
-    }
-
+    /**
+     * Prepares recycler view in which the user will specify the input
+     */
     protected void prepareRecyclerView() {
         mRecyclerView = (RecyclerView) findViewById(R.id.recycler_view);
         mLayoutManager = new LinearLayoutManager(this);
@@ -144,5 +181,11 @@ public abstract class InputActivity extends AppCompatActivity {
         mAdapter.show();
     }
 
+    /**
+     * Returns correct {@link android.widget.ListAdapter} capable of showing correct input method
+     *
+     * @param view view
+     * @return list adapter
+     */
     protected abstract EntryInputListAdapter getCorrectAdapter(RecyclerView view);
 }

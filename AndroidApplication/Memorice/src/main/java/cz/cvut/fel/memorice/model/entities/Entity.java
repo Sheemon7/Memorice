@@ -5,7 +5,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import cz.cvut.fel.memorice.model.entities.entries.Entry;
-import cz.cvut.fel.memorice.model.util.TermAlreadyUsedException;
+import cz.cvut.fel.memorice.model.util.DefinitionAlreadyUsedException;
 
 /**
  * Entity abstract class defines attributes and characteristics of each entity in the program
@@ -32,13 +32,13 @@ public abstract class Entity implements Serializable, Iterable {
     public abstract int size();
 
     /**
-     * Adds new entry to the entity, throws {@link TermAlreadyUsedException} if the entry with
+     * Adds new entry to the entity, throws {@link DefinitionAlreadyUsedException} if the entry with
      * the same value is already present
      *
      * @param entry entry to be added
-     * @throws TermAlreadyUsedException
+     * @throws DefinitionAlreadyUsedException
      */
-    public abstract void addEntry(Entry entry) throws TermAlreadyUsedException;
+    public abstract void addEntry(Entry entry) throws DefinitionAlreadyUsedException;
 
     /**
      * Deletes entry from the entity

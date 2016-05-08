@@ -14,6 +14,7 @@ import cz.cvut.fel.memorice.model.util.NameAlreadyUsedException;
 /**
  * Class that stores all names that have been used and provides methods for checking
  * name validity.
+ * @deprecated
  */
 @Deprecated
 public class NameDatabase implements Serializable {

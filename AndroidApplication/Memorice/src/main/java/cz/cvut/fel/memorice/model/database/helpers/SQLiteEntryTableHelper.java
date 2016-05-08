@@ -197,35 +197,35 @@ public class SQLiteEntryTableHelper {
         db.close();
     }
 
-//    /**
-//     * Deletes passed set entry from the database
-//     *
-//     * @param entry entry to be deleted
-//     */
-//    public void deleteEntry(SequenceEntry entry, Entity entity) {
-//        LOG.info("Deleting sequence entry " + entry);
-//        String query = "DELETE FROM " + TABLE_ENTRIES_SEQUENCES + " WHERE " + KEY_VALUE + " = " + "\""
-//                + entry.getValue() + "\"" + " AND " + KEY_ENTITY
-//                + " = " + "\"" + entity.getLabel() + "\"";
-//        SQLiteDatabase db = helper.getWritableDatabase();
-//        db.execSQL(query);
-//        db.close();
-//    }
-//
-//    /**
-//     * Deletes passed set entry from the database
-//     *
-//     * @param entry entry to be deleted
-//     */
-//    public void deleteEntry(DictionaryEntry entry, Entity entity) {
-//        LOG.info("Deleting dictionary entry " + entry);
-//        String query = "DELETE FROM " + TABLE_ENTRIES_DICTS + " WHERE " + KEY_VALUE + " = " + "\""
-//                + entry.getValue() + "\"" + " AND " + KEY_ENTITY
-//                + " = " + "\"" + entity.getLabel() + "\"";
-//        SQLiteDatabase db = helper.getWritableDatabase();
-//        db.execSQL(query);
-//        db.close();
-//    }
+    /**
+     * Deletes passed set entry from the database
+     *
+     * @param entry entry to be deleted
+     */
+    public void deleteEntry(SequenceEntry entry, Entity entity) {
+        LOG.info("Deleting sequence entry " + entry);
+        String query = "DELETE FROM " + TABLE_ENTRIES_SEQUENCES + " WHERE " + KEY_VALUE + " = " + "\""
+                + entry.getValue() + "\"" + " AND " + KEY_ENTITY
+                + " = " + "\"" + entity.getLabel() + "\"";
+        SQLiteDatabase db = helper.getWritableDatabase();
+        db.execSQL(query);
+        db.close();
+    }
+
+    /**
+     * Deletes passed set entry from the database
+     *
+     * @param entry entry to be deleted
+     */
+    public void deleteEntry(DictionaryEntry entry, Entity entity) {
+        LOG.info("Deleting dictionary entry " + entry);
+        String query = "DELETE FROM " + TABLE_ENTRIES_DICTS + " WHERE " + KEY_VALUE + " = " + "\""
+                + entry.getValue() + "\"" + " AND " + KEY_ENTITY
+                + " = " + "\"" + entity.getLabel() + "\"";
+        SQLiteDatabase db = helper.getWritableDatabase();
+        db.execSQL(query);
+        db.close();
+    }
 
     /**
      * Edits passed set entry from the database
@@ -244,37 +244,37 @@ public class SQLiteEntryTableHelper {
         db.close();
     }
 
-//    /**
-//     * Edits passed set entry from the database
-//     *
-//     * @param entry entry to be deleted
-//     */
-//    public void editEntry(SequenceEntry entry, String oldValue, Entity entity) {
-//        LOG.info("Editing set entry " + entry);
-//        String query = "UPDATE " + TABLE_ENTRIES_SEQUENCES + " SET " + KEY_VALUE + "=\"" + entry.getValue() +
-//                "\" WHERE " + KEY_VALUE + " = " + "\""
-//                + oldValue + "\"" + " AND " + KEY_ENTITY
-//                + " = " + "\"" + entity.getLabel() + "\"";
-//        SQLiteDatabase db = helper.getWritableDatabase();
-//        db.execSQL(query);
-//        db.close();
-//    }
-//
-//    /**
-//     * Edits passed set entry from the database
-//     *
-//     * @param entry entry to be deleted
-//     */
-//    public void editEntry(DictionaryEntry entry, String oldValue, Entity entity) {
-//        LOG.info("Editing set entry " + entry);
-//        String query = "UPDATE " + TABLE_ENTRIES_DICTS + " SET " + KEY_VALUE + "=\"" + entry.getValue() +
-//                "\" WHERE " + KEY_VALUE + " = " + "\""
-//                + oldValue + "\"" + " AND " + KEY_ENTITY
-//                + " = " + "\"" + entity.getLabel() + "\"";
-//        SQLiteDatabase db = helper.getWritableDatabase();
-//        db.execSQL(query);
-//        db.close();
-//    }
+    /**
+     * Edits passed set entry from the database
+     *
+     * @param entry entry to be deleted
+     */
+    public void editEntry(SequenceEntry entry, String oldValue, Entity entity) {
+        LOG.info("Editing set entry " + entry);
+        String query = "UPDATE " + TABLE_ENTRIES_SEQUENCES + " SET " + KEY_VALUE + "=\"" + entry.getValue() +
+                "\" WHERE " + KEY_VALUE + " = " + "\""
+                + oldValue + "\"" + " AND " + KEY_ENTITY
+                + " = " + "\"" + entity.getLabel() + "\"";
+        SQLiteDatabase db = helper.getWritableDatabase();
+        db.execSQL(query);
+        db.close();
+    }
+
+    /**
+     * Edits passed set entry from the database
+     *
+     * @param entry entry to be deleted
+     */
+    public void editEntry(DictionaryEntry entry, String oldValue, Entity entity) {
+        LOG.info("Editing set entry " + entry);
+        String query = "UPDATE " + TABLE_ENTRIES_DICTS + " SET " + KEY_VALUE + "=\"" + entry.getValue() +
+                "\" WHERE " + KEY_VALUE + " = " + "\""
+                + oldValue + "\"" + " AND " + KEY_ENTITY
+                + " = " + "\"" + entity.getLabel() + "\"";
+        SQLiteDatabase db = helper.getWritableDatabase();
+        db.execSQL(query);
+        db.close();
+    }
 
     /**
      * Returns the total number of entries in all tables.

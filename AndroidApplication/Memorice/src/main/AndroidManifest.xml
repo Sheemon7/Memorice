@@ -9,7 +9,7 @@
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme.NoActionBar">
+        android:theme="@style/AppTheme">
 
 
         <activity
@@ -24,14 +24,12 @@
         <activity
             android:name=".view.activities.MainActivity"
             android:label="@string/app_name"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar"/>
+            android:screenOrientation="portrait"/>
 
         <activity
             android:name=".view.activities.EntityViewActivity"
             android:label="@string/title_acitivity_entities"
-            android:parentActivityName=".view.activities.MainActivity"
-            android:theme="@style/AppTheme.NoActionBar">
+            android:parentActivityName=".view.activities.MainActivity">
 
             <!-- Parent activity meta-data to support 4.0 and lower -->
             <meta-data

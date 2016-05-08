@@ -9,25 +9,40 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
 /**
- * Created by sheemon on 22.4.16.
+ * Simple divider used in my recycler views. Inspiration taken here :
+ * //http://stackoverflow.com/questions/24618829/how-to-add-dividers-and-spaces-between-items-in-recyclerview
  */
 public class DividerItemDecoration extends RecyclerView.ItemDecoration {
-    //http://stackoverflow.com/questions/24618829/how-to-add-dividers-and-spaces-between-items-in-recyclerview
+
     private static final int[] ATTRS = new int[]{android.R.attr.listDivider};
     private static final int OFFSET = 50;
 
     private Drawable mDivider;
 
+    /**
+     * Creates new instance with context provided
+     *
+     * @param context context
+     */
     public DividerItemDecoration(Context context) {
         final TypedArray styledAttributes = context.obtainStyledAttributes(ATTRS);
         mDivider = styledAttributes.getDrawable(0);
         styledAttributes.recycle();
     }
 
+    /**
+     * Creates new instance from the resource and application context
+     *
+     * @param context context
+     * @param resId   resource if
+     */
     public DividerItemDecoration(Context context, int resId) {
         mDivider = ContextCompat.getDrawable(context, resId);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void onDraw(Canvas c, RecyclerView parent, RecyclerView.State state) {
         int left = parent.getPaddingLeft() + OFFSET;

@@ -1,14 +1,19 @@
 package cz.cvut.fel.memorice.model.database;
 
-import cz.cvut.fel.memorice.model.database.DataReader;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 import cz.cvut.fel.memorice.model.entities.Entity;
 import cz.cvut.fel.memorice.model.entities.EntityEnum;
 
-import java.io.*;
-import java.util.logging.Logger;
-
 /**
  * {@inheritDoc}
+ * @deprecated
  */
 @Deprecated
 public class FileDataReader implements DataReader {
@@ -28,11 +33,11 @@ public class FileDataReader implements DataReader {
             objectIn.close();
             in.close();
         } catch (FileNotFoundException e) {
-            e.printStackTrace();
+            LOGGER.log(Level.SEVERE, "File not found!", e);
         } catch (ClassNotFoundException e) {
-            e.printStackTrace();
+            LOGGER.log(Level.SEVERE, "Class not found!", e);
         } catch (IOException e) {
-            e.printStackTrace();
+            LOGGER.log(Level.SEVERE, "IO Exception", e);
         }
         return (Entity) object;
     }

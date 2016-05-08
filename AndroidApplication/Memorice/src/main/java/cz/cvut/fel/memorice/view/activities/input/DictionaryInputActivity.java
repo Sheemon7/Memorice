@@ -3,33 +3,34 @@ package cz.cvut.fel.memorice.view.activities.input;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 
-import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import cz.cvut.fel.memorice.R;
-import cz.cvut.fel.memorice.model.database.helpers.SQLiteHelper;
 import cz.cvut.fel.memorice.model.entities.EntityEnum;
-import cz.cvut.fel.memorice.model.entities.builders.Builder;
-import cz.cvut.fel.memorice.model.entities.entries.DictionaryEntry;
 import cz.cvut.fel.memorice.model.util.EmptyLabelException;
-import cz.cvut.fel.memorice.model.util.EmptyTermException;
+import cz.cvut.fel.memorice.model.util.EmptyDefinitionException;
 import cz.cvut.fel.memorice.model.util.NameAlreadyUsedException;
-import cz.cvut.fel.memorice.model.util.TermAlreadyUsedException;
+import cz.cvut.fel.memorice.model.util.DefinitionAlreadyUsedException;
 import cz.cvut.fel.memorice.view.fragments.input.DictionaryInputListAdapter;
 import cz.cvut.fel.memorice.view.fragments.input.EntryInputListAdapter;
 
 /**
- * Created by sheemon on 18.4.16.
+ * This activity extends InputActivity. It shows appropriate input method for taking user input for
+ * dictionary entity
  */
 public class DictionaryInputActivity extends InputActivity {
+    private static final Logger LOG = Logger.getLogger(DictionaryInputActivity.class.getName());
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -51,6 +52,9 @@ public class DictionaryInputActivity extends InputActivity {
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
@@ -59,46 +63,32 @@ public class DictionaryInputActivity extends InputActivity {
                 return true;
             case R.id.action_save:
                 try {
-                    buildNewDictionary();
+                    labelInput = (EditText) findViewById(R.id.entity_type);
+                    String label = labelInput.getText().toString().trim();
+                    mAdapter.buildNew(label, EntityEnum.DICTIONARY);
                     finish();
                 } catch (NameAlreadyUsedException e) {
+                    LOG.log(Level.INFO, "NameAlreadyUsed!", e);
                     showLabelUsedDialog(new AlertDialog.Builder(DictionaryInputActivity.this, R.style.AlertDialogTheme));
                 } catch (EmptyLabelException e) {
+                    LOG.log(Level.INFO, "EmptyLabel!", e);
                     showLabelEmptyDialog(new AlertDialog.Builder(DictionaryInputActivity.this, R.style.AlertDialogTheme));
-                } catch (TermAlreadyUsedException e) {
-                    showDefinitionDuplicateDialog(new AlertDialog.Builder(DictionaryInputActivity.this, R.style.AlertDialogTheme));
-                } catch (EmptyTermException e) {
+                } catch (DefinitionAlreadyUsedException e) {
+                    LOG.log(Level.INFO, "DefinitionAlreadyUsed!", e);
+                    showTermDuplicateDialog(new AlertDialog.Builder(DictionaryInputActivity.this, R.style.AlertDialogTheme));
+                } catch (EmptyDefinitionException e) {
+                    LOG.log(Level.INFO, "EmptyDefinition!", e);
                     showValueEmptyDialog(new AlertDialog.Builder(DictionaryInputActivity.this, R.style.AlertDialogTheme));
                 }
+                break;
+            default:
         }
         return super.onOptionsItemSelected(item);
     }
 
-    private void buildNewDictionary() throws NameAlreadyUsedException, EmptyLabelException, TermAlreadyUsedException, EmptyTermException {
-        labelInput = (EditText) findViewById(R.id.entity_type);
-        String label = labelInput.getText().toString().trim();
-        SQLiteHelper helper = new SQLiteHelper(getApplicationContext());
-        if (label.length() == 0) {
-            throw new EmptyLabelException();
-        } else if (helper.getEntity(label) != null) {
-            throw new NameAlreadyUsedException();
-        }
-        Builder builder = Builder.getCorrectBuilder(EntityEnum.DICTIONARY);
-        builder.init(label);
-
-        try {
-            for (DictionaryEntry e: (ArrayList<DictionaryEntry>) mAdapter.getInput()) {
-                builder.add(e);
-            }
-        } catch (TermAlreadyUsedException | EmptyTermException e) {
-            mAdapter.emphasizeErrors();
-            builder.wrap();
-            throw e;
-        }
-
-        addEntityToDatabase(builder.wrap());
-    }
-
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected EntryInputListAdapter getCorrectAdapter(RecyclerView view) {
         return new DictionaryInputListAdapter(view);

@@ -10,15 +10,15 @@ import org.junit.Test;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import cz.cvut.fel.memorice.model.entities.Dictionary;
 import cz.cvut.fel.memorice.model.entities.Entity;
-import cz.cvut.fel.memorice.model.entities.Set;
+import cz.cvut.fel.memorice.model.entities.EntityEnum;
 import cz.cvut.fel.memorice.model.entities.Sequence;
+import cz.cvut.fel.memorice.model.entities.Set;
 import cz.cvut.fel.memorice.model.entities.builders.Builder;
-import cz.cvut.fel.memorice.model.entities.builders.DictionaryBuilder;
-import cz.cvut.fel.memorice.model.entities.builders.SequenceBuilder;
-import cz.cvut.fel.memorice.model.entities.builders.SetBuilder;
 import cz.cvut.fel.memorice.model.entities.entries.DictionaryEntry;
 import cz.cvut.fel.memorice.model.entities.entries.Entry;
 import cz.cvut.fel.memorice.model.entities.entries.SequenceEntry;
@@ -28,6 +28,8 @@ import cz.cvut.fel.memorice.model.util.WrongNameException;
  * Testing {@link SQLiteHelper} class
  */
 public class SQLiteHelperTest extends AndroidTestCase {
+
+    private static final Logger LOG = Logger.getLogger(SQLiteHelperTest.class.getName());
 
     private static final int NUMBER_OF_ENTRIES_WITHIN_ENTITIES = 10;
     private SQLiteHelper helper;
@@ -155,6 +157,7 @@ public class SQLiteHelperTest extends AndroidTestCase {
             try {
                 assertEquals(e.isFavourite(), helper.isEntityFavourite(e.getLabel()));
             } catch (WrongNameException e1) {
+                LOG.log(Level.INFO, "Wrong name!", e1);
                 fail();
             }
         }
@@ -193,7 +196,7 @@ public class SQLiteHelperTest extends AndroidTestCase {
     }
 
     private Set prepareTestingSet(String label) {
-        Builder b = SetBuilder.getInstance();
+        Builder b = Builder.getCorrectBuilder(EntityEnum.SET);
         b.init(label);
         for (int i = 0; i < NUMBER_OF_ENTRIES_WITHIN_ENTITIES; i++) {
             b.add(new Entry(UUID.randomUUID().toString()));
@@ -202,7 +205,7 @@ public class SQLiteHelperTest extends AndroidTestCase {
     }
 
     private Sequence prepareTestingList(String label) {
-        Builder b = SequenceBuilder.getInstance();
+        Builder b = Builder.getCorrectBuilder(EntityEnum.SEQUENCE);
         b.init(label);
         for (int i = 0; i < NUMBER_OF_ENTRIES_WITHIN_ENTITIES; i++) {
             b.add(new SequenceEntry(UUID.randomUUID().toString(), i + 1));
@@ -211,7 +214,7 @@ public class SQLiteHelperTest extends AndroidTestCase {
     }
 
     private Dictionary prepareTestingDict(String label) {
-        Builder b = DictionaryBuilder.getInstance();
+        Builder b = Builder.getCorrectBuilder(EntityEnum.DICTIONARY);
         b.init(label);
         for (int i = 0; i < NUMBER_OF_ENTRIES_WITHIN_ENTITIES; i++) {
             //for the sake of simplicity, dictionary definitions are kept that simple

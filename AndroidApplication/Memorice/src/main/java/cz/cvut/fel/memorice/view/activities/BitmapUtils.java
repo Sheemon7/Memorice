@@ -3,17 +3,22 @@ package cz.cvut.fel.memorice.view.activities;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.support.v7.app.AlertDialog;
 
 /**
  * This class serves for convenient big image compressing for use in application
  */
 public class BitmapUtils {
 
+    private BitmapUtils() {
+    }
+
     /**
      * Decodes bitmap from resource, preserving required height
-     * @param res bitmap resource
-     * @param resId resource id
-     * @param reqWidth required width
+     *
+     * @param res       bitmap resource
+     * @param resId     resource id
+     * @param reqWidth  required width
      * @param reqHeight required height
      * @return
      */

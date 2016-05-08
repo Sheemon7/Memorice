@@ -26,7 +26,7 @@ import cz.cvut.fel.memorice.view.activities.detail.SequenceDetailActivity;
 import cz.cvut.fel.memorice.view.activities.detail.SetDetailActivity;
 
 /**
- * Created by sheemon on 21.4.16.
+ * This class is responsible for displaying entity list and handling aactions connected with them
  */
 public class EntityListAdapter extends RecyclerView.Adapter<EntityListAdapter.ViewHolder> {
 
@@ -34,6 +34,9 @@ public class EntityListAdapter extends RecyclerView.Adapter<EntityListAdapter.Vi
     private RecyclerView view;
     private String filter = "";
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public EntityListAdapter.ViewHolder onCreateViewHolder(ViewGroup parent,
                                                            int viewType) {
@@ -41,6 +44,9 @@ public class EntityListAdapter extends RecyclerView.Adapter<EntityListAdapter.Vi
         return new ViewHolder(v);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         final Entity entity = mDataset.get(position);
@@ -66,16 +72,29 @@ public class EntityListAdapter extends RecyclerView.Adapter<EntityListAdapter.Vi
         prepareDeleteIcon(holder, entity);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public int getItemCount() {
         return mDataset.size();
     }
 
+    /**
+     * Creates an instance of adapter
+     *
+     * @param view recycler view
+     */
     public EntityListAdapter(RecyclerView view) {
         this.view = view;
         mDataset = new ArrayList<>();
     }
 
+    /**
+     * Shows all entities from the database in the recycler view
+     *
+     * @param context application context
+     */
     public void showAll(Context context) {
         ASyncListReadDatabase access = new ASyncListReadDatabase(context);
         access.setAdapter(this);
@@ -83,11 +102,25 @@ public class EntityListAdapter extends RecyclerView.Adapter<EntityListAdapter.Vi
         view.setAdapter(this);
     }
 
-    public void setData(List<Entity> data) {
-        mDataset = data;
-        notifyDataSetChanged();
+    /**
+     * Shows only entities filtered by a string in the recycler view
+     *
+     * @param context application context
+     * @param filter  filter string
+     */
+    public void showFiltered(String filter, Context context) {
+        this.filter = filter;
+        ASyncListReadDatabase access = new ASyncListReadDatabase(context);
+        access.setAdapter(this);
+        access.setFilter(filter);
+        access.execute(ASyncListReadDatabase.FILTERED_ENTITIES);
     }
 
+    /**
+     * Shows only favourite entities in the recycler view
+     *
+     * @param context application context
+     */
     public void showFavorites(Context context) {
         ASyncListReadDatabase access = new ASyncListReadDatabase(context);
         access.setAdapter(this);
@@ -99,41 +132,55 @@ public class EntityListAdapter extends RecyclerView.Adapter<EntityListAdapter.Vi
         }
     }
 
-    public void remove(Entity item, Context context) {
-        int position = mDataset.indexOf(item);
+    /**
+     * Sets different entities list to display, notifies recycler view to change its layout
+     *
+     * @param entities list of entities
+     */
+    public void setData(List<Entity> entities) {
+        mDataset = entities;
+        notifyDataSetChanged();
+    }
+
+    /**
+     * Completely removes entity from the recycler view and the database
+     *
+     * @param entity  entity
+     * @param context application context
+     */
+    public void remove(Entity entity, Context context) {
+        int position = mDataset.indexOf(entity);
         mDataset.remove(position);
         ASyncSimpleAccessDatabase access = new ASyncSimpleAccessDatabase(context);
-        access.setEntity(item);
+        access.setEntity(entity);
         access.execute(ASyncSimpleAccessDatabase.DELETE_ENTITY);
         notifyItemRemoved(position);
     }
 
-    public void toggleFavorite(Entity item, Context context) {
+    /**
+     * Change favourite entity to not favourite and vice versa. Changes also occur in the database
+     *
+     * @param entity  entity
+     * @param context application context
+     */
+    public void toggleFavorite(Entity entity, Context context) {
         ASyncSimpleAccessDatabase access = new ASyncSimpleAccessDatabase(context);
-        access.setEntity(item);
+        access.setEntity(entity);
         access.execute(ASyncSimpleAccessDatabase.TOGGLE_FAVOURITE);
-        notifyItemChanged(mDataset.indexOf(item));
+        notifyItemChanged(mDataset.indexOf(entity));
     }
 
-    public void filter(String filter, Context context) {
-        this.filter = filter;
-        ASyncListReadDatabase access = new ASyncListReadDatabase(context);
-        access.setAdapter(this);
-        access.setFilter(filter);
-        access.execute(ASyncListReadDatabase.FILTERED_ENTITIES);
-    }
-
+    /**
+     * View holder serves as an encapsulation for the whole recyler view line
+     */
     protected static class ViewHolder extends RecyclerView.ViewHolder {
 
         private TextView txtHeader;
-
         private TextView txtType;
-
-
         private ImageView imageType;
-
         private ImageView imageFav;
         private ImageView imageDel;
+
         public ViewHolder(View v) {
             super(v);
             txtHeader = (TextView) v.findViewById(R.id.label_line);
@@ -144,17 +191,23 @@ public class EntityListAdapter extends RecyclerView.Adapter<EntityListAdapter.Vi
         }
     }
 
+    /**
+     * Returns correct on click listener, depending of entity type
+     *
+     * @param entity entity
+     * @return correct listener
+     */
     private View.OnClickListener getCorrectListener(final Entity entity) {
         Intent myIntent;
         switch (entity.getType()) {
             case SEQUENCE:
-                        myIntent = new Intent(view.getContext(), SequenceDetailActivity.class);
+                myIntent = new Intent(view.getContext(), SequenceDetailActivity.class);
                 break;
             case DICTIONARY:
-                        myIntent = new Intent(view.getContext(), DictionaryDetailActivity.class);
+                myIntent = new Intent(view.getContext(), DictionaryDetailActivity.class);
                 break;
             default:
-                        myIntent = new Intent(view.getContext(), SetDetailActivity.class);
+                myIntent = new Intent(view.getContext(), SetDetailActivity.class);
                 break;
         }
         myIntent.putExtra(view.getContext().getString(R.string.entity_label_resource), entity.getLabel());
@@ -167,8 +220,14 @@ public class EntityListAdapter extends RecyclerView.Adapter<EntityListAdapter.Vi
         };
     }
 
-    private void emphasizeFilteredText(ViewHolder holder, Entity e) {
-        int i = e.getLabel().toLowerCase().indexOf(filter.toLowerCase());
+    /**
+     * Emphasizes entities, which complies with the filtering text
+     *
+     * @param holder holder
+     * @param entity entity
+     */
+    private void emphasizeFilteredText(ViewHolder holder, Entity entity) {
+        int i = entity.getLabel().toLowerCase().indexOf(filter.toLowerCase());
         if (i != -1) {
             Spannable str = (Spannable) holder.txtHeader.getText();
             int color;
@@ -181,14 +240,19 @@ public class EntityListAdapter extends RecyclerView.Adapter<EntityListAdapter.Vi
         }
     }
 
-    private void showConfirmationDialog(final Entity e) {
+    /**
+     * Shows confirmation dialog upon the deletion of an entity
+     *
+     * @param entity entity to be deleted
+     */
+    private void showConfirmationDialog(final Entity entity) {
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(view.getContext(), R.style.AlertDialogTheme);
-        alertDialogBuilder.setTitle("Delete " + e.getLabel());
+        alertDialogBuilder.setTitle("Delete " + entity.getLabel());
         alertDialogBuilder.setMessage("Are you sure?");
         alertDialogBuilder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                remove(e, view.getContext());
+                remove(entity, view.getContext());
                 dialog.cancel();
             }
         });
@@ -202,6 +266,12 @@ public class EntityListAdapter extends RecyclerView.Adapter<EntityListAdapter.Vi
         alert.show();
     }
 
+    /**
+     * Prepares favourite icon and all its listeners
+     *
+     * @param holder holder
+     * @param entity entity
+     */
     private void prepareFavIcon(ViewHolder holder, final Entity entity) {
         if (entity.isFavourite()) {
             holder.imageFav.setImageResource(R.drawable.ic_favorite_true_24dp);
@@ -216,6 +286,12 @@ public class EntityListAdapter extends RecyclerView.Adapter<EntityListAdapter.Vi
         });
     }
 
+    /**
+     * Prepares delete icon and all its listeners
+     *
+     * @param holder holder
+     * @param entity entity
+     */
     private void prepareDeleteIcon(ViewHolder holder, final Entity entity) {
         holder.imageDel.setImageResource(R.drawable.ic_delete_inverted_24dp);
         holder.imageDel.setOnClickListener(new View.OnClickListener() {

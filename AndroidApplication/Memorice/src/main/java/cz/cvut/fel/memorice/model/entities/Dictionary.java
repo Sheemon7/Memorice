@@ -9,7 +9,7 @@ import java.util.Set;
 
 import cz.cvut.fel.memorice.model.entities.entries.DictionaryEntry;
 import cz.cvut.fel.memorice.model.entities.entries.Entry;
-import cz.cvut.fel.memorice.model.util.TermAlreadyUsedException;
+import cz.cvut.fel.memorice.model.util.DefinitionAlreadyUsedException;
 
 /**
  * Instances of this class represent Dictionary datasets in the application
@@ -39,11 +39,11 @@ public class Dictionary extends Entity implements Serializable {
      * {@inheritDoc}
      */
     @Override
-    public void addEntry(Entry entry) throws TermAlreadyUsedException {
+    public void addEntry(Entry entry) throws DefinitionAlreadyUsedException {
         if (!entries.contains(entry)) {
             entries.add((DictionaryEntry) entry);
         } else {
-            throw new TermAlreadyUsedException();
+            throw new DefinitionAlreadyUsedException();
         }
     }
 

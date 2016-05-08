@@ -7,7 +7,7 @@ import java.util.LinkedHashSet;
 import java.util.List;
 
 import cz.cvut.fel.memorice.model.entities.entries.Entry;
-import cz.cvut.fel.memorice.model.util.TermAlreadyUsedException;
+import cz.cvut.fel.memorice.model.util.DefinitionAlreadyUsedException;
 
 /**
  * Instances of this class represent Set datasets in the application
@@ -37,11 +37,11 @@ public class Set extends Entity implements Serializable {
      * {@inheritDoc}
      */
     @Override
-    public void addEntry(Entry entry) throws TermAlreadyUsedException {
+    public void addEntry(Entry entry) throws DefinitionAlreadyUsedException {
         if (!entries.contains(entry)) {
             entries.add(entry);
         } else {
-            throw new TermAlreadyUsedException();
+            throw new DefinitionAlreadyUsedException();
         }
     }
 

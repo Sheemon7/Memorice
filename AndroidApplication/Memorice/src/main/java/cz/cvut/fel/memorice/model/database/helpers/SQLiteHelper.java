@@ -8,6 +8,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import cz.cvut.fel.memorice.model.entities.Entity;
@@ -27,24 +28,24 @@ import cz.cvut.fel.memorice.model.util.WrongNameException;
 public class SQLiteHelper extends SQLiteOpenHelper {
     private static final Logger LOG = Logger.getLogger(SQLiteHelper.class.getName());
 
-    public static final int DATABASE_VERSION = 5;
-    public static final String DATABASE_NAME = "MemoriceDB_5";
+    private static final int DATABASE_VERSION = 5;
+    private static final String DATABASE_NAME = "MemoriceDB_5";
 
-    public static final String TABLE_ENTITIES = DatabaseConstants.TABLE_ENTITIES;
-    public static final String KEY_LABEL = DatabaseConstants.KEY_LABEL;
-    public static final String KEY_TYPE = DatabaseConstants.KEY_TYPE;
-    public static final String KEY_FAVORITE = DatabaseConstants.KEY_FAVORITE;
-    public static final String[] ENTITIES_COLUMNS = DatabaseConstants.ENTITIES_COLUMNS;
+    private static final String TABLE_ENTITIES = DatabaseConstants.TABLE_ENTITIES;
+    private static final String KEY_LABEL = DatabaseConstants.KEY_LABEL;
+    private static final String KEY_TYPE = DatabaseConstants.KEY_TYPE;
+    private static final String KEY_FAVORITE = DatabaseConstants.KEY_FAVORITE;
+    private static final String[] ENTITIES_COLUMNS = DatabaseConstants.ENTITIES_COLUMNS;
 
-    public static final String TABLE_ENTRIES_SEQUENCES = DatabaseConstants.TABLE_ENTRIES_SEQUENCES;
-    public static final String KEY_NUMBER = DatabaseConstants.KEY_NUMBER;
-    public static final String KEY_VALUE = DatabaseConstants.KEY_VALUE;
-    public static final String KEY_ENTITY = DatabaseConstants.KEY_ENTITY;
+    private static final String TABLE_ENTRIES_SEQUENCES = DatabaseConstants.TABLE_ENTRIES_SEQUENCES;
+    private static final String KEY_NUMBER = DatabaseConstants.KEY_NUMBER;
+    private static final String KEY_VALUE = DatabaseConstants.KEY_VALUE;
+    private static final String KEY_ENTITY = DatabaseConstants.KEY_ENTITY;
 
-    public static final String TABLE_ENTRIES_DICTS = DatabaseConstants.TABLE_ENTRIES_DICTS;
-    public static final String KEY_PASS = DatabaseConstants.KEY_PASS;
+    private static final String TABLE_ENTRIES_DICTS = DatabaseConstants.TABLE_ENTRIES_DICTS;
+    private static final String KEY_PASS = DatabaseConstants.KEY_PASS;
 
-    public static final String TABLE_ENTRIES_SETS = DatabaseConstants.TABLE_ENTRIES_SETS;
+    private static final String TABLE_ENTRIES_SETS = DatabaseConstants.TABLE_ENTRIES_SETS;
 
     private SQLiteEntryTableHelper sqLiteEntryTableHelper = new SQLiteEntryTableHelper(this);
 
@@ -178,7 +179,7 @@ public class SQLiteHelper extends SQLiteOpenHelper {
             try {
                 entity.setFavourite(isEntityFavourite(entity.getLabel()));
             } catch (WrongNameException e) {
-                e.printStackTrace();
+                LOG.log(Level.INFO, "Wrong name", e);
             }
             cursor.close();
             return entity;
@@ -285,7 +286,7 @@ public class SQLiteHelper extends SQLiteOpenHelper {
 
     /**
      * Returns list of all entities in the database that comprise with
-     * the filter string
+     * the showFiltered string
      *
      * @return list of all entities in the database that comprises
      */
@@ -307,7 +308,7 @@ public class SQLiteHelper extends SQLiteOpenHelper {
 
     /**
      * Returns list of all favourite entities in the database that comprise with
-     * the filter string
+     * the showFiltered string
      *
      * @return list of all favourite entities in the database that comprises
      */
@@ -335,7 +336,7 @@ public class SQLiteHelper extends SQLiteOpenHelper {
     /**
      * Returns list of all entities' names in the database
      *
-     * @return list of all entities'names in the database
+     * @return list of all entities' names in the database
      */
     public ArrayList<String> getAllLabels() {
         LOG.info("Getting all possible labels");

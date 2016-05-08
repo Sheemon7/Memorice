@@ -33,6 +33,7 @@ public class SettingsActivity extends AppCompatActivity {
             case android.R.id.home: // Intercept the click on the home button
                 finish();
                 return true;
+            default:
         }
         return super.onOptionsItemSelected(item);
     }

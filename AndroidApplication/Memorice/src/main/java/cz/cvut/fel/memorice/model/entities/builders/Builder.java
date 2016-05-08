@@ -1,5 +1,6 @@
 package cz.cvut.fel.memorice.model.entities.builders;
 
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import cz.cvut.fel.memorice.model.entities.Entity;
@@ -10,7 +11,7 @@ import cz.cvut.fel.memorice.model.entities.builders.factories.SequenceFactory;
 import cz.cvut.fel.memorice.model.entities.builders.factories.SetFactory;
 import cz.cvut.fel.memorice.model.entities.entries.Entry;
 import cz.cvut.fel.memorice.model.util.ConcurrentBuildingException;
-import cz.cvut.fel.memorice.model.util.TermAlreadyUsedException;
+import cz.cvut.fel.memorice.model.util.DefinitionAlreadyUsedException;
 
 /**
  * Instances of this class serve for easy building of entities. The building process itself is encapsulated
@@ -30,7 +31,7 @@ public class Builder {
     }
 
     /**
-     * Returns appropriate builder according to type pass in as parameter
+     * Returns appropriate builder according to type passed in as parameter
      * @param type type of entity to be built
      * @return correct builder
      */
@@ -67,8 +68,8 @@ public class Builder {
     public void add(Entry entry) {
         try {
             beingBuilt.addEntry(entry);
-        } catch (TermAlreadyUsedException e) {
-            LOG.severe(e.getMessage());
+        } catch (DefinitionAlreadyUsedException e) {
+            LOG.log(Level.SEVERE, "Concurrent Building!", e);
         }
     }
 

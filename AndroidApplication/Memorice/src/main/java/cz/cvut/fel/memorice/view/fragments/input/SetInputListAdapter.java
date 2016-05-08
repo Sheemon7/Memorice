@@ -14,27 +14,36 @@ import java.util.HashSet;
 
 import cz.cvut.fel.memorice.R;
 import cz.cvut.fel.memorice.model.entities.entries.Entry;
-import cz.cvut.fel.memorice.model.util.EmptyTermException;
-import cz.cvut.fel.memorice.model.util.TermAlreadyUsedException;
+import cz.cvut.fel.memorice.model.util.EmptyDefinitionException;
+import cz.cvut.fel.memorice.model.util.DefinitionAlreadyUsedException;
 
 /**
- * Created by sheemon on 28.4.16.
+ * Adapter responsible for correct display of the set entries input items
  */
 public class SetInputListAdapter extends EntryInputListAdapter<SetInputListAdapter.ViewHolder> {
 
+    /**
+     * Creates a new adapter binded to the given recycler view
+     *
+     * @param view recycler view
+     */
     public SetInputListAdapter(RecyclerView view) {
         super(view);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SetInputListAdapter.ViewHolder onCreateViewHolder(ViewGroup parent,
                                                              int viewType) {
         View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.entry_set_line, parent, false);
-        ViewHolder vh = new ViewHolder(v);
-        return vh;
+        return new ViewHolder(v);
     }
 
-
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void onBindViewHolder(final ViewHolder holder, final int position) {
         ItemList itemList = items.get(position);
@@ -49,23 +58,7 @@ public class SetInputListAdapter extends EntryInputListAdapter<SetInputListAdapt
         }
         itemList.setCorrect(true);
         holder.txtValue.setText(itemList.getValue());
-        holder.txtValue.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if (holder.getAdapterPosition() != RecyclerView.NO_POSITION) {
-                    items.get(holder.getAdapterPosition()).setValue(s.toString());
-                }
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-            }
-        });
+        holder.txtValue.addTextChangedListener(new CustomTextWatcher(holder));
         holder.icon.setImageResource(R.drawable.ic_minus_24dp);
         holder.icon.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -78,17 +71,20 @@ public class SetInputListAdapter extends EntryInputListAdapter<SetInputListAdapt
         });
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
-    public ArrayList<Entry> getInput() throws TermAlreadyUsedException, EmptyTermException {
+    public ArrayList<Entry> getInput() throws DefinitionAlreadyUsedException, EmptyDefinitionException {
         HashSet<String> valueCheck = new HashSet<>(items.size());
         ArrayList<Entry> ret = new ArrayList<>(items.size());
         for (ItemList item :
                 items) {
             String value = item.getValue();
             if (valueCheck.contains(value)) {
-                throw new TermAlreadyUsedException();
+                throw new DefinitionAlreadyUsedException();
             } else if (value.equals("")) {
-                throw new EmptyTermException();
+                throw new EmptyDefinitionException();
             } else {
                 valueCheck.add(value);
                 ret.add(new Entry(value));
@@ -97,6 +93,9 @@ public class SetInputListAdapter extends EntryInputListAdapter<SetInputListAdapt
         return ret;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void emphasizeErrors() {
         ArrayList<String> valueCheck = new ArrayList<>(items.size());
@@ -116,6 +115,9 @@ public class SetInputListAdapter extends EntryInputListAdapter<SetInputListAdapt
         notifyDataSetChanged();
     }
 
+    /**
+     * View Holder class encapsulates recycler view items' components
+     */
     protected static class ViewHolder extends RecyclerView.ViewHolder {
         private EditText txtValue;
         private ImageView icon;
@@ -124,6 +126,35 @@ public class SetInputListAdapter extends EntryInputListAdapter<SetInputListAdapt
             super(v);
             txtValue = (EditText) v.findViewById(R.id.entry_value);
             icon = (ImageView) v.findViewById(R.id.icon_minus);
+        }
+    }
+
+    /**
+     * Custom watcher takes care of changing the list items value of value attribut once the user changes the input
+     */
+    private class CustomTextWatcher implements TextWatcher {
+
+        private ViewHolder holder;
+
+        public CustomTextWatcher(ViewHolder holder) {
+            this.holder = holder;
+        }
+
+        @Override
+        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                /* event passed */
+        }
+
+        @Override
+        public void onTextChanged(CharSequence s, int start, int before, int count) {
+            if (holder.getAdapterPosition() != RecyclerView.NO_POSITION) {
+                items.get(holder.getAdapterPosition()).setValue(s.toString());
+            }
+        }
+
+        @Override
+        public void afterTextChanged(Editable s) {
+                /* event passed */
         }
     }
 }

@@ -8,6 +8,7 @@ import cz.cvut.fel.memorice.model.entities.EntityEnum;
 
 /**
  * Specifies objects that are able to write objects to files
+ * @deprecated
  */
 @Deprecated
 public interface DataWriter extends DataHandler {

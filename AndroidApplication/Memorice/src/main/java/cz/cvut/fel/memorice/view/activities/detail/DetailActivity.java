@@ -333,7 +333,7 @@ public abstract class DetailActivity extends AppCompatActivity {
          */
         private void showErrorSign(String newLabel) {
             String errorString;
-            if (newLabel.equals("")) {
+            if ("".equals(newLabel)) {
                 errorString = "Name cannot be empty!";
             } else {
                 errorString = "Name is already used!";

@@ -1,6 +1,7 @@
 package cz.cvut.fel.memorice.model.database;
 
 import java.io.*;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import cz.cvut.fel.memorice.model.entities.Entity;
@@ -8,6 +9,7 @@ import cz.cvut.fel.memorice.model.entities.EntityEnum;
 
 /**
  * {@inheritDoc}
+ * @deprecated
  */
 @Deprecated
 public class FileDataWriter implements DataWriter {
@@ -28,9 +30,9 @@ public class FileDataWriter implements DataWriter {
             objectOut.close();
             out.close();
         } catch (FileNotFoundException e) {
-            e.printStackTrace();
+            LOGGER.log(Level.SEVERE, "File not found!", e);
         } catch (IOException e) {
-            e.printStackTrace();
+            LOGGER.log(Level.SEVERE, "IO Exception!", e);
         }
     }
 
@@ -54,7 +56,7 @@ public class FileDataWriter implements DataWriter {
             file.getParentFile().mkdirs();
             file.createNewFile();
         } catch (IOException e) {
-            e.printStackTrace();
+            LOGGER.log(Level.SEVERE, "IO Exception", e);
         }
         return file;
     }

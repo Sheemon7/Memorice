@@ -6,6 +6,7 @@ import cz.cvut.fel.memorice.model.entities.EntityEnum;
 
 /**
  * Specifies objects that are able to read objects from files
+ * @deprecated
  */
 @Deprecated
 public interface DataReader extends DataHandler {

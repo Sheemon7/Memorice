@@ -10,20 +10,31 @@ import cz.cvut.fel.memorice.R;
 import cz.cvut.fel.memorice.model.entities.entries.Entry;
 
 /**
- * Created by sheemon on 30.4.16.
+ * This adapter is responsible for displaying entries of sequence entity
  */
 public class SequenceDetailListAdapter extends EntityDetailListAdapter<SequenceDetailListAdapter.ViewHolder, Entry> {
 
+    /**
+     * Constructs new instance
+     *
+     * @param view recycler view
+     */
     public SequenceDetailListAdapter(RecyclerView view) {
         super(view);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.detail_sequence_line, parent, false);
         return new ViewHolder(view);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         holder.txtValue.setText(items.get(position).getValue());
@@ -31,6 +42,9 @@ public class SequenceDetailListAdapter extends EntityDetailListAdapter<SequenceD
         holder.txtNumber.setText(number);
     }
 
+    /**
+     * View Holder class encapsulates recycler view items' components
+     */
     protected static class ViewHolder extends RecyclerView.ViewHolder {
         private TextView txtValue;
         private TextView txtNumber;
