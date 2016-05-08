@@ -1,5 +1,6 @@
 package cz.cvut.fel.memorice.view.activities;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.view.MenuItemCompat;
@@ -20,6 +21,8 @@ import android.widget.Switch;
 
 import com.getbase.floatingactionbutton.FloatingActionsMenu;
 
+import java.util.logging.Logger;
+
 import cz.cvut.fel.memorice.R;
 import cz.cvut.fel.memorice.view.activities.input.DictionaryInputActivity;
 import cz.cvut.fel.memorice.view.activities.input.SequenceInputActivity;
@@ -31,6 +34,7 @@ import cz.cvut.fel.memorice.view.fragments.EntityListAdapter;
  * Created by sheemon on 14.4.16.
  */
 public class EntityViewActivity extends AppCompatActivity {
+    private static final Logger LOG = Logger.getLogger(EntityViewActivity.class.getName());
 
     private static final int ANIMATION_DURATION = 200;
     private static final int FAB_HIDE_DURATION = 3000;
@@ -38,33 +42,71 @@ public class EntityViewActivity extends AppCompatActivity {
 
     private RecyclerView mRecyclerView;
     private EntityListAdapter mAdapter;
-    private RecyclerView.LayoutManager mLayoutManager;
     private FloatingActionsMenu fabMenu;
 
     private Thread fabHideThread;
     private View shadowView;
 
+    /* listeners */
+    private RecyclerView.OnScrollListener onScrollListener = new CustomOnScrollListener();
+    private View.OnClickListener onClickListener = new CustomOnClickListener();
+    private SearchView.OnCloseListener onCloseListener = new CustomOnCloseListener();
+    private SearchView.OnQueryTextListener onQueryTextListener = new CustomOnQueryTextChangeListener();
+    private FloatingActionsMenu.OnFloatingActionsMenuUpdateListener onFloatingActionsMenuUpdateListener = new CustomOnFloatingActionsMenuChangeListener();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_entity_list);
-
         Toolbar toolbar =
                 (Toolbar) findViewById(R.id.entry_toolbar);
         setSupportActionBar(toolbar);
 
-
+        prepareSwitch();
         prepareRecyclerView();
         prepareFAB();
-        shadowView = findViewById(R.id.shadowView);
-        prepareShadowView();
         prepareFABHideThread();
-        prepareSwitch();
         fabHideThread.start();
 
         final ActionBar ab = getSupportActionBar();
         ab.setDisplayHomeAsUpEnabled(true);
+    }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        mAdapter.showAll(getApplicationContext());
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_sets, menu);
+        MenuItem searchItem = menu.findItem(R.id.action_search);
+        SearchView searchView = (SearchView) MenuItemCompat.getActionView(searchItem);
+        searchView.setOnSearchClickListener(onClickListener);
+        searchView.setOnCloseListener(onCloseListener);
+        searchView.setOnQueryTextListener(onQueryTextListener);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        Intent myIntent;
+        switch (item.getItemId()) {
+            case R.id.action_settings:
+                myIntent = new Intent(EntityViewActivity.this, SettingsActivity.class);
+                EntityViewActivity.this.startActivity(myIntent);
+                return true;
+            case android.R.id.home:
+                finish();
+                return true;
+            case R.id.action_help:
+                myIntent = new Intent(EntityViewActivity.this, HelpActivity.class);
+                EntityViewActivity.this.startActivity(myIntent);
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 
     private void prepareSwitch() {
@@ -72,6 +114,7 @@ public class EntityViewActivity extends AppCompatActivity {
         final ImageView indicator = (ImageView) findViewById(R.id.fav_indicator);
         if (switchFav != null) {
             switchFav.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+
                 @Override
                 public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                     if (isChecked) {
@@ -87,6 +130,9 @@ public class EntityViewActivity extends AppCompatActivity {
     }
 
     private void prepareFABHideThread() {
+        if (fabHideThread != null && fabHideThread.isAlive()) {
+            fabHideThread.interrupt();
+        }
         fabHideThread = new Thread(new Runnable() {
             @Override
             public void run() {
@@ -101,13 +147,14 @@ public class EntityViewActivity extends AppCompatActivity {
                         }
                     });
                 } catch (InterruptedException e) {
-                    return;
+                    LOG.info("Interrupting fab hide thread");
                 }
             }
         });
     }
 
     private void prepareShadowView() {
+        shadowView = findViewById(R.id.shadowView);
         shadowView.bringToFront();
         shadowView.setOnTouchListener(new View.OnTouchListener() {
             @Override
@@ -117,62 +164,14 @@ public class EntityViewActivity extends AppCompatActivity {
             }
         });
         shadowView.setAlpha(0.6f);
-        shadowView.setVisibility(View.GONE);
         fabMenu.bringToFront();
-    }
-
-    @Override
-    protected void onPostResume() {
-        super.onPostResume();
-        mAdapter.showAll(getApplicationContext());
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        mAdapter.showAll(getApplicationContext());
     }
 
     private void prepareRecyclerView() {
         mRecyclerView = (RecyclerView) findViewById(R.id.recycler_view);
         mRecyclerView.setHasFixedSize(true);
-        mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
-            @Override
-            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
-                super.onScrollStateChanged(recyclerView, newState);
-                if (newState == RecyclerView.SCROLL_STATE_DRAGGING) {
-                    fadeIn(fabMenu, FAB_ANIMATION_OFFSET);
-                    if (fabHideThread.isAlive()) {
-                        fabHideThread.interrupt();
-                    }
-                } else if (newState == RecyclerView.SCROLL_STATE_IDLE) {
-                    if (fabHideThread.isAlive()) {
-                        fabHideThread.interrupt();
-                    }
-                    prepareFABHideThread();
-                    fabHideThread.start();
-                }
-            }
-
-            @Override
-            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-                super.onScrolled(recyclerView, dx, dy);
-            }
-        });
-        mRecyclerView.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                fadeIn(fabMenu, FAB_ANIMATION_OFFSET);
-                if (fabHideThread.isAlive()) {
-                    fabHideThread.interrupt();
-                }
-                prepareFABHideThread();
-                fabHideThread.start();
-                return false;
-            }
-        });
-
-        mLayoutManager = new LinearLayoutManager(this);
+        mRecyclerView.addOnScrollListener(onScrollListener);
+        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(mLayoutManager);
         mAdapter = new EntityListAdapter(mRecyclerView);
         mRecyclerView.addItemDecoration(
@@ -182,31 +181,11 @@ public class EntityViewActivity extends AppCompatActivity {
 
     private void prepareFAB() {
         fabMenu = (FloatingActionsMenu) findViewById(R.id.fab_menu);
-        fabMenu.setOnFloatingActionsMenuUpdateListener(new FloatingActionsMenu.OnFloatingActionsMenuUpdateListener() {
-            @Override
-            public void onMenuExpanded() {
-                fadeIn(shadowView);
-                shadowView.setOnTouchListener(new View.OnTouchListener() {
-                    @Override
-                    public boolean onTouch(View v, MotionEvent event) {
-                        fabMenu.collapse();
-                        return true;
-                    }
-                });
-            }
+        fabMenu.setOnFloatingActionsMenuUpdateListener(onFloatingActionsMenuUpdateListener);
+        prepareFABActionsMenu();
+    }
 
-            @Override
-            public void onMenuCollapsed() {
-                shadowView.setOnTouchListener(null);
-                fadeOut(shadowView);
-
-                if (fabHideThread.isAlive()) {
-                    fabHideThread.interrupt();
-                }
-                prepareFABHideThread();
-                fabHideThread.start();
-            }
-        });
+    private void prepareFABActionsMenu() {
         findViewById(R.id.fab_list).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -252,16 +231,10 @@ public class EntityViewActivity extends AppCompatActivity {
         }).start();
     }
 
-    private void carryOutAnimation(View view, AlphaAnimation animation) {
-        animation.setDuration(ANIMATION_DURATION);
-        animation.setFillAfter(true);
-        view.startAnimation(animation);
-    }
-
     private void fadeIn(View view, int offset) {
-        AlphaAnimation fadeOut = new AlphaAnimation(view.getAlpha(), 1);
-        fadeOut.setStartOffset(offset);
-        carryOutAnimation(view, fadeOut);
+        AlphaAnimation fadeIn = new AlphaAnimation(view.getAlpha(), 1);
+        fadeIn.setStartOffset(offset);
+        carryOutAnimation(view, fadeIn);
         view.setEnabled(true);
     }
 
@@ -273,69 +246,86 @@ public class EntityViewActivity extends AppCompatActivity {
         fadeOut(view, 0);
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_sets, menu);
-        MenuItem searchItem = menu.findItem(R.id.action_search);
-        SearchView searchView = (SearchView) MenuItemCompat.getActionView(searchItem);
-        searchView.setOnSearchClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                shadowView.setAlpha(0);
-                fabMenu.setEnabled(false);
-            }
-        });
-        searchView.setOnCloseListener(new SearchView.OnCloseListener() {
-            @Override
-            public boolean onClose() {
-                fabMenu.setEnabled(true);
-                prepareShadowView();
-                return false;
-            }
-        });
-        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextSubmit(String query) {
-                return onQueryTextChange(query);
-            }
+    /* listeners */
 
-            @Override
-            public boolean onQueryTextChange(String newText) {
-                mAdapter.filter(newText, getApplicationContext());
-                return true;
-            }
-        });
-        return true;
+    private void carryOutAnimation(View view, AlphaAnimation animation) {
+        animation.setDuration(ANIMATION_DURATION);
+        animation.setFillAfter(true);
+        view.startAnimation(animation);
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        Intent myIntent;
-        switch (item.getItemId()) {
-            case R.id.action_settings:
-                myIntent = new Intent(EntityViewActivity.this, SettingsActivity.class);
-                EntityViewActivity.this.startActivity(myIntent);
-                return true;
-            case android.R.id.home:
-                finish();
-                return true;
-            case R.id.action_help:
-                myIntent = new Intent(EntityViewActivity.this, HelpActivity.class);
-                EntityViewActivity.this.startActivity(myIntent);
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
+    private class CustomOnScrollListener extends RecyclerView.OnScrollListener {
+
+        @Override
+        public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+            super.onScrollStateChanged(recyclerView, newState);
+            if (newState == RecyclerView.SCROLL_STATE_DRAGGING) {
+                fadeIn(fabMenu, FAB_ANIMATION_OFFSET);
+                if (fabHideThread.isAlive()) {
+                    fabHideThread.interrupt();
+                }
+            } else if (newState == RecyclerView.SCROLL_STATE_IDLE) {
+                prepareFABHideThread();
+                fabHideThread.start();
+            }
+        }
+    }
+
+    private class CustomOnClickListener implements View.OnClickListener {
+
+        @Override
+        public void onClick(View v) {
+            mRecyclerView.removeOnScrollListener(onScrollListener);
+            if (fabHideThread.isAlive()) {
+                fabHideThread.interrupt();
+            }
+            fadeOut(fabMenu);
+        }
+    }
+
+    private class CustomOnCloseListener implements SearchView.OnCloseListener {
+
+        @Override
+        public boolean onClose() {
+            mRecyclerView.addOnScrollListener(onScrollListener);
+            return false;
+        }
+    }
+
+    private class CustomOnQueryTextChangeListener implements SearchView.OnQueryTextListener {
+
+        @Override
+        public boolean onQueryTextSubmit(String query) {
+            return onQueryTextChange(query);
         }
 
+        @Override
+        public boolean onQueryTextChange(String newText) {
+            mAdapter.filter(newText, getApplicationContext());
+            return true;
+        }
     }
 
-//    public void showDetail(Intent myIntent, View shareElement) {
-//        Intent myIntent = new Intent(view.getContext(), SetDetailActivity.class);
-//        myIntent.putExtra("entity", e);
-//        String transitionName = "detail_transition";
-//        ActivityOptions transitionActivityOptions = ActivityOptions.makeSceneTransitionAnimation(, (View)holder.imageType, transitionName);
-//        view.getContext().startActivity(myIntent, transitionActivityOptions.toBundle());
-//    }
+    private class CustomOnFloatingActionsMenuChangeListener implements FloatingActionsMenu.OnFloatingActionsMenuUpdateListener {
 
+        @Override
+        public void onMenuExpanded() {
+            prepareShadowView();
+            shadowView.setVisibility(View.VISIBLE);
+            fadeIn(shadowView);
+        }
 
+        @Override
+        public void onMenuCollapsed() {
+            fadeOut(shadowView);
+            shadowView.setVisibility(View.INVISIBLE);
+            shadowView.setAlpha(0f);
+            if (fabHideThread.isAlive()) {
+                fabHideThread.interrupt();
+            }
+            prepareFABHideThread();
+            fabHideThread.start();
+        }
+    }
 }
+

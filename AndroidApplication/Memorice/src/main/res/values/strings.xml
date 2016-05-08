@@ -7,7 +7,7 @@
     <string name="favourite_action_label">Favourite</string>
     <string name="delete_action_label">Delete</string>
 
-    <string name="list">List</string>
+    <string name="list">Sequence</string>
     <string name="set">Set</string>
     <string name="dictionary">Dictionary</string>
 
@@ -17,8 +17,7 @@
     <string name="title_activity_help">Help</string>
     <string name="title_activity_detail" />
 
-    <string name="help_text">The whole help can be found there:</string>
-    <string name="help_url">http://sheemon7.github.io/Memorice/</string>
+    <string name="help_url">https://sheemon7.github.io/Memorice/</string>
 
     <string name="add_entity">Label</string>
     <string name="save_entity">Save</string>

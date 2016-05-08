@@ -58,10 +58,6 @@ public abstract class DetailActivity extends AppCompatActivity {
         prepareTypeIcon(iconType);
         prepareTypeText(textType);
         prepareRecyclerView();
-
-        ASyncEntityRead access = new ASyncEntityRead(getApplicationContext());
-        access.setDetailActivity(this);
-        access.execute(getLabel());
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
     }
 
@@ -81,6 +77,9 @@ public abstract class DetailActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         this.menu = menu;
         getMenuInflater().inflate(R.menu.menu_detail, menu);
+        ASyncEntityRead access = new ASyncEntityRead(getApplicationContext());
+        access.setDetailActivity(this);
+        access.execute(getLabel());
         return true;
     }
 

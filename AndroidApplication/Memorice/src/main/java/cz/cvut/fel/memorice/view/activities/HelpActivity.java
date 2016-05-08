@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.webkit.WebView;
 
 import cz.cvut.fel.memorice.R;
 
@@ -21,5 +22,9 @@ public class HelpActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         ActionBar ab = getSupportActionBar();
         ab.setDisplayHomeAsUpEnabled(true);
+
+        WebView myWebView = (WebView) findViewById(R.id.webView);
+        myWebView.loadUrl(getResources().getString(R.string.help_url));
+
     }
 }
