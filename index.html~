@@ -75,7 +75,7 @@
 
 <h2> <a class="anchor" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Objektový návrh<br><code>17.3.2016</code></h2>
 
-<p>Vedle vývoje hlavní, androidí aplikace vyvíjím i konzolovou aplikaci, která bude stejně funkční jako aplikace, ale bude probíhat pouze v konzoli. Poté mám v plánu aplikaci pouze přemigrovat do prostředí Androida. Toho lze docílit pomocí vhodných interfaců. Za hlavní považuji tyto</p>:
+<p>Vedle vývoje hlavní, androidí aplikace vyvíjím i konzolovou aplikaci, která bude stejně funkční jako aplikace, ale bude probíhat pouze v konzoli. Poté mám v plánu aplikaci pouze přemigrovat do prostředí Androida. Toho lze docílit pomocí vhodných interfaců. Za hlavní považuji tyto:</p>
 
 <ul>
 		<li><b>I/O</b> - Skupina interfaců pro komunikaci, zejména zadávání vstupu v podobě dat a komunikace aplikace s uživatelem. V aplikaci nahradím dialogovými okny nebo něčím podobným.
