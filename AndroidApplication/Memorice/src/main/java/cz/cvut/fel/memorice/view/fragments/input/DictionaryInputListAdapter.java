@@ -83,7 +83,6 @@ public class DictionaryInputListAdapter extends EntryInputListAdapter<Dictionary
             public void afterTextChanged(Editable s) {
             }
         });
-        holder.txtDefinition.requestFocus();
         holder.icon.setImageResource(R.drawable.ic_minus_24dp);
         holder.icon.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -56,7 +56,7 @@ public class SequenceInputActivity extends InputActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
 
         switch (item.getItemId()) {
-            case android.R.id.home: // Intercept the click on the home button
+            case android.R.id.home:
                 finish();
                 return true;
             case R.id.action_save:

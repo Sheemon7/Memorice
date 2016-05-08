@@ -54,7 +54,7 @@ public class SetInputActivity extends InputActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
 
         switch (item.getItemId()) {
-            case android.R.id.home: // Intercept the click on the home button
+            case android.R.id.home:
                 finish();
                 return true;
             case R.id.action_save:
@@ -102,22 +102,4 @@ public class SetInputActivity extends InputActivity {
     protected EntryInputListAdapter getCorrectAdapter(RecyclerView view) {
         return new SetInputListAdapter(view);
     }
-
-//    protected void prepareRecyclerView() {
-//        mRecyclerView = (RecyclerView) findViewById(R.id.recycler_view);
-//        mLayoutManager = new LinearLayoutManager(this);
-//        mRecyclerView.setLayoutManager(mLayoutManager);
-//        mAdapter = new SetInputListAdapter(mRecyclerView);
-//        ImageView iconAdd = (ImageView) findViewById(R.id.icon_add);
-//        iconAdd.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                mAdapter.addRow();
-//            }
-//        });
-//        mAdapter.setPlusIcon(iconAdd);
-//        mAdapter.show();
-//
-//    }
-
 }

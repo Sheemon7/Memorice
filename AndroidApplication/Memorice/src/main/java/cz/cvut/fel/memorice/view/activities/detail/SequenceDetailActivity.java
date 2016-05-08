@@ -14,16 +14,25 @@ import cz.cvut.fel.memorice.view.fragments.detail.SequenceDetailListAdapter;
  */
 public class SequenceDetailActivity extends DetailActivity {
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected void prepareTypeIcon(ImageView iconType) {
         iconType.setImageResource(R.drawable.ic_list_white_24dp);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected void prepareTypeText(EditText textType) {
         textType.setText(EntityEnum.SEQUENCE.getName());
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected EntityDetailListAdapter provideListAdapter(RecyclerView view) {
         return new SequenceDetailListAdapter(view);

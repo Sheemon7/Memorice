@@ -49,7 +49,6 @@ public class SetInputListAdapter extends EntryInputListAdapter<SetInputListAdapt
         }
         itemList.setCorrect(true);
         holder.txtValue.setText(itemList.getValue());
-        holder.txtValue.requestFocus();
         holder.txtValue.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {

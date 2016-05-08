@@ -33,7 +33,8 @@ import cz.cvut.fel.memorice.view.fragments.detail.EntityDetailListAdapter;
 import cz.cvut.fel.memorice.view.fragments.detail.SequenceDetailListAdapter;
 
 /**
- * Created by sheemon on 24.4.16.
+ * This activity is responsible for viewing entity detail. It also setups recycler view, which is
+ * responsible for entity actions, such as deletion and edit
  */
 public abstract class DetailActivity extends AppCompatActivity {
 
@@ -50,6 +51,9 @@ public abstract class DetailActivity extends AppCompatActivity {
     protected EntityDetailListAdapter mAdapter;
     protected RecyclerView.LayoutManager mLayoutManager;
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -64,6 +68,9 @@ public abstract class DetailActivity extends AppCompatActivity {
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         this.menu = menu;
@@ -74,6 +81,9 @@ public abstract class DetailActivity extends AppCompatActivity {
         return true;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         ASyncSimpleAccessDatabase access = new ASyncSimpleAccessDatabase(getApplicationContext());
@@ -96,36 +106,78 @@ public abstract class DetailActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Returns the entity, which is currently being displayed
+     *
+     * @return entity
+     */
     public Entity getEntity() {
         return entity;
     }
 
-    public void setEntity(Entity e) {
-        mAdapter.setData(e.getListOfEntries());
-        if (e.isFavourite()) {
+    /**
+     * Sets another entity to display on this activity, it also appropriately changes the
+     * activity layout to agree with entity attributes
+     *
+     * @param entity entity
+     */
+    public void setEntity(Entity entity) {
+        mAdapter.setData(entity.getListOfEntries());
+        if (entity.isFavourite()) {
             menu.getItem(0).setIcon(ResourcesCompat.getDrawable(getResources(), R.drawable.ic_fav_white_fill_24dp, null));
         } else {
             menu.getItem(0).setIcon(ResourcesCompat.getDrawable(getResources(), R.drawable.ic_fav_outline_24dp, null));
         }
-        this.entity = e;
-        mAdapter.setEntity(e);
+        this.entity = entity;
+        mAdapter.setEntity(entity);
     }
 
+    /**
+     * Gets label of the entity displayed
+     *
+     * @return label
+     */
     public String getLabel() {
         return label;
     }
 
+    /**
+     * Sets the label of the entity to the activity
+     *
+     * @param label new label
+     */
     public void setLabel(String label) {
         setTitle(label);
         this.label = label;
     }
 
+    /**
+     * Prepares icon indicating type of the entity
+     *
+     * @param iconType icon
+     */
     protected abstract void prepareTypeIcon(ImageView iconType);
 
+    /**
+     * Prepares text indicating type of the entity
+     *
+     * @param textType text
+     */
     protected abstract void prepareTypeText(EditText textType);
 
+    /**
+     * Provides correct {@link android.widget.ListAdapter} which is capable of viewing the entries
+     * of the entity
+     *
+     * @param view recycler view
+     * @return correct adapter
+     */
     protected abstract EntityDetailListAdapter provideListAdapter(RecyclerView view);
 
+    /**
+     * Prepares toolbar of the activity - sets appropriate color to the status bar and prepares
+     * the header of the activity with appropriate listeners
+     */
     private void prepareToolbar() {
         Toolbar toolbar =
                 (Toolbar) findViewById(R.id.detail_toolbar);
@@ -138,6 +190,9 @@ public abstract class DetailActivity extends AppCompatActivity {
         prepareEditIcon();
     }
 
+    /**
+     * Sets toolbar color if the device has complying sdk
+     */
     private void setToolbarColor() {
         if (Build.VERSION.SDK_INT >= 21) {
             Window window = getWindow();
@@ -147,20 +202,30 @@ public abstract class DetailActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Prepares edit icon to be displayed
+     */
     private void prepareEditIcon() {
         editIcon = (ImageView) findViewById(R.id.editable_icon);
         editIcon.setImageResource(R.drawable.ic_edit_white_24dp);
         editIcon.setOnClickListener(new InitEditListener(new SQLiteHelper(getApplicationContext())));
     }
 
+    /**
+     * Hides keyboard input at the beginning of the activity (edit text gets focused and keyboard
+     * is displayed)
+     */
     private void hideKeyboard() {
         View view = this.getCurrentFocus();
         if (view != null) {
-            InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+            InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
             imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
         }
     }
 
+    /**
+     * Prepares recycler view to display entries of the activity
+     */
     private void prepareRecyclerView() {
         mRecyclerView = (RecyclerView) findViewById(R.id.recycler_view);
         mLayoutManager = new LinearLayoutManager(this);
@@ -170,25 +235,39 @@ public abstract class DetailActivity extends AppCompatActivity {
         mAdapter = provideListAdapter(mRecyclerView);
     }
 
+    /**
+     * This listener is responsible for handling entity label change, displaying correct imgae at the icon
+     * and writing changes to the database
+     */
     private class InitEditListener implements View.OnClickListener {
 
         private SQLiteHelper helper;
         private String oldLabel;
 
+        /**
+         * Initiates listener with {@link SQLiteHelper} instance provided
+         *
+         * @param helper helper
+         */
         public InitEditListener(SQLiteHelper helper) {
             this.helper = helper;
         }
 
+        /**
+         * Handles on click event - reaction depends on the edit state of the fragment
+         *
+         * @param v view
+         */
         @Override
         public void onClick(View v) {
             editable = !editable;
             if (editable) {
                 prepareViewToEdit();
             } else {
-                String text = textType.getText().toString().trim();
-                if (isLabelOkay(text, oldLabel)) {
-                    if (text != oldLabel) {
-                        changeLabel(text);
+                String newLabel = textType.getText().toString().trim();
+                if (isLabelOkay(newLabel, oldLabel)) {
+                    if (!newLabel.equals(oldLabel)) {
+                        changeLabel(newLabel);
                     }
                     textType.setEnabled(false);
                     prepareTypeText(textType);
@@ -196,18 +275,26 @@ public abstract class DetailActivity extends AppCompatActivity {
                     hideKeyboard();
                 } else {
                     editable = true;
-                    showErrorSign(text);
+                    showErrorSign(newLabel);
                 }
             }
             mAdapter.setEditable(editable);
         }
 
+        /**
+         * Changes entity's label
+         *
+         * @param text text
+         */
         private void changeLabel(String text) {
             entity.setLabel(text);
             setLabel(text);
             writeNewLabelToDatabase(oldLabel);
         }
 
+        /**
+         * Set ups all components of the view to the editable state
+         */
         private void prepareViewToEdit() {
             textType.setEnabled(true);
             textType.setText(entity.getLabel());
@@ -215,6 +302,11 @@ public abstract class DetailActivity extends AppCompatActivity {
             editIcon.setImageResource(R.drawable.ic_done_white_24dp);
         }
 
+        /**
+         * Writes new label to the database
+         *
+         * @param oldLabel old label of the entity
+         */
         private void writeNewLabelToDatabase(String oldLabel) {
             ASyncSimpleAccessDatabase access = new ASyncSimpleAccessDatabase(getApplicationContext());
             access.setOldValue(oldLabel);
@@ -222,13 +314,26 @@ public abstract class DetailActivity extends AppCompatActivity {
             access.execute(ASyncSimpleAccessDatabase.RENAME_ENTITY);
         }
 
-        private boolean isLabelOkay(String text, String oldLabel) {
-            return text.equals(oldLabel) || helper.getEntity(text) == null && !text.equals("");
+        /**
+         * Decides whether the new name is compliant - there must be no duplicate in the database
+         * and the name cannot be empty as well
+         *
+         * @param newLabel new label
+         * @param oldLabel old label
+         * @return true if the new label is possible else false
+         */
+        private boolean isLabelOkay(String newLabel, String oldLabel) {
+            return newLabel.equals(oldLabel) || helper.getEntity(newLabel) == null && !newLabel.equals("");
         }
 
-        private void showErrorSign(String text) {
+        /**
+         * Displays error sign if the new label is not compliant
+         *
+         * @param newLabel new label
+         */
+        private void showErrorSign(String newLabel) {
             String errorString;
-            if (text.equals("")) {
+            if (newLabel.equals("")) {
                 errorString = "Name cannot be empty!";
             } else {
                 errorString = "Name is already used!";

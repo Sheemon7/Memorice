@@ -18,16 +18,25 @@ import cz.cvut.fel.memorice.view.fragments.detail.EntityDetailListAdapter;
  */
 public class DictionaryDetailActivity extends DetailActivity {
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected void prepareTypeText(EditText textType) {
         textType.setText(EntityEnum.DICTIONARY.getName());
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected EntityDetailListAdapter provideListAdapter(RecyclerView view) {
         return new DictionaryDetailListAdapter(view);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected void prepareTypeIcon(ImageView iconType) {
         iconType.setImageResource(R.drawable.ic_dictionary_white_24dp);

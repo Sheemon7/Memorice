@@ -54,6 +54,9 @@ public class EntityViewActivity extends AppCompatActivity {
     private SearchView.OnQueryTextListener onQueryTextListener = new CustomOnQueryTextChangeListener();
     private FloatingActionsMenu.OnFloatingActionsMenuUpdateListener onFloatingActionsMenuUpdateListener = new CustomOnFloatingActionsMenuChangeListener();
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -72,12 +75,18 @@ public class EntityViewActivity extends AppCompatActivity {
         ab.setDisplayHomeAsUpEnabled(true);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected void onResume() {
         super.onResume();
         mAdapter.showAll(getApplicationContext());
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_sets, menu);
@@ -89,6 +98,9 @@ public class EntityViewActivity extends AppCompatActivity {
         return true;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         Intent myIntent;
@@ -109,6 +121,9 @@ public class EntityViewActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Prepares switch responsible for switching between all/favourite-only views
+     */
     private void prepareSwitch() {
         final Switch switchFav = (Switch) findViewById(R.id.switch_fav);
         final ImageView indicator = (ImageView) findViewById(R.id.fav_indicator);
@@ -129,6 +144,9 @@ public class EntityViewActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Set ups thread responsible for hiding floating action button after some time
+     */
     private void prepareFABHideThread() {
         if (fabHideThread != null && fabHideThread.isAlive()) {
             fabHideThread.interrupt();
@@ -153,6 +171,9 @@ public class EntityViewActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     * Prepares view displayed each time floating action button is expanded
+     */
     private void prepareShadowView() {
         shadowView = findViewById(R.id.shadowView);
         shadowView.bringToFront();
@@ -167,6 +188,9 @@ public class EntityViewActivity extends AppCompatActivity {
         fabMenu.bringToFront();
     }
 
+    /**
+     * Prepares recycler view responsible for viewing list of entities
+     */
     private void prepareRecyclerView() {
         mRecyclerView = (RecyclerView) findViewById(R.id.recycler_view);
         mRecyclerView.setHasFixedSize(true);
@@ -179,12 +203,18 @@ public class EntityViewActivity extends AppCompatActivity {
         mAdapter.showAll(getApplicationContext());
     }
 
+    /**
+     * Prepares floating action button with menu
+     */
     private void prepareFAB() {
         fabMenu = (FloatingActionsMenu) findViewById(R.id.fab_menu);
         fabMenu.setOnFloatingActionsMenuUpdateListener(onFloatingActionsMenuUpdateListener);
         prepareFABActionsMenu();
     }
 
+    /**
+     * Prepares floating action button menu, providing it with appropriate listeners
+     */
     private void prepareFABActionsMenu() {
         findViewById(R.id.fab_list).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -209,6 +239,12 @@ public class EntityViewActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     * Fades out view with animation offset specified
+     *
+     * @param view   view
+     * @param offset animation offset
+     */
     private void fadeOut(final View view, final int offset) {
         AlphaAnimation fadeOut = new AlphaAnimation(view.getAlpha(), 0);
         fadeOut.setStartOffset(offset);
@@ -231,6 +267,12 @@ public class EntityViewActivity extends AppCompatActivity {
         }).start();
     }
 
+    /**
+     * Fades in view with animation offset specified
+     *
+     * @param view   view
+     * @param offset animation offset
+     */
     private void fadeIn(View view, int offset) {
         AlphaAnimation fadeIn = new AlphaAnimation(view.getAlpha(), 1);
         fadeIn.setStartOffset(offset);
@@ -238,14 +280,30 @@ public class EntityViewActivity extends AppCompatActivity {
         view.setEnabled(true);
     }
 
+    /**
+     * Fades in view
+     *
+     * @param view view
+     */
     private void fadeIn(View view) {
         fadeIn(view, 0);
     }
 
+    /**
+     * Fades out view
+     *
+     * @param view view
+     */
     private void fadeOut(View view) {
         fadeOut(view, 0);
     }
 
+    /**
+     * Carries out provided alpha animation on view
+     *
+     * @param view      view
+     * @param animation animation
+     */
     private void carryOutAnimation(View view, AlphaAnimation animation) {
         animation.setDuration(ANIMATION_DURATION);
         animation.setFillAfter(true);
@@ -254,6 +312,10 @@ public class EntityViewActivity extends AppCompatActivity {
 
     /* listeners */
 
+    /**
+     * Custom listener defining what happens when user scrolls recycler view.
+     * Basically, it occupies with setting up floating action button to hide after a while
+     */
     private class CustomOnScrollListener extends RecyclerView.OnScrollListener {
 
         @Override
@@ -271,6 +333,9 @@ public class EntityViewActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Custom listener defining what happens after the user tries to filter the entities
+     */
     private class CustomOnClickListener implements View.OnClickListener {
 
         @Override
@@ -285,6 +350,9 @@ public class EntityViewActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Custom listener defining what happens when user stops filtering entities
+     */
     private class CustomOnCloseListener implements SearchView.OnCloseListener {
 
         @Override
@@ -294,6 +362,9 @@ public class EntityViewActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Custom listener listening to changes of filter text and displaying results
+     */
     private class CustomOnQueryTextChangeListener implements SearchView.OnQueryTextListener {
 
         @Override
@@ -308,6 +379,9 @@ public class EntityViewActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Custom listener defining floating action button behaviour
+     */
     private class CustomOnFloatingActionsMenuChangeListener implements FloatingActionsMenu.OnFloatingActionsMenuUpdateListener {
 
         @Override

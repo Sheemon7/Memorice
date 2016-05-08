@@ -20,16 +20,25 @@ import cz.cvut.fel.memorice.view.fragments.detail.SetDetailListAdapter;
  */
 public class SetDetailActivity extends DetailActivity {
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected void prepareTypeIcon(ImageView icon) {
         icon.setImageResource(R.drawable.ic_set_white_24dp);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected void prepareTypeText(EditText textType) {
         textType.setText(EntityEnum.SET.getName());
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected EntityDetailListAdapter provideListAdapter(RecyclerView view) {
         return new SetDetailListAdapter(view);
