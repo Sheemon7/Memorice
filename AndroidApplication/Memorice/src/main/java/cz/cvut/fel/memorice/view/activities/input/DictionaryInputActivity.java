@@ -23,6 +23,7 @@ import cz.cvut.fel.memorice.model.util.EmptyTermException;
 import cz.cvut.fel.memorice.model.util.NameAlreadyUsedException;
 import cz.cvut.fel.memorice.model.util.TermAlreadyUsedException;
 import cz.cvut.fel.memorice.view.fragments.input.DictionaryInputListAdapter;
+import cz.cvut.fel.memorice.view.fragments.input.EntryInputListAdapter;
 
 /**
  * Created by sheemon on 18.4.16.
@@ -98,20 +99,25 @@ public class DictionaryInputActivity extends InputActivity {
         addEntityToDatabase(builder.wrap());
     }
 
-
-    protected void prepareRecyclerView() {
-        mRecyclerView = (RecyclerView) findViewById(R.id.recycler_view);
-        mLayoutManager = new LinearLayoutManager(this);
-        mRecyclerView.setLayoutManager(mLayoutManager);
-        mAdapter = new DictionaryInputListAdapter(mRecyclerView);
-        ImageView iconAdd = (ImageView) findViewById(R.id.icon_add);
-        iconAdd.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mAdapter.addRow();
-            }
-        });
-        mAdapter.setPlusIcon(iconAdd);
-        mAdapter.show();
+    @Override
+    protected EntryInputListAdapter getCorrectAdapter(RecyclerView view) {
+        return new DictionaryInputListAdapter(view);
     }
+
+
+//    protected void prepareRecyclerView() {
+//        mRecyclerView = (RecyclerView) findViewById(R.id.recycler_view);
+//        mLayoutManager = new LinearLayoutManager(this);
+//        mRecyclerView.setLayoutManager(mLayoutManager);
+//        mAdapter = new DictionaryInputListAdapter(mRecyclerView);
+//        ImageView iconAdd = (ImageView) findViewById(R.id.icon_add);
+//        iconAdd.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                mAdapter.addRow();
+//            }
+//        });
+//        mAdapter.setPlusIcon(iconAdd);
+//        mAdapter.show();
+//    }
 }

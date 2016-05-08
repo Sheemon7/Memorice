@@ -11,6 +11,7 @@ import cz.cvut.fel.memorice.model.database.dataaccess.ASyncEntityRead;
 import cz.cvut.fel.memorice.model.entities.EntityEnum;
 import cz.cvut.fel.memorice.view.fragments.detail.DictionaryDetailListAdapter;
 import cz.cvut.fel.memorice.view.fragments.DividerItemDecoration;
+import cz.cvut.fel.memorice.view.fragments.detail.EntityDetailListAdapter;
 
 /**
  * Created by sheemon on 18.4.16.
@@ -23,16 +24,12 @@ public class DictionaryDetailActivity extends DetailActivity {
     }
 
     @Override
-    protected void prepareTypeIcon(ImageView iconType) {
-        iconType.setImageResource(R.drawable.ic_dictionary_white_24dp);
+    protected EntityDetailListAdapter provideListAdapter(RecyclerView view) {
+        return new DictionaryDetailListAdapter(view);
     }
 
-    protected void prepareRecyclerView() {
-        mRecyclerView = (RecyclerView) findViewById(R.id.recycler_view);
-        mLayoutManager = new LinearLayoutManager(this);
-        mRecyclerView.setLayoutManager(mLayoutManager);
-        mRecyclerView.addItemDecoration(
-                new DividerItemDecoration(getApplicationContext(), R.drawable.separator));
-        mAdapter = new DictionaryDetailListAdapter(mRecyclerView);
+    @Override
+    protected void prepareTypeIcon(ImageView iconType) {
+        iconType.setImageResource(R.drawable.ic_dictionary_white_24dp);
     }
 }

@@ -44,7 +44,7 @@ public class SQLiteHelper extends SQLiteOpenHelper {
     public static final String TABLE_ENTRIES_DICTS = DatabaseConstants.TABLE_ENTRIES_DICTS;
     public static final String KEY_PASS = DatabaseConstants.KEY_PASS;
 
-    public static final String TABLE_ENTRIES_SETS = DatabaseConstants.TABLE_ENTRIES_DICTS;
+    public static final String TABLE_ENTRIES_SETS = DatabaseConstants.TABLE_ENTRIES_SETS;
 
     private SQLiteEntryTableHelper sqLiteEntryTableHelper = new SQLiteEntryTableHelper(this);
 
@@ -104,8 +104,8 @@ public class SQLiteHelper extends SQLiteOpenHelper {
         db.close();
 
         if (entity.getType() == EntityEnum.SEQUENCE) {
-            for (SequenceEntry entry : (Iterable<SequenceEntry>) entity) {
-                sqLiteEntryTableHelper.addSequenceEntry(entry, entity);
+            for (Entry entry : entity.getListOfEntries()) {
+                sqLiteEntryTableHelper.addSequenceEntry((SequenceEntry)entry, entity);
             }
         } else if (entity.getType() == EntityEnum.DICTIONARY) {
             for (Entry entry : entity.getListOfEntries()) {
@@ -123,21 +123,32 @@ public class SQLiteHelper extends SQLiteOpenHelper {
      * Renames the entity in the database
      *
      * @param oldLabel old label of the entity
-     * @param newLabel new label of the entity
+     * @param entity entity object
      */
-    public void renameEntity(String oldLabel, String newLabel) {
+    public void renameEntity(String oldLabel, Entity entity) {
         LOG.info("Renaming entity " + oldLabel);
         SQLiteDatabase db = getWritableDatabase();
-        String query = "UPDATE " + TABLE_ENTITIES + " SET " + KEY_LABEL + "=\"" + newLabel +
+        String query = "UPDATE " + TABLE_ENTITIES + " SET " + KEY_LABEL + "=\"" + entity.getLabel() +
                 "\" WHERE " + KEY_LABEL + " = " + "\""
                 + oldLabel + "\"";
         db.execSQL(query);
-        for (String table : new String[]{TABLE_ENTRIES_SETS, TABLE_ENTRIES_DICTS, TABLE_ENTRIES_SEQUENCES}) {
-            query = "UPDATE " + table + " SET " + KEY_ENTITY + "=\"" + newLabel +
+        String table;
+        switch (entity.getType()) {
+            case DICTIONARY:
+                table = TABLE_ENTRIES_DICTS;
+                break;
+            case SEQUENCE:
+                table = TABLE_ENTRIES_SEQUENCES;
+                break;
+            default:
+                table = TABLE_ENTRIES_SETS;
+                break;
+
+        }
+        query = "UPDATE " + table + " SET " + KEY_ENTITY + "=\"" + entity.getLabel() +
                     "\" WHERE " + KEY_ENTITY + " = " + "\""
                     + oldLabel + "\"";
             db.execSQL(query);
-        }
         db.close();
     }
 

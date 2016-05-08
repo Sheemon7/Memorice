@@ -27,8 +27,8 @@
     <string name="empty_name_quote">Name cannot be empty!</string>
     <string name="duplicate_quote">Your set contains duplicates!</string>
     <string name="duplicate_def_quote">Your set contains duplicate definitions!</string>
-    <string name="definition">definition</string>
-    <string name="value">value</string>
+    <string name="term">term</string>
+    <string name="value">definition</string>
     <string name="remove">remove</string>
     <string name="only_fav">Favourites</string>
     <string name="empty_value_quote">Your set contains empty values!</string>
@@ -39,5 +39,6 @@
     <string name="welcome">Welcome</string>
     <string name="rice_icon">Memorice icon</string>
     <string name="edit">edit</string>
+    <string name="entity_label_resource">entity_label</string>
 
 </resources>

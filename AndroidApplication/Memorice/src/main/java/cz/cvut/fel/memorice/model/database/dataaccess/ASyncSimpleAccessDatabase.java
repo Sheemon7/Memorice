@@ -73,7 +73,7 @@ public class ASyncSimpleAccessDatabase extends AsyncTask<String, Void, Void> {
                 helper.deleteEntity(entity);
                 break;
             case RENAME_ENTITY:
-                helper.renameEntity(oldValue, entity.getLabel());
+                helper.renameEntity(oldValue, entity);
                 break;
             case DELETE_ENTRY:
                 new SQLiteEntryTableHelper(helper).deleteEntry(entry, entity);

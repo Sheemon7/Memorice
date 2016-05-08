@@ -25,15 +25,15 @@ public class DictionaryDetailListAdapter extends EntityDetailListAdapter<Diction
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.detail_dictionary_line, parent, false);
-        ViewHolder vh = new ViewHolder(v);
-        return vh;
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.detail_dictionary_line, parent, false);
+        return new ViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
-        holder.txtDefinition.setText(items.get(position).getDefinition());
-        holder.txtValue.setText(items.get(position).getValue());
+        DictionaryEntry entry = items.get(position);
+        holder.txtDefinition.setText(entry.getDefinition());
+        holder.txtValue.setText(entry.getValue());
     }
 
     protected static class ViewHolder extends RecyclerView.ViewHolder {

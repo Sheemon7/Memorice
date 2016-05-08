@@ -5,6 +5,7 @@ import android.os.Build;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -13,6 +14,7 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import cz.cvut.fel.memorice.R;
@@ -20,6 +22,7 @@ import cz.cvut.fel.memorice.model.database.dataaccess.ASyncSimpleAccessDatabase;
 import cz.cvut.fel.memorice.model.database.helpers.SQLiteHelper;
 import cz.cvut.fel.memorice.model.entities.Entity;
 import cz.cvut.fel.memorice.view.fragments.input.EntryInputListAdapter;
+import cz.cvut.fel.memorice.view.fragments.input.SequenceInputListAdapter;
 
 /**
  * Created by sheemon on 19.4.16.
@@ -34,7 +37,6 @@ public abstract class InputActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_input, menu);
         return true;
     }
@@ -125,4 +127,22 @@ public abstract class InputActivity extends AppCompatActivity {
         access.setEntity(entity);
         access.execute(ASyncSimpleAccessDatabase.ADD_ENTITY);
     }
+
+    protected void prepareRecyclerView() {
+        mRecyclerView = (RecyclerView) findViewById(R.id.recycler_view);
+        mLayoutManager = new LinearLayoutManager(this);
+        mRecyclerView.setLayoutManager(mLayoutManager);
+        mAdapter = getCorrectAdapter(mRecyclerView);
+        ImageView iconAdd = (ImageView) findViewById(R.id.icon_add);
+        iconAdd.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mAdapter.addRow();
+            }
+        });
+        mAdapter.setPlusIcon(iconAdd);
+        mAdapter.show();
+    }
+
+    protected abstract EntryInputListAdapter getCorrectAdapter(RecyclerView view);
 }

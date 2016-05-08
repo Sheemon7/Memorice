@@ -12,6 +12,7 @@ import cz.cvut.fel.memorice.model.database.dataaccess.ASyncEntityRead;
 import cz.cvut.fel.memorice.model.entities.EntityEnum;
 import cz.cvut.fel.memorice.model.entities.Set;
 import cz.cvut.fel.memorice.view.fragments.DividerItemDecoration;
+import cz.cvut.fel.memorice.view.fragments.detail.EntityDetailListAdapter;
 import cz.cvut.fel.memorice.view.fragments.detail.SetDetailListAdapter;
 
 /**
@@ -29,13 +30,9 @@ public class SetDetailActivity extends DetailActivity {
         textType.setText(EntityEnum.SET.getName());
     }
 
-    protected void prepareRecyclerView() {
-        mRecyclerView = (RecyclerView) findViewById(R.id.recycler_view);
-        mLayoutManager = new LinearLayoutManager(this);
-        mRecyclerView.setLayoutManager(mLayoutManager);
-        mRecyclerView.addItemDecoration(
-                new DividerItemDecoration(getApplicationContext(), R.drawable.separator));
-        mAdapter = new SetDetailListAdapter(mRecyclerView);
+    @Override
+    protected EntityDetailListAdapter provideListAdapter(RecyclerView view) {
+        return new SetDetailListAdapter(view);
     }
 
 }

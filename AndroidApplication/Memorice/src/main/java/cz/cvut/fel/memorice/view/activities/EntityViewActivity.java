@@ -1,6 +1,5 @@
 package cz.cvut.fel.memorice.view.activities;
 
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.view.MenuItemCompat;
@@ -31,7 +30,8 @@ import cz.cvut.fel.memorice.view.fragments.DividerItemDecoration;
 import cz.cvut.fel.memorice.view.fragments.EntityListAdapter;
 
 /**
- * Created by sheemon on 14.4.16.
+ * This activity is responsible for viewing list of datasets. It is basically the main part of the
+ * application.
  */
 public class EntityViewActivity extends AppCompatActivity {
     private static final Logger LOG = Logger.getLogger(EntityViewActivity.class.getName());
@@ -246,13 +246,13 @@ public class EntityViewActivity extends AppCompatActivity {
         fadeOut(view, 0);
     }
 
-    /* listeners */
-
     private void carryOutAnimation(View view, AlphaAnimation animation) {
         animation.setDuration(ANIMATION_DURATION);
         animation.setFillAfter(true);
         view.startAnimation(animation);
     }
+
+    /* listeners */
 
     private class CustomOnScrollListener extends RecyclerView.OnScrollListener {
 
@@ -279,7 +279,9 @@ public class EntityViewActivity extends AppCompatActivity {
             if (fabHideThread.isAlive()) {
                 fabHideThread.interrupt();
             }
-            fadeOut(fabMenu);
+            if (fabMenu.isEnabled()) {
+                fadeOut(fabMenu);
+            }
         }
     }
 

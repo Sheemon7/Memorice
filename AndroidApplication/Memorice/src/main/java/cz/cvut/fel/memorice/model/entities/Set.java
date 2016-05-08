@@ -2,8 +2,8 @@ package cz.cvut.fel.memorice.model.entities;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.Iterator;
+import java.util.LinkedHashSet;
 import java.util.List;
 
 import cz.cvut.fel.memorice.model.entities.entries.Entry;
@@ -14,7 +14,7 @@ import cz.cvut.fel.memorice.model.util.TermAlreadyUsedException;
  */
 public class Set extends Entity implements Serializable {
 
-    private java.util.Set<Entry> entries = new HashSet<>();
+    private java.util.Set<Entry> entries = new LinkedHashSet<>();
 
     /**
      * Initiates new Set entity with label passed as parameter

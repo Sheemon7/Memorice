@@ -15,7 +15,7 @@
             android:layout_width="150dp"
             android:layout_height="match_parent"
             android:gravity="center"
-            android:hint="@string/definition"
+            android:hint="@string/term"
             android:inputType="text"
             android:textColor="@color/pink"
             android:textCursorDrawable="@null"

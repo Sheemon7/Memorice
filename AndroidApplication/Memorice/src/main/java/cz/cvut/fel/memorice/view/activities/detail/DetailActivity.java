@@ -7,6 +7,7 @@ import android.support.v4.content.ContextCompat;
 import android.support.v4.content.res.ResourcesCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
@@ -27,7 +28,9 @@ import cz.cvut.fel.memorice.model.database.dataaccess.ASyncEntityRead;
 import cz.cvut.fel.memorice.model.database.dataaccess.ASyncSimpleAccessDatabase;
 import cz.cvut.fel.memorice.model.database.helpers.SQLiteHelper;
 import cz.cvut.fel.memorice.model.entities.Entity;
+import cz.cvut.fel.memorice.view.fragments.DividerItemDecoration;
 import cz.cvut.fel.memorice.view.fragments.detail.EntityDetailListAdapter;
+import cz.cvut.fel.memorice.view.fragments.detail.SequenceDetailListAdapter;
 
 /**
  * Created by sheemon on 24.4.16.
@@ -53,24 +56,12 @@ public abstract class DetailActivity extends AppCompatActivity {
         setContentView(R.layout.activity_detail);
         iconType = (ImageView) findViewById(R.id.entity_icon);
         textType = (EditText) findViewById(R.id.entity_type);
-        setLabel(getIntent().getStringExtra("entity_label"));
+        setLabel(getIntent().getStringExtra(getString(R.string.entity_label_resource)));
         prepareToolbar();
         prepareTypeIcon(iconType);
         prepareTypeText(textType);
         prepareRecyclerView();
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
-    }
-
-    protected void prepareToolbar() {
-        Toolbar toolbar =
-                (Toolbar) findViewById(R.id.detail_toolbar);
-        toolbar.setTitleTextColor(ContextCompat.getColor(getApplicationContext(), R.color.white));
-        setSupportActionBar(toolbar);
-        ActionBar ab = getSupportActionBar();
-        ab.setDisplayHomeAsUpEnabled(true);
-        ab.setHomeAsUpIndicator(R.drawable.ic_arrow_back_white_24dp);
-        setToolbarColor();
-        prepareEditIcon();
     }
 
     @Override
@@ -109,7 +100,6 @@ public abstract class DetailActivity extends AppCompatActivity {
         return entity;
     }
 
-
     public void setEntity(Entity e) {
         mAdapter.setData(e.getListOfEntries());
         if (e.isFavourite()) {
@@ -128,6 +118,24 @@ public abstract class DetailActivity extends AppCompatActivity {
     public void setLabel(String label) {
         setTitle(label);
         this.label = label;
+    }
+
+    protected abstract void prepareTypeIcon(ImageView iconType);
+
+    protected abstract void prepareTypeText(EditText textType);
+
+    protected abstract EntityDetailListAdapter provideListAdapter(RecyclerView view);
+
+    private void prepareToolbar() {
+        Toolbar toolbar =
+                (Toolbar) findViewById(R.id.detail_toolbar);
+        toolbar.setTitleTextColor(ContextCompat.getColor(getApplicationContext(), R.color.white));
+        setSupportActionBar(toolbar);
+        ActionBar ab = getSupportActionBar();
+        ab.setDisplayHomeAsUpEnabled(true);
+        ab.setHomeAsUpIndicator(R.drawable.ic_arrow_back_white_24dp);
+        setToolbarColor();
+        prepareEditIcon();
     }
 
     private void setToolbarColor() {
@@ -153,77 +161,83 @@ public abstract class DetailActivity extends AppCompatActivity {
         }
     }
 
-    protected abstract void prepareTypeIcon(ImageView iconType);
-
-    protected abstract void prepareTypeText(EditText textType);
-
-    protected abstract void prepareRecyclerView();
+    private void prepareRecyclerView() {
+        mRecyclerView = (RecyclerView) findViewById(R.id.recycler_view);
+        mLayoutManager = new LinearLayoutManager(this);
+        mRecyclerView.setLayoutManager(mLayoutManager);
+        mRecyclerView.addItemDecoration(
+                new DividerItemDecoration(getApplicationContext(), R.drawable.separator));
+        mAdapter = provideListAdapter(mRecyclerView);
+    }
 
     private class InitEditListener implements View.OnClickListener {
 
         private SQLiteHelper helper;
-        private TextWatcher watcher;
+        private String oldLabel;
 
         public InitEditListener(SQLiteHelper helper) {
             this.helper = helper;
-        }
-
-        public void createTextWatcher(final String oldLabel) {
-            watcher = new TextWatcher() {
-                @Override
-                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-                }
-
-                @Override
-                public void onTextChanged(CharSequence s, int start, int before, int count) {
-                }
-
-                @Override
-                public void afterTextChanged(Editable s) {
-                    if (helper.getEntity(s.toString()) == null && !s.toString().equals("")) {
-                        ASyncSimpleAccessDatabase access = new ASyncSimpleAccessDatabase(getApplicationContext());
-                        entity.setLabel(s.toString());
-                        access.setOldValue(oldLabel);
-                        access.setEntity(entity);
-                        access.execute(ASyncSimpleAccessDatabase.RENAME_ENTITY);
-                        editIcon.setVisibility(View.VISIBLE);
-                    } else {
-                        String errorString;
-                        if (!s.toString().equals("")) {
-                            errorString = "Name is already used!";
-                        } else {
-                            errorString = "Name cannot be empty!";
-                        }
-                        int color = ContextCompat.getColor(getApplicationContext(), R.color.pink);
-                        ForegroundColorSpan fgcspan = new ForegroundColorSpan(color);
-                        SpannableStringBuilder builder = new SpannableStringBuilder(errorString);
-                        builder.setSpan(fgcspan, 0, errorString.length(), 0);
-                        textType.setError(builder);
-                        editIcon.setVisibility(View.GONE);
-                    }
-                }
-            };
         }
 
         @Override
         public void onClick(View v) {
             editable = !editable;
             if (editable) {
-                textType.setEnabled(true);
-                textType.setText(entity.getLabel());
-                final String oldLabel = entity.getLabel();
-                createTextWatcher(oldLabel);
-                textType.addTextChangedListener(watcher);
-                editIcon.setImageResource(R.drawable.ic_done_white_24dp);
+                prepareViewToEdit();
             } else {
-                textType.setEnabled(false);
-                textType.removeTextChangedListener(watcher);
-                setTitle(textType.getText().toString());
-                prepareTypeText(textType);
-                editIcon.setImageResource(R.drawable.ic_edit_white_24dp);
-                hideKeyboard();
+                String text = textType.getText().toString().trim();
+                if (isLabelOkay(text, oldLabel)) {
+                    if (text != oldLabel) {
+                        changeLabel(text);
+                    }
+                    textType.setEnabled(false);
+                    prepareTypeText(textType);
+                    editIcon.setImageResource(R.drawable.ic_edit_white_24dp);
+                    hideKeyboard();
+                } else {
+                    editable = true;
+                    showErrorSign(text);
+                }
             }
             mAdapter.setEditable(editable);
+        }
+
+        private void changeLabel(String text) {
+            entity.setLabel(text);
+            setLabel(text);
+            writeNewLabelToDatabase(oldLabel);
+        }
+
+        private void prepareViewToEdit() {
+            textType.setEnabled(true);
+            textType.setText(entity.getLabel());
+            oldLabel = entity.getLabel();
+            editIcon.setImageResource(R.drawable.ic_done_white_24dp);
+        }
+
+        private void writeNewLabelToDatabase(String oldLabel) {
+            ASyncSimpleAccessDatabase access = new ASyncSimpleAccessDatabase(getApplicationContext());
+            access.setOldValue(oldLabel);
+            access.setEntity(entity);
+            access.execute(ASyncSimpleAccessDatabase.RENAME_ENTITY);
+        }
+
+        private boolean isLabelOkay(String text, String oldLabel) {
+            return text.equals(oldLabel) || helper.getEntity(text) == null && !text.equals("");
+        }
+
+        private void showErrorSign(String text) {
+            String errorString;
+            if (text.equals("")) {
+                errorString = "Name cannot be empty!";
+            } else {
+                errorString = "Name is already used!";
+            }
+            int color = ContextCompat.getColor(getApplicationContext(), R.color.pink);
+            ForegroundColorSpan fgcspan = new ForegroundColorSpan(color);
+            SpannableStringBuilder builder = new SpannableStringBuilder(errorString);
+            builder.setSpan(fgcspan, 0, errorString.length(), 0);
+            textType.setError(builder);
         }
     }
 }

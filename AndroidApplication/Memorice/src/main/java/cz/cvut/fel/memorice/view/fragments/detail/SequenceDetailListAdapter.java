@@ -20,15 +20,15 @@ public class SequenceDetailListAdapter extends EntityDetailListAdapter<SequenceD
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.detail_sequence_line, parent, false);
-        ViewHolder vh = new ViewHolder(v);
-        return vh;
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.detail_sequence_line, parent, false);
+        return new ViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         holder.txtValue.setText(items.get(position).getValue());
-        holder.txtNumber.setText(String.valueOf(position + 1) + ".");
+        String number = (position + 1) + ".";
+        holder.txtNumber.setText(number);
     }
 
     protected static class ViewHolder extends RecyclerView.ViewHolder {
