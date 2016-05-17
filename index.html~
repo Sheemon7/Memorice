@@ -41,6 +41,58 @@
 
 --->
 
+<h2> <a class="anchor" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Finální verze<br><code>28.4.2016</code></h2>
+
+<p>Dnes jsem odevzdal finální verzi mé aplikace (respektive nahrál na gitlab poslední commit). Dovoluji si sem přidat návod k použití, který je stejný jako na mé gitlab wiki (ta je bohužel soukromá) </p>
+
+<h3>Návod k použití aplikace/komentář k odevzdání:</h3>
+
+<p>Aplikace slouží k uchovávání informací. V blogu jsem se rozepsal o třech "entitách" (takto datasety nazývám i v aplikaci) - <i>set/group</i>, <i>sequence/list</i>, <i>dictionary</i>, které jsem definoval jako tři nejdůležitější typy informací, které si běžný člověk potřebuje uložit/zapamatovat. Ty je možné v aplikaci nadefinovat a uložit, posléze i přečíst a používat. </p>
+
+<h4>Přidání Entity </h4>
+<p>Přidat Entitu lze jednoduše kliknutím na modré plovoucí tlačítko (<b>pozor!</b> - při uživatelově neaktivitě mizí, a je třeba ho vyvolat poklepáním, případně scrollem. Důvodem je lepší orientace)</p>
+
+<p>Při vkládání dat je třeba mít na paměti několik zásad:</p>
+
+<ol>
+	<li>Set/Group nepovoluje duplikáty</li>
+	<li>Dictionary nepovoluje dvě a více různých definic stejného termínu. Pouze jeden termín může být prázdný</li>
+	<li>Žádná z entit nepovoluje prázdné hodnoty</li>
+	<li>Název Entity nesmí být prázdný a v databázi se nesmějí vyskytovat dvě entity se stejnou hodnotou</li>
+</ol>
+
+<p>Při nesplnění jedné z těchto podmínek bude uživatel aplikacé upozorněn a bude si moci upravit svůj input.</p>
+
+<h4>Manipulace s Entitami</h4>
+<p>Po přidání několika datasetů se již aktivita s entitami začíná plnit. Entity je možné označit jako oblíbené, nebo je vymazat. Aplikace podporuje fulltextové vyhledávání (ignoruje velká/malá písmena), které lze podpořit i filtrem podle oblíbenosti. (poklepání na ikonku s lupou)</p>
+
+<h5>Úprava entity</h5>
+<p>Pří poklepání na entitu v seznamu entit lze vyvolat její detail. Zde lze opět označit entitu jako oblíbenou, či ji celou smazat. Při poklepání na tužku lze vyvolat mód úpravy, který umožňuje přejmenovat entitu (pokud nový název splní podmínky výše) nebo upravit její data (<b>pozor!</b> - v momentální verzi aplikace lze měnit pouze data u <i>Set</i> entit, <i>List</i> a <i>Dictionary</i> tak můžeme považovat za jakési "immutable")</p>
+
+<h4>Help</h4>
+<p>Aktivita help, do které se lze dostat z aktivity s entitami, nabízí náhled na můj vývojářský blog.</p>
+
+<h4>Settings</h4>
+<p>Aktivitu settings jsem bohužel naimplementovat nestihl, nepovažuji ji ale za stěžejní část aplikace.</p>
+
+<h3>Vývojářské poznámky</h3>
+
+<p>O použitých knihovnách/frameworcích je článek na blogu.</p>
+
+<p>V Aplikaci je mnoho míst, kde je možné naimplementovat dodatečnou funkčnost, kterou jsem nestihl dodat.
+Zde vidím hlavní body, kde se dá aplikace ještě rozvíjet:</p>
+
+<ul>
+	<li>Training - původním záměrem bylo v aplikaci poskytnout i nějaké drobnější aktivity na "trénovaní" vložených dat (kromě zapamatování si položek nákupu, které pro nás dlouhodobě nemají význam, by byla možnost vkládaat i například anglická slovíčka a posléze si je trénovat a ukládat do dlouhodobé paměti). </li>
+
+	<li>Větší volnost při editaci entit - nyní lze měnit pouze nějaké části našich dat.</li>
+</ul>
+
+<h2> <a class="anchor" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Konzolová aplikace je hotová<br><code>1.4.2016</code></h2>
+
+<p>Konečně jsem dokončil konzolovou aplikaci. Prozatím používá serializaci a ukládá data do souborů. To bych v budoucnu v Androidu rád nahradil použitím SQL databáze, kterou Android přímo podporuje. Nyní mám v plánu nastudovat několik témat, zejména tato:</p>
+
+
 <h2> <a class="anchor" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Libraries and frameworks<br><code>22.4.2016</code></h2>
 
 <p>V tomto přípěvku bych se chtěl trochu rozhovořit o použitých knihovnách v rámci mé aplikace. V té hrajou stěžejní roli následující: </p>
